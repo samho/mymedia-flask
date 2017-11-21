@@ -1,8 +1,10 @@
 from flask import Flask, render_template
 from flask_script import Manager
+from app import create_app
 
 
-app = Flask(__name__)
+#app = Flask(__name__)
+app = create_app("development")
 manager = Manager(app)
 
 
