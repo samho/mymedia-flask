@@ -1,9 +1,9 @@
 from flask import Flask, render_template
 from flask_script import Manager
-from app import create_app
+from applications import create_app
 
 
-#app = Flask(__name__)
+#applications = Flask(__name__)
 app = create_app("development")
 manager = Manager(app)
 
@@ -20,6 +20,6 @@ def user(name):
 
 
 if __name__ == '__main__':
-    # app.run(debug=True)
+    # applications.run(debug=True)
     manager.run()
 

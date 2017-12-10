@@ -1,10 +1,10 @@
 from flask_sqlalchemy import SQLAlchemy
-from app import cretae_app
+from applications import create_app
 from config import config
 import datetime
 
 
-db = SQLAlchemy(cretae_app(config['development']))
+db = SQLAlchemy(create_app(config['development']))
 
 
 class Actor(db.Model):

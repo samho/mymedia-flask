@@ -24,8 +24,16 @@ def create_app(config_name):
     db.init_app(app)
 
     # register blueprint
-    from .main import main as main_blueprint
-    app.register_blueprint(main_blueprint)
+    from applications.main.views import main
+    app.register_blueprint(main)
+
+    # register user blueprint
+    from applications.users.views import users
+    app.register_blueprint(users, prefix_url="/users")
 
     return app
+
+
+
+
 
