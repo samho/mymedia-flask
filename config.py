@@ -9,7 +9,8 @@ class Config:
     MEDIA_MAIL_SUBJECT_PREFIX = '[Flask]'
     MEDIA_MAIL_SENDER = 'Media Admin <samhocngz@gmail.com>'
     MEDIA_ADMIN = os.environ.get('MEDIA_ADMIN')
-
+    LOG_FILE = os.path.join(basedir, 'application.log')
+    LOG_DEFAULT_LEVEL = 'INFO'
 
     @staticmethod
     def init_app(app):
