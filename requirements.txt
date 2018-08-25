@@ -66,7 +66,7 @@ redis==2.10.6
 requests==2.18.4
 selenium==3.7.0
 six==1.11.0
-SQLAlchemy==0.7.9
+SQLAlchemy==1.1.15
 typing==3.6.2
 urllib3==1.22
 vine==1.1.4
