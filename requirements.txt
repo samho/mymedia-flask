@@ -12,7 +12,7 @@ csvalidate==1.1.1
 docker-py==1.10.6
 docker-pycreds==0.2.1
 dominate==2.3.1
-Flask==0.12.2
+Flask
 Flask-Bootstrap==3.3.7.1
 Flask-Celery==2.4.3
 Flask-CLI==0.4.0
