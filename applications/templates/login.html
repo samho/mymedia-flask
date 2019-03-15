@@ -2,144 +2,115 @@
 <html lang="en">
 
 <head>
-  <!--
-        ===
-        This comment should NOT be removed.
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
 
-        Charisma v2.0.0
+    <!-- Title Page-->
+    <title>Login</title>
 
-        Copyright 2012-2014 Muhammad Usman
-        Licensed under the Apache License v2.0
-        http://www.apache.org/licenses/LICENSE-2.0
+    <!-- Fontfaces CSS-->
+    <link href="static/css/font-face.css" rel="stylesheet" media="all">
+    <link href="static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
-        http://usman.it
-        http://twitter.com/halalit_usman
-        ===
-    -->
-  <meta charset="utf-8">
-  <title>My Media Application - Login</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
-  <meta name="author" content="Muhammad Usman">
+    <!-- Bootstrap CSS-->
+    <link href="static/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
-  <!-- The styles -->
-  <link id="bs-css" href="static/css/bootstrap-cerulean.min.css" rel="stylesheet">
+    <!-- Vendor CSS-->
+    <link href="static/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="static/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
-  <link href="static/css/charisma-app.css" rel="stylesheet">
-  <link href="static/bower_components/fullcalendar/dist/fullcalendar.css" rel="stylesheet">
-  <link href="static/bower_components/fullcalendar/dist/fullcalendar.print.css" rel="stylesheet" media="print">
-  <link href="static/bower_components/chosen/chosen.min.css" rel="stylesheet">
-  <link href="static/bower_components/colorbox/example3/colorbox.css" rel="stylesheet">
-  <link href="static/bower_components/responsive-tables/responsive-tables.css" rel="stylesheet">
-  <link href="static/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css" rel="stylesheet">
-  <link href="static/css/jquery.noty.css" rel="stylesheet">
-  <link href="static/css/noty_theme_default.css" rel="stylesheet">
-  <link href="static/css/elfinder.min.css" rel="stylesheet">
-  <link href="static/css/elfinder.theme.css" rel="stylesheet">
-  <link href="static/css/jquery.iphone.toggle.css" rel="stylesheet">
-  <link href="static/css/uploadify.css" rel="stylesheet">
-  <link href="static/css/animate.min.css" rel="stylesheet">
-
-  <!-- jQuery -->
-  <script src="static/bower_components/jquery/jquery.min.js"></script>
-
-  <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
-  <!--[if lt IE 9]>
-    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-
-  <!-- The fav icon -->
-  <link rel="shortcut icon" href="static/img/favicon.ico">
+    <!-- Main CSS-->
+    <link href="static/css/theme.css" rel="stylesheet" media="all">
 
 </head>
 
-<body>
-  <div class="ch-container">
-    <div class="row">
-
-      <div class="row">
-        <div class="col-md-12 center login-header">
-          <h2>Welcome to My Media Application</h2>
+<body class="animsition">
+    <div class="page-wrapper">
+        <div class="page-content--bge5">
+            <div class="container">
+                <div class="login-wrap">
+                    <div class="login-content">
+                        <div class="login-logo">
+                            <a href="#">
+                                <img src="static/images/icon/logo.png" alt="CoolAdmin">
+                            </a>
+                        </div>
+                        <div class="login-form">
+                            <form action="/index" method="post">
+                                <div class="form-group">
+                                    <label>Email Address</label>
+                                    <input class="au-input au-input--full" type="email" name="email" placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <label>Password</label>
+                                    <input class="au-input au-input--full" type="password" name="password" placeholder="Password">
+                                </div>
+                                <div class="login-checkbox">
+                                    <label>
+                                        <input type="checkbox" name="remember">Remember Me
+                                    </label>
+                                    <label>
+                                        <a href="#">Forgotten Password?</a>
+                                    </label>
+                                </div>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">sign in</button>
+                                <!--<div class="social-login-content">
+                                    <div class="social-button">
+                                        <button class="au-btn au-btn--block au-btn--blue m-b-20">sign in with facebook</button>
+                                        <button class="au-btn au-btn--block au-btn--blue2">sign in with twitter</button>
+                                    </div>
+                                </div> -->
+                            </form>
+                            <div class="register-link">
+                                <p>
+                                    Don't you have account?
+                                    <a href="#">Sign Up Here</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!--/span-->
-      </div>
-      <!--/row-->
 
-      <div class="row">
-        <div class="well col-md-5 center login-box">
-          <div class="alert alert-info">
-            Please login with your Username and Password.
-          </div>
-          <form class="form-horizontal" action="/index" method="post">
-            <fieldset>
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-user red"></i></span>
-                <input type="text" class="form-control" placeholder="Username">
-              </div>
-              <div class="clearfix"></div><br>
-
-              <div class="input-group input-group-lg">
-                <span class="input-group-addon"><i class="glyphicon glyphicon-lock red"></i></span>
-                <input type="password" class="form-control" placeholder="Password">
-              </div>
-              <div class="clearfix"></div>
-
-              <div class="input-prepend">
-                <label class="remember" for="remember"><input type="checkbox" id="remember"> Remember me</label>
-              </div>
-              <div class="clearfix"></div>
-
-              <p class="center col-md-5">
-                <button type="submit" class="btn btn-primary">Login</button>
-              </p>
-            </fieldset>
-          </form>
-        </div>
-        <!--/span-->
-      </div>
-      <!--/row-->
     </div>
-    <!--/fluid-row-->
 
-  </div>
-  <!--/.fluid-container-->
+    <!-- Jquery JS-->
+    <script src="static/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="static/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="static/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="static/vendor/slick/slick.min.js">
+    </script>
+    <script src="static/vendor/wow/wow.min.js"></script>
+    <script src="static/vendor/animsition/animsition.min.js"></script>
+    <script src="static/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="static/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="static/vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="static/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="static/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="static/vendor/select2/select2.min.js">
+    </script>
 
-  <!-- external javascript -->
-
-  <script src="static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-
-  <!-- library for cookie management -->
-  <script src="static/js/jquery.cookie.js"></script>
-  <!-- calender plugin -->
-  <script src="static/bower_components/moment/min/moment.min.js"></script>
-  <script src="static/bower_components/fullcalendar/dist/fullcalendar.min.js"></script>
-  <!-- data table plugin -->
-  <script src="static/js/jquery.dataTables.min.js"></script>
-
-  <!-- select or dropdown enhancer -->
-  <script src="static/bower_components/chosen/chosen.jquery.min.js"></script>
-  <!-- plugin for gallery image view -->
-  <script src="static/bower_components/colorbox/jquery.colorbox-min.js"></script>
-  <!-- notification plugin -->
-  <script src="static/js/jquery.noty.js"></script>
-  <!-- library for making tables responsive -->
-  <script src="static/bower_components/responsive-tables/responsive-tables.js"></script>
-  <!-- tour plugin -->
-  <script src="static/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js"></script>
-  <!-- star rating plugin -->
-  <script src="static/js/jquery.raty.min.js"></script>
-  <!-- for iOS style toggle switch -->
-  <script src="static/js/jquery.iphone.toggle.js"></script>
-  <!-- autogrowing textarea plugin -->
-  <script src="static/js/jquery.autogrow-textarea.js"></script>
-  <!-- multiple file upload plugin -->
-  <script src="static/js/jquery.uploadify-3.1.min.js"></script>
-  <!-- history.js for cross-browser state change on ajax -->
-  <script src="static/js/jquery.history.js"></script>
-  <!-- application script for Charisma demo -->
-  <script src="static/js/charisma.js"></script>
-
+    <!-- Main JS-->
+    <script src="static/js/main.js"></script>
 
 </body>
 
 </html>
+<!-- end document-->
