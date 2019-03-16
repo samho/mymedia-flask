@@ -2,9 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    {% include 'head.html' %}
+    {% block head %}
+    <title>{% block title %}{% endblock %} - MyMedia</title>
+    {% endblock %}
 </head>
 <body>
-
+    {% block body %}
+    {% endblock %}
+    {% include 'copyright.html' %}
+    {% include 'scripts.html' %}
+    
 </body>
 </html>
