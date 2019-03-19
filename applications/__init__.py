@@ -17,7 +17,6 @@ def create_app(config_name):
     app.config.from_object(config[config_name])
     config[config_name].init_app(app)
 
-
     bootstrap.init_app(app)
     mail.init_app(app)
     moment.init_app(app)
@@ -29,7 +28,7 @@ def create_app(config_name):
 
     # register user blueprint
     from applications.users.views import users
-    app.register_blueprint(users, prefix_url="/users")
+    app.register_blueprint(users, url_prefix="/users")
 
     return app
 
