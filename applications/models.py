@@ -1,9 +1,8 @@
 import datetime
 from flask_sqlalchemy import SQLAlchemy
-from config import config
 from applications import create_app
 
-db = SQLAlchemy(create_app(config["development"]))
+db = SQLAlchemy(create_app())
 
 
 class Actor(db.Model):

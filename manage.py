@@ -4,7 +4,7 @@ from applications import create_app
 
 from applications.models import db, User
 
-app = create_app("development")
+app = create_app()
 manager = Manager(app)
 
 migrate = Migrate(app, db)

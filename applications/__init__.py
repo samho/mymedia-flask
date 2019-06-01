@@ -3,7 +3,6 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from config import config
 import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -14,9 +13,10 @@ moment = Moment()
 db = SQLAlchemy()
 
 
-def create_app(config_name):
+def create_app():
     app = Flask(__name__)
     app.config.from_pyfile("config.py")
+
     #app.config.from_mapping(
     #    DEBUG = False,
     #    MAIL_SERVER = 'smtp.gmail.com',
