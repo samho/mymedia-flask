@@ -1,6 +1,7 @@
 import logging
 import logging.handlers
-from config import Config
+from applications.config import Config
+
 
 def splitStrIdToInteger(str_id_list):
     str_list = str_id_list.split(',')

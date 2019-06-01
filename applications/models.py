@@ -1,10 +1,9 @@
-from flask_sqlalchemy import SQLAlchemy
-from applications import create_app
-from config import config
 import datetime
+from flask_sqlalchemy import SQLAlchemy
+from config import config
+from applications import create_app
 
-
-db = SQLAlchemy(create_app(config['development']))
+db = SQLAlchemy(create_app(config["development"]))
 
 
 class Actor(db.Model):
@@ -96,7 +95,6 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
-
 
 
 
