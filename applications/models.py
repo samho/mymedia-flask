@@ -90,7 +90,7 @@ class User(db.Model):
     username = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(50))
     create_at = db.Column(db.DateTime, default=datetime.datetime.now())
-    update_ate = db.Column(db.DateTime, default=datetime.datetime.now())
+    update_at = db.Column(db.DateTime, default=datetime.datetime.now())
 
     def __repr__(self):
         return '<User %r>' % self.username
