@@ -1,6 +1,8 @@
 import datetime
 from flask_sqlalchemy import SQLAlchemy
 from applications import create_app
+from flask.ext.login import UserMixin
+from . import login_manager
 
 db = SQLAlchemy(create_app())
 
@@ -83,7 +85,7 @@ class Storage(db.Model):
         return '<Storage %r>' % self.name
 
 
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'user'
 
     id = db.Column(db.Integer, primary_key=True)
@@ -96,4 +98,6 @@ class User(db.Model):
         return '<User %r>' % self.username
 
 
-
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
