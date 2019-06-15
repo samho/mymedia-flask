@@ -13,7 +13,7 @@ class Actor(db.Model):
     sex = db.Column(db.Boolean)
     country = db.Column(db.String(50))
     description = db.Column(db.Text)
-    thumb = db.Column(db.Integer)
+    thumb = db.Column(db.Integer)  # the record id in photo table.
 
     def __repr__(self):
         return '<Actor %r>' % self.name
@@ -24,7 +24,7 @@ class EBook(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    mediatype = db.Column(db.Integer)
+    mediatype = db.Column(db.String(100)) # with the media type id
     storage = db.Column(db.Integer)
     file_path = db.Column(db.String(500))
 

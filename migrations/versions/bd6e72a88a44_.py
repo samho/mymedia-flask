@@ -1,8 +1,8 @@
-"""initial migration
+"""empty message
 
-Revision ID: 24dbd9ee414c
+Revision ID: bd6e72a88a44
 Revises: 
-Create Date: 2019-06-01 14:31:40.654334
+Create Date: 2019-06-11 23:50:22.705683
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '24dbd9ee414c'
+revision = 'bd6e72a88a44'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,7 +30,7 @@ def upgrade():
     op.create_table('ebook',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=50), nullable=True),
-    sa.Column('mediatype', sa.Integer(), nullable=True),
+    sa.Column('mediatype', sa.String(length=100), nullable=True),
     sa.Column('storage', sa.Integer(), nullable=True),
     sa.Column('file_path', sa.String(length=500), nullable=True),
     sa.PrimaryKeyConstraint('id')
@@ -71,7 +71,7 @@ def upgrade():
     sa.Column('username', sa.String(length=50), nullable=True),
     sa.Column('password', sa.String(length=50), nullable=True),
     sa.Column('create_at', sa.DateTime(), nullable=True),
-    sa.Column('update_ate', sa.DateTime(), nullable=True),
+    sa.Column('update_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('username')
     )
