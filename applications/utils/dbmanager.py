@@ -1,11 +1,13 @@
 from flask_sqlalchemy import SQLAlchemy
-from applications import create_app
+from flask import Flask
 from applications.models import MediaType, User, Storage, Photo, Actor, EBook, Movie
 import datetime
 import marshal
-import  os
+import os
 
-db = SQLAlchemy(create_app())
+app = Flask(__name__)
+app.config.from_pyfile("../config.py")
+db = SQLAlchemy(app)
 
 # DB Operations for MediaType
 

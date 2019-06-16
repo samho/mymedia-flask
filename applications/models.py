@@ -1,10 +1,14 @@
 import datetime
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from applications import create_app
-from flask.ext.login import UserMixin
+from flask_login import UserMixin
 from . import login_manager
 
-db = SQLAlchemy(create_app())
+
+app = Flask(__name__)
+app.config.from_pyfile("config.py")
+db = SQLAlchemy(app)
 
 
 class Actor(db.Model):
@@ -97,7 +101,6 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-
-@login_manager.user_loader
-def load_user(user_id):
-    return User.query.get(int(user_id))
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))

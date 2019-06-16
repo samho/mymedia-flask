@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template
-from flask_login import login_required
+from flask import Blueprint, render_template, url_for, flash
+from flask_login import login_required, login_user
 from forms import LoginForm
+from ..utils import dbmanager
 
 
 main = Blueprint("main", __name__)
@@ -13,7 +14,14 @@ def root():
 
 @main.route('/login', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = dbmanager.find_user_by_name(form.username.data)
+        if user is not None and (user.password == form.password.data):
+            login_user(user)
+            return url_for("main.view")
+        flash("Invalid username or password.")
+    return render_template('login.html', form=form)
 
 
 @main.route('/index', methods=['GET', 'POST'])
