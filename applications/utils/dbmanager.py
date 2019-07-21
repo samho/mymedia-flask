@@ -64,7 +64,7 @@ def find_user_by_id(id):
 
 
 def find_user_by_name(username):
-    return User.query.filter_by(username=username).all()
+    return User.query.filter_by(username=username).first()
 
 
 def find_all_users():

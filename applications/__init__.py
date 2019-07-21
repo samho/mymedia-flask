@@ -3,8 +3,8 @@ from flask_bootstrap import Bootstrap
 from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 import os
+from applications.extensions import bcrypt
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -12,10 +12,6 @@ bootstrap = Bootstrap()
 mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
-
-login_manager = LoginManager()
-login_manager.session_protection = 'strong'
-login_manager.login_view = 'main.login'
 
 
 def create_app():
@@ -37,7 +33,7 @@ def create_app():
     mail.init_app(app)
     moment.init_app(app)
     db.init_app(app)
-    login_manager.init_app(app)
+    bcrypt.init_app(app)
 
 
     # register blueprint

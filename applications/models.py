@@ -3,7 +3,8 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from applications import create_app
 from flask_login import UserMixin
-from . import login_manager
+
+from applications.extensions import bcrypt
 
 
 app = Flask(__name__)
@@ -101,6 +102,9 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User %r>' % self.username
 
-    @login_manager.user_loader
-    def load_user(user_id):
-        return User.query.get(int(user_id))
+    def set_password(self, password):
+        self.password = bcrypt.generate_password_hash(password)
+
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self.password, password)
+
