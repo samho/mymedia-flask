@@ -1,7 +1,7 @@
 amqp==2.2.2
 backports.ssl-match-hostname==3.5.0.1
 billiard==3.5.0.3
-bleach==2.1.1
+bleach==3.1.1
 blinker==1.4
 celery==4.1.0
 certifi==2017.11.5
