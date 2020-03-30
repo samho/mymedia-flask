@@ -1,6 +1,12 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask
-from applications.models import MediaType, User, Storage, Photo, Actor, EBook, Movie
+from applications.mediatype.model import MediaType
+from applications.users.model import User
+from applications.storage.model import Storage
+from applications.photo.model import Photo
+from applications.actors.model import Actor
+from applications.ebooks.model import EBook
+from applications.movies.model import Movie
 import datetime
 import marshal
 import os
@@ -55,6 +61,7 @@ def delete_mediatype(id):
 
 def save_user(username, password):
     new_user = User(username=username, password=password, create_at=datetime.datetime.now(), update_at=datetime.datetime.now())
+    new_user.set_password(password)
     db.session.add(new_user)
     db.session.commit()
 
@@ -77,7 +84,7 @@ def update_user(id, username, password):
     if update_user is None:
         return {"err_msg": "The user with id %d is not existed." % id, "obj": None}
     else:
-        db.session.query(User).filter_by(id=id).update({"username": username, "password": password, "update_at": datetime.datetime.now()})
+        db.session.query(User).filter_by(id=id).update({"username": username, "password": User.set_password(password), "update_at": datetime.datetime.now()})
         db.session.commit()
         return {"err_msg": "Update success.", "obj": None}
 
@@ -298,8 +305,11 @@ def delete_movie(id):
         return {"err_msg": "Delete success.", "obj": None}
 
 
-
 if __name__ == '__main__':
+    #save_user("samho", "19781117")
+    user = find_user_by_name("samho")
+    print user.username, user.password
+    print user.check_password("19781117")
     #save_mediatype("photo", 0)
     #mediatype = find_mediatype_by_name("photo")
     #print mediatype.id
@@ -315,17 +325,17 @@ if __name__ == '__main__':
     #    photo_blob = marshal.dumps(input_file.read(), 2)
     #    save_photo(name=file_name, ext=ext, content=photo_blob)
 
-    try:
-        p = find_photo_by_id(1)
-        name = p.name
-        ext = p.ext
-        static_path = "/tmp/"
-        print p.name
-        print p.ext
-        file_name = "%s%s" % (name, ext)
-        file_path = os.path.join(static_path, "%s" % file_name)
-        with open(file_path, 'wb') as output_file:
-            output_file.write(marshal.loads(p.content))
-    except Exception:
-        print "file not existed."
+    #try:
+    #    p = find_photo_by_id(1)
+    #    name = p.name
+    #    ext = p.ext
+    #    static_path = "/tmp/"
+    #    print p.name
+    #    print p.ext
+    #    file_name = "%s%s" % (name, ext)
+    #    file_path = os.path.join(static_path, "%s" % file_name)
+    #    with open(file_path, 'wb') as output_file:
+    #        output_file.write(marshal.loads(p.content))
+    #except Exception:
+    #    print "file not existed."
 

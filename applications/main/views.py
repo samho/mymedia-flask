@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, url_for, flash
+from flask import Blueprint, render_template, url_for, flash, redirect
 from forms import LoginForm
 
 
@@ -15,7 +15,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         flash("You have been logged in.", category="success")
-        return url_for("main.view")
+        return redirect(url_for("main.index"))
 
     return render_template('login.html', form=form)
 

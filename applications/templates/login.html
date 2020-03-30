@@ -4,11 +4,19 @@
 {% block body %}
 
 <body class="animsition">
+
     <div class="page-wrapper">
         <div class="page-content--bge5">
             <div class="container">
                 <div class="login-wrap">
                     <div class="login-content">
+                        {%  if form.username.errors %}
+                            {% for error in form.username.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ error }}
+                            </div>
+                            {% endfor %}
+                        {% endif %}
                         <div class="login-logo">
                             <a href="#">
                                 <img src="/static/images/icon/logo.png" alt="CoolAdmin">
@@ -18,7 +26,7 @@
                             <form action="/login" method="POST">
                                 <div class="form-group">
                                     <label>User Name</label>
-                                    {{ form.username(class="au-input au-input--full", placeholder="Text")}}
+                                    {{ form.username(class="au-input au-input--full", placeholder="Username")}}
                                     <!--input class="au-input au-input--full" type="text" name="email" placeholder="Email"-->
                                 </div>
                                 <div class="form-group">

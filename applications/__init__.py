@@ -4,9 +4,16 @@ from flask_mail import Mail
 from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 import os
+from flask_login import LoginManager
 from applications.extensions import bcrypt
 
 basedir = os.path.abspath(os.path.dirname(__file__))
+
+login_manager = LoginManager()
+login_manager.login_view = "auth.login"
+login_manager.session_protection = "strong"
+login_manager.login_message = "Please login to access this page"
+login_manager.login_message_category = "info"
 
 bootstrap = Bootstrap()
 mail = Mail()
@@ -42,7 +49,7 @@ def create_app():
 
     # register user blueprint
     from applications.users.views import users
-    app.register_blueprint(users, url_prefix="/users")
+    app.register_blueprint(users)
 
     return app
 
