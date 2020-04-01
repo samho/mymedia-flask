@@ -31,7 +31,7 @@ def logout():
 @main.route('/index', methods=['GET', 'POST'])
 def index():
     if 'username' in session:
-        return render_template('index.html')
+        return render_template('index.html', logon_user=session['username'])
     else:
         return render_template('login.html', form=LoginForm())
 

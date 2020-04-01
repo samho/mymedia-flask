@@ -75,7 +75,10 @@ def find_user_by_name(username):
 
 
 def find_all_users():
-    return User.query.all()
+    user_list = User.query.all()
+    if user_list is None:
+        return None
+    return user_list
 
 
 def update_user(id, username, password):
