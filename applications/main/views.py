@@ -36,3 +36,8 @@ def index():
         return render_template('login.html', form=LoginForm())
 
 
+@main.route('/demo', methods=['GET', 'POST'])
+def demo():
+    return render_template('demo.html')
+
+
