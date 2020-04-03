@@ -33,8 +33,8 @@
                                     -->
                                 </div>
                                 <div class="table-data__tool-right">
-                                    <button id="new_user" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                        <i class="zmdi zmdi-plus"></i>add item</button>
+                                    <a id="new_user" href="./new" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                        <i class="zmdi zmdi-plus"></i>add item</a>
                                     <!--div class="rs-select2--dark rs-select2--sm rs-select2--dark2">
                                         <select class="js-select2" name="type">
                                             <option selected="selected">Export</option>
@@ -74,12 +74,12 @@
                                                 <td>{{ user.update_at }}</td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="./edit/{{ user.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
-                                                        </button>
-                                                        <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        </a>
+                                                        <a href="./delete/{{ user.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
-                                                        </button>
+                                                        </a>
                                                     </div>
                                                 </td>
                                             </tr>

@@ -1,0 +1,22 @@
+<html>
+<head>
+</head>
+<link href="css/demo.css" rel="stylesheet" type="text/css" />
+<script src="vendor/jquery-3.2.1.min.js" type="text/javascript"></script>
+<script src="js/demo.js" type="text/javascript"></script>
+<script type="text/javascript">
+        function showClick() {
+            Message.config("config 弹出框测试,是否删除?", function (f) {
+                if (f) { Message.alter("点击Ok按钮"); } else { Message.alter("点击Cannel按钮"); }
+            });
+        }
+        function showClick2() {
+            Message.alter("alert 弹出框测试");
+        }
+</script>
+</head>
+<body>
+    alert弹出框：  <input type="button"  value="alert" onclick="showClick2()" /><br />
+    config弹出框：<input type="button"  value="config" onclick="showClick()" /><br />
+</body>
+</html>

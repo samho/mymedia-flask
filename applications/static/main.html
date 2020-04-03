@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        input{
+            margin: 10px;
+            width: 100px;
+            height: 30px;
+        }
+    </style>
+</head>
+<body>
+         <input id="Button1" type="button" value="删除" onclick="del()">
+          <script>
+              function del() {
+                  if(confirm("确实要删除吗？")){
+                      alert("已经删除！");
+                      windows.redirect("/login");
+                  }else {
+                      alert("已经取消了删除操作");
+                  }
+
+              }
+          </script>
+</body>
+</html>
