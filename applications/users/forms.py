@@ -21,12 +21,9 @@ class UserForm(FlaskForm):
 
         user = dbmanager.find_user_by_name(username=self.username.data)
 
-        if not user:
-            dbmanager.save_user(self.username.data, self.password.data)
-            return True
-        else:
+        if user:
             self.username.errors.append("User is existed.")
             return False
 
-
+        return True
 

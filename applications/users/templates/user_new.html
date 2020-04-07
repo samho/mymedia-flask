@@ -29,7 +29,7 @@
                                 <div class="form-group">
                                     <label for="nf-password" class=" form-control-label">Password</label>
                                     {{ userform.password(type="password",id="new_password",placeholder="Enter Password..",class="form-control") }}
-                                    {%  if userform.username.errors %}
+                                    {%  if userform.password.errors %}
                                         {% for error in userform.password.errors %}
                                             <div class="alert alert-danger" role="alert">
                                                 {{ error }}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, session, flash
+from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.users.forms import UserForm
 from applications.utils import dbmanager
@@ -50,12 +50,13 @@ def create_user():
 
     userform = UserForm()
     if userform.validate_on_submit():
+        dbmanager.save_user(userform.username.data, userform.password.data)
         user_list = dbmanager.find_all_users()
         if user_list is None:
             return render_template("users.html", pagename="Users", logon_user=session['username'])
         else:
             return render_template("users.html", pagename="Users", logon_user=session['username'], users=user_list)
 
-    return render_template("/user_new.html", userform=userform)
+    return render_template("/user_new.html", userform=userform, logon_user=session['username'])
 
 
