@@ -1,2 +1,3 @@
 2020-04-02 11:56:49,886 - INFO - /Users/samho/workspace/mymedia-flask/applications/utils/logger.py:72 - logger.py - Module:logger - Func:<module> - 7564 - MainThread - test level4
 2020-04-02 11:56:49,886 - INFO - /Users/samho/workspace/mymedia-flask/applications/utils/logger.py:72 - logger.py - Module:logger - Func:<module> - test level4
+2020-04-08 16:34:15,679 - INFO - /Users/samho/workspace/mymedia-flask/applications/users/views.pyc:73 - views.py - Module:views - Func:delete_user - 4099 - Thread-19 - Delete success.
