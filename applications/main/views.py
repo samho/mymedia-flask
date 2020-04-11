@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, url_for, flash, redirect, session
 from forms import LoginForm
+from applications.utils import dbmanager
 
 
 main = Blueprint("main", __name__)
@@ -15,6 +16,7 @@ def login():
     form = LoginForm()
     if form.validate_on_submit():
         session["username"] = form.username.data
+        dbmanager.refresh_logon_datetime(form.username.data)
         flash("You have been logged in.", category="success")
         return redirect(url_for("main.index"))
 

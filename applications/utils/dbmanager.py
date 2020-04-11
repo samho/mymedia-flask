@@ -93,6 +93,16 @@ def find_all_users():
     return user_list
 
 
+def refresh_logon_datetime(username):
+    logon_user = find_user_by_name(username)
+    if logon_user is None:
+        return {"err_msg": "The user with user name %s is not existed." % username, "obj": None, "op_status": False}
+    else:
+        db.session.query(User).filter_by(id=logon_user.id).update({"update_at": datetime.datetime.now()})
+        db.session.commit()
+        return {"err_msg": "Update logon user success.", "obj": None, "op_status": True}
+
+
 def update_user(id, username, password):
 
     update_user = find_user_by_id(id)
