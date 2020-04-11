@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
-from applications.users.forms import UserForm
+from applications.users.forms import UserForm, UserEditForm
 from applications.utils import dbmanager, logger
 
 users = Blueprint("users",
@@ -79,6 +79,41 @@ def delete_user(user_id):
         return render_template("users.html", pagename="Users", logon_user=session['username'])
     else:
         return render_template("users.html", pagename="Users", logon_user=session['username'], users=user_list)
+
+
+@users.route('/edit/<int:user_id>')
+def edit_user(user_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    user = dbmanager.find_user_by_id(user_id)
+    if user is None:
+        return render_template('user_edit.html', pagename="Edit User", logon_user=session['username'])
+    else:
+        return render_template('user_edit.html', pagename="Edit User", logon_user=session['username'], user=user, usereditform=UserEditForm())
+
+
+@users.route('/user_update/<int:user_id>', methods=('GET', 'POST'))
+def update_user(user_id):
+
+    usereditform = UserEditForm()
+    user = dbmanager.find_user_by_id(user_id)
+    if usereditform.validate_on_submit():
+
+        op_result = dbmanager.update_user(user_id, user.username, usereditform.password.data)
+
+        if op_result["op_status"]:
+            logger.info(op_result["err_msg"])
+        else:
+            logger.error(op_result["err_msg"])
+
+        user_list = dbmanager.find_all_users()
+        if user_list is None:
+            return render_template("users.html", pagename="Users", logon_user=session['username'])
+        else:
+            return render_template("users.html", pagename="Users", logon_user=session['username'], users=user_list)
+
+    return render_template("/user_edit.html", usereditform=usereditform, user=user, logon_user=session['username'])
 
 
 

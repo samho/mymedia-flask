@@ -109,7 +109,7 @@ def update_user(id, username, password):
     if update_user is None:
         return {"err_msg": "The user with id %d is not existed." % id, "obj": None, "op_status": False}
     else:
-        db.session.query(User).filter_by(id=id).update({"username": username, "password": User.set_password(password), "update_at": datetime.datetime.now()})
+        db.session.query(User).filter_by(id=id).update({"username": username, "password": update_user.set_password(password), "update_at": datetime.datetime.now()})
         db.session.commit()
         return {"err_msg": "Update success.", "obj": None, "op_status": True}
 

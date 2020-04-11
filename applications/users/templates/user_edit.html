@@ -1,10 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %} Edit User {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+         <div class="page-content--bge5">
+            <!--DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    {%  if user %}
+                                    <form action="/users/user_update/{{ user.id }}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label class=" form-control-label">User Name</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <p class="form-control-static">{{ user.username }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="password-input" class=" form-control-label">Nww Password</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ usereditform.password(type="password",id="new_password",placeholder="New Password",class="form-control") }}
+                                                {%  if usereditform.password.errors %}
+                                                    {% for error in usereditform.password.errors %}
+                                                    <div class="alert alert-danger" role="alert">
+                                                        {{ error }}
+                                                    </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                <small class="help-block form-text">Please enter your new password</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="password-input" class=" form-control-label">Password</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ usereditform.password_confirm(type="password",id="confrim_password",placeholder="New Password to confirm",class="form-control") }}
+                                                {%  if usereditform.password_confirm.errors %}
+                                                    {% for error in usereditform.password_confirm.errors %}
+                                                        <div class="alert alert-danger" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                <small class="help-block form-text">Please enter new password to confirm.</small>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-dot-circle-o"></i> Submit
+                                            </button>
+                                            <button type="reset" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-ban"></i> Reset
+                                            </button>
+                                        </div>
+                                    </form>
+                                    {% else %}
+                                        <div class="alert alert-danger" role="alert">
+                    	                    <h4 class="alert-heading">Confirm</h4>
+                    		                <p>
+                                                There is nothing found.
+                                            </p>
+                        		            <hr>
+                        		            <p class="mb-0">Are you sure the user is existed?</p>
+                        	            </div>
+                                        <div align="right">
+                                            <a role="button" href="/users/all" class="btn btn-secondary btn-sm">Cancel</a>
+                                        </div>
+                                        {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+         </div>
+{% endblock %}

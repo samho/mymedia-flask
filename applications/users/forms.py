@@ -27,3 +27,24 @@ class UserForm(FlaskForm):
 
         return True
 
+
+class UserEditForm(FlaskForm):
+    password = PasswordField("Your new password.", validators=[DataRequired()])
+    password_confirm = PasswordField("Your new password again.", validators=[DataRequired()])
+
+    def validate(self):
+        super(UserEditForm, self).validate()
+
+        if self.password.data.strip() == "":
+            self.password.errors.append("New Password can not be empty.")
+            return False
+
+        if self.password_confirm.data.strip() == "":
+            self.password_confirm.errors.append("Confirm Password can not be empty.")
+            return False
+
+        if not (self.password.data.strip() == self.password_confirm.data.strip()):
+            self.password_confirm.errors.append("Confirm password is not equal the new password.")
+            return False
+
+        return True
