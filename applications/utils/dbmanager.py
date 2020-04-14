@@ -9,11 +9,13 @@ from applications.ebooks.model import EBook
 from applications.movies.model import Movie
 import datetime
 from applications.utils import logger
+from applications import create_app
 
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
 app = Flask(__name__)
 app.config.from_pyfile("../config.py")
+app.app_context().push()
 db = SQLAlchemy(app)
 
 # DB Operations for MediaType
@@ -40,7 +42,10 @@ def find_mediatype_by_name(name):
 
 
 def find_all_mediatypes():
-    return MediaType.query.all()
+    mediatype_list = MediaType.query.all()
+    if mediatype_list is None:
+        return None
+    return mediatype_list
 
 
 def update_mediatype(id, name, parent):
@@ -358,10 +363,12 @@ def delete_movie(id):
 
 
 if __name__ == '__main__':
+    mediatypes = find_mediatype_by_id(1)
+    print mediatypes["id"]
     #save_user("samho", "19781117")
-    user = find_user_by_name("samho")
-    print user.username, user.password
-    print user.check_password("19781117")
+    #user = find_user_by_name("samho")
+    #print user.username, user.password
+    #print user.check_password("19781117")
     #save_mediatype("photo", 0)
     #mediatype = find_mediatype_by_name("photo")
     #print mediatype.id

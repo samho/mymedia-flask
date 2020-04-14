@@ -51,5 +51,9 @@ def create_app():
     from applications.users.views import users
     app.register_blueprint(users)
 
+    # register mediatype blueprint
+    from applications.mediatype.views import mediatype
+    app.register_blueprint(mediatype)
+
     return app
 
