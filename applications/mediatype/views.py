@@ -74,6 +74,27 @@ def create_mediatype():
     return render_template("create_mediatype.html", pagename="Create Media Type", logon_user=session['username'], mediatypeform=mediatypeform)
 
 
+@mediatype.route('/edit/<int:mediatype_id>', methods=['GET', 'POST'])
+def edit_mediatype(mediatype_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    mediatype = dbmanager.find_mediatype_by_id(mediatype_id)
+    if mediatype is None:
+        logger.error("There is not any media type match id %d." % mediatype_id)
+        return redirect("/mediatype/all")
+    else:
+        mediatypeform = MediaTypeForm()
+        return render_template("edit_mediatype.html", pagename="Edit Media Type", logon_user=session['username'],
+                       mediatypeform=mediatypeform, cur_mediatype=mediatype)
+
+
+
+
+
+
+
+
 
 
 

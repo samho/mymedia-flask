@@ -13,31 +13,39 @@
                             <div class="card">
                                 <div class="card-body card-block">
                                     <form action="./create_user" method="POST" class="">
-                                        <div class="form-group">
-                                            <label for="nf-email" class=" form-control-label">User Name</label>
-                                            {{ userform.username(type="text",id="new_username",placeholder="User Name..",class="form-control") }}
-                                            {%  if userform.username.errors %}
-                                                {% for error in userform.username.errors %}
-                                                <div class="alert alert-danger" role="alert">
-                                                    {{ error }}
-                                                </div>
-                                                {% endfor %}
-                                            {% else %}
-                                                <span class="help-block">Please enter your user name</span>
-                                            {% endif %}
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="nf-password" class=" form-control-label">Password</label>
-                                            {{ userform.password(type="password",id="new_password",placeholder="Enter Password..",class="form-control") }}
-                                            {%  if userform.password.errors %}
-                                                {% for error in userform.password.errors %}
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="nf-email" class=" form-control-label">User Name</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ userform.username(type="text",id="new_username",placeholder="User Name..",class="form-control") }}
+                                                {%  if userform.username.errors %}
+                                                    {% for error in userform.username.errors %}
                                                     <div class="alert alert-danger" role="alert">
                                                         {{ error }}
                                                     </div>
-                                                {% endfor %}
-                                            {% else %}
-                                                <span class="help-block">Please enter your password</span>
-                                            {% endif %}
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter your user name</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="nf-password" class=" form-control-label">Password</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ userform.password(type="password",id="new_password",placeholder="Enter Password..",class="form-control") }}
+                                                {%  if userform.password.errors %}
+                                                    {% for error in userform.password.errors %}
+                                                        <div class="alert alert-danger" role="alert">
+                                                            {{ error }}
+                                                       </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter your password</span>
+                                                {% endif %}
+                                            </div>
                                         </div>
                                         <div class="form-group">
                                             <button type="submit" class="btn btn-primary btn-sm">

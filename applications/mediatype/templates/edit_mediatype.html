@@ -1,10 +1,65 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Media Type Edit {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+         <div class="page-wrapper">
+         <div class="page-content--bge5">
+            <!--DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <form action="/mediatype/edit_mediatype/{{ cur_mediatype.id }}" method="POST" class="">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">Origin Media Type:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <label for="text-input" class="form-control-label">{{ cur_mediatype.name }}</label>
+                                            </div>
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">New Media Type:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ mediatypeform.name(type="text",id="new_mediatype",placeholder="Media Type..",class="form-control col-md-6") }}
+                                                {%  if mediatypeform.name.errors %}
+                                                    {% for error in mediatypeform.name.errors %}
+                                                    <div class="alert alert-danger col-md-6" role="alert">
+                                                        {{ error }}
+                                                    </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the new media type.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="select" class="form-control-label">Parent Type:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ mediatypeform.parent(id="parent_type", class="form-control col-md-6") }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-dot-circle-o"></i> Submit
+                                            </button>
+                                            <button type="reset" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-ban"></i> Reset
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+         </div>
+         </div>
+{% endblock %}
