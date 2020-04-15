@@ -89,6 +89,58 @@ def edit_mediatype(mediatype_id):
                        mediatypeform=mediatypeform, cur_mediatype=mediatype)
 
 
+@mediatype.route('/update_mediatype/<int:mediatype_id>', methods=['GET', 'POST'])
+def update_mediatype(mediatype_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    cur_mediatype = dbmanager.find_mediatype_by_id(mediatype_id)
+    mediatypeform = MediaTypeForm()
+    if mediatypeform.validate_on_submit():
+        mediatype = dbmanager.find_mediatype_by_name(mediatypeform.name.data.strip())
+        if len(mediatype) == 0:
+            logger.info("Update new media type to db.")
+            op_result = dbmanager.update_mediatype(mediatype_id, mediatypeform.name.data.strip(), mediatypeform.parent.data)
+            logger.info("Update new media type complete, status: %s." % op_result["op_status"])
+            return redirect("/mediatype/all")
+        else:
+            logger.info("Media type is existed.")
+            mediatypeform.name.errors.append("Media Type is existed.")
+            return render_template("edit_mediatype.html", pagename="Edit Media Type", logon_user=session['username'], mediatypeform=mediatypeform, cur_mediatype=cur_mediatype)
+    else:
+        return render_template("edit_mediatype.html", pagename="Edit Media Type", logon_user=session['username'], mediatypeform=mediatypeform, cur_mediatype=cur_mediatype)
+
+
+@mediatype.route('/delete_confirm/<int:mediatype_id>', methods=['GET', 'POST'])
+def delete_confirm(mediatype_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    mediatype = dbmanager.find_mediatype_by_id(mediatype_id)
+    if mediatype is None:
+        logger.error("There is not any media type match id %d." % mediatype_id)
+        return redirect("/mediatype/all")
+    else:
+        return render_template("delete_mediatype_confirm.html", pagename="Delete Media Type Confirm", logon_user=session['username'], cur_mediatype=mediatype)
+
+
+@mediatype.route('/delete_mediatype/<int:mediatype_id>')
+def delete_mediatype(mediatype_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    mediatype = dbmanager.find_mediatype_by_id(mediatype_id)
+    if mediatype is None:
+        logger.error("There is not any media type match id %d." % mediatype_id)
+        return redirect("/mediatype/all")
+    else:
+        op_result = dbmanager.delete_mediatype(mediatype_id)
+        logger.info("Delete the media type with id: %d success." % mediatype_id)
+        return redirect("/mediatype/all")
+
+
+
+
 
 
 

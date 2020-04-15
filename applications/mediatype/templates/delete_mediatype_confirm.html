@@ -13,19 +13,19 @@
                            <div class="col-md-6">
                                <div class="card">
                                     <div class="card-body">
-                                        {% if mediatype %}
+                                        {% if cur_mediatype %}
                                         <div class="alert alert-danger" role="alert">
                     	                    <h4 class="alert-heading">Confirm</h4>
                                             <br>
                 	    	                <p>
-                                                <div>ID : {{ mediatype.id }} </div>
-                                                <div>User Name: {{ mediatype.name }} </div>
+                                                <div>ID : {{ cur_mediatype.id }} </div>
+                                                <div>User Name: {{ cur_mediatype.name }} </div>
                                             </p>
                     		                <hr>
                     		                <p class="mb-0">Are you sure to delete the record?</p>
                     	                </div>
                                         <div align="right">
-                                            <a role="button" href="/mediatype/mediatype_delete/{{ mediatype.id }}" class="btn btn-danger btn-sm">Delete</a>&nbsp;<a role="button" href="/users/all" class="btn btn-secondary btn-sm">Cancel</a>
+                                            <a role="button" href="/mediatype/delete_mediatype/{{ cur_mediatype.id }}" class="btn btn-danger btn-sm">Delete</a>&nbsp;<a role="button" href="/mediatype/all" class="btn btn-secondary btn-sm">Cancel</a>
                                         </div>
                                         {% else %}
                                         <div class="alert alert-danger" role="alert">
@@ -34,7 +34,7 @@
                                                 There is nothing found.
                                             </p>
                         		            <hr>
-                        		            <p class="mb-0">Are you sure the user is existed?</p>
+                        		            <p class="mb-0">Are you sure the media type is existed?</p>
                         	            </div>
                                         <div align="right">
                                             <a role="button" href="/mediatype/all" class="btn btn-secondary btn-sm">Cancel</a>

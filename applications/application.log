@@ -39,3 +39,13 @@
 2020-04-14 18:11:23,901 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.pyc:66 - views.py - Module:views - Func:create_mediatype - 47713 - Thread-154 - Save new media type complete, status: True.
 2020-04-14 18:16:51,300 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:64 - views.py - Module:views - Func:create_mediatype - 47960 - Thread-40 - Saving new media type to db.
 2020-04-14 18:16:51,306 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:66 - views.py - Module:views - Func:create_mediatype - 47960 - Thread-40 - Save new media type complete, status: True.
+2020-04-15 11:31:24,358 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:107 - views.py - Module:views - Func:update_mediatype - 51809 - Thread-52 - Media type is existed.
+2020-04-15 11:33:54,201 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.pyc:107 - views.py - Module:views - Func:update_mediatype - 51896 - Thread-46 - Media type is existed.
+2020-04-15 11:35:42,716 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:107 - views.py - Module:views - Func:update_mediatype - 51944 - Thread-33 - Media type is existed.
+2020-04-15 11:35:45,619 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:102 - views.py - Module:views - Func:update_mediatype - 51944 - Thread-46 - Update new media type to db.
+2020-04-15 11:35:45,624 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:104 - views.py - Module:views - Func:update_mediatype - 51944 - Thread-46 - Update new media type complete, status: True.
+2020-04-15 11:35:54,634 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:102 - views.py - Module:views - Func:update_mediatype - 51944 - Thread-60 - Update new media type to db.
+2020-04-15 11:35:54,640 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:104 - views.py - Module:views - Func:update_mediatype - 51944 - Thread-60 - Update new media type complete, status: True.
+2020-04-15 11:47:24,092 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.pyc:64 - views.py - Module:views - Func:create_mediatype - 52262 - Thread-61 - Saving new media type to db.
+2020-04-15 11:47:24,097 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.pyc:66 - views.py - Module:views - Func:create_mediatype - 52262 - Thread-61 - Save new media type complete, status: True.
+2020-04-15 11:53:01,655 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:138 - views.py - Module:views - Func:delete_mediatype - 52407 - Thread-1 - Delete the media type with id: 17 success.
