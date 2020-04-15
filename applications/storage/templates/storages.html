@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}Storages {% endblock %}
+{% block title %}Storage List {% endblock %}
 {% block body %}
          {% include 'top.html' %}
          {% include 'breadcrumb.html' %}
@@ -9,7 +9,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">User List</h3>
+                            <h3 class="title-5 m-b-35">Storage List</h3>
                             <div class="table-data__tool">
                                 <div class="table-data__tool-left">
                                 </div>
@@ -23,26 +23,26 @@
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>User Name</th>
-                                            <th>Create Time</th>
-                                            <th>Update Time</th>
+                                            <th>Storage Name</th>
+                                            <th>Media Type</th>
+                                            <th>Storage Size (GB)</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if users %}
-                                            {% for user in users %}
+                                        {% if storage_list %}
+                                            {% for storage in storage_list %}
                                             <tr class="tr-shadow">
-                                                <td>{{ user.id }}</td>
-                                                <td>{{ user.username }}</td>
-                                                <td>{{ user.create_at }}</td>
-                                                <td>{{ user.update_at }}</td>
+                                                <td>{{ storage.id }}</td>
+                                                <td>{{ storage.name }}</td>
+                                                <td>{{ storage.mediatype }}</td>
+                                                <td>{{ storage.size }}</td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <a href="./edit/{{ user.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="./edit/{{ storage.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="./delete_confirm/{{ user.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="./delete_confirm/{{ storage.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                     </div>
@@ -58,18 +58,16 @@
                                                     <span class="au-checkmark"></span>
                                                 </label>
                                             </td-->
-                                            <td>Lori Lynch</td>
-                                            <td>
-                                                <span class="block-email">lori@example.com</span>
-                                            </td>
-                                            <td class="desc">Samsung S8 Black</td>
-                                            <td>2018-09-27 02:12</td>
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>None</td>
                                             <td>
                                                 <div class="table-data-feature">
-                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" disabled="disabled">
                                                         <i class="zmdi zmdi-edit"></i>
                                                     </button>
-                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" disabled="disabled">
                                                         <i class="zmdi zmdi-delete"></i>
                                                     </button>
                                                 </div>

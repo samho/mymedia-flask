@@ -55,5 +55,9 @@ def create_app():
     from applications.mediatype.views import mediatype
     app.register_blueprint(mediatype)
 
+    # register storage blueprint
+    from applications.storage.views import storage
+    app.register_blueprint(storage)
+
     return app
 

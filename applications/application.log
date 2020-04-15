@@ -49,3 +49,16 @@
 2020-04-15 11:47:24,092 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.pyc:64 - views.py - Module:views - Func:create_mediatype - 52262 - Thread-61 - Saving new media type to db.
 2020-04-15 11:47:24,097 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.pyc:66 - views.py - Module:views - Func:create_mediatype - 52262 - Thread-61 - Save new media type complete, status: True.
 2020-04-15 11:53:01,655 - INFO - /Users/samho/workspace/mymedia-flask/applications/mediatype/views.py:138 - views.py - Module:views - Func:delete_mediatype - 52407 - Thread-1 - Delete the media type with id: 17 success.
+2020-04-15 16:31:42,185 - ERROR - /Users/samho/workspace/mymedia-flask/applications/storage/views.pyc:59 - views.py - Module:views - Func:create_storage - 58481 - Thread-63 - Create new storage fail.
+2020-04-15 16:36:25,502 - ERROR - /Users/samho/workspace/mymedia-flask/applications/storage/views.py:59 - views.py - Module:views - Func:create_storage - 58604 - Thread-1 - Create new storage fail.
+2020-04-15 16:37:48,275 - ERROR - /Users/samho/workspace/mymedia-flask/applications/storage/forms.pyc:39 - forms.py - Module:forms - Func:validate - 58604 - Thread-38 - The storage size is not digital.
+2020-04-15 16:37:48,276 - ERROR - /Users/samho/workspace/mymedia-flask/applications/storage/views.py:59 - views.py - Module:views - Func:create_storage - 58604 - Thread-38 - Create new storage fail.
+2020-04-15 16:38:02,670 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.py:50 - views.py - Module:views - Func:create_storage - 58604 - Thread-45 - Saving new media type to db.
+2020-04-15 16:38:02,684 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.py:52 - views.py - Module:views - Func:create_storage - 58604 - Thread-45 - Save new storage complete, status: True.
+2020-04-15 18:03:41,963 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.pyc:89 - views.py - Module:views - Func:update_storage - 60715 - Thread-32 - Update new storage to db.
+2020-04-15 18:03:41,968 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.pyc:91 - views.py - Module:views - Func:update_storage - 60715 - Thread-32 - Update new storage complete, status: True.
+2020-04-15 18:04:01,798 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.pyc:89 - views.py - Module:views - Func:update_storage - 60715 - Thread-47 - Update new storage to db.
+2020-04-15 18:04:01,801 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.pyc:91 - views.py - Module:views - Func:update_storage - 60715 - Thread-47 - Update new storage complete, status: True.
+2020-04-15 18:16:03,705 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.py:50 - views.py - Module:views - Func:create_storage - 61035 - Thread-8 - Saving new media type to db.
+2020-04-15 18:16:03,709 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.py:52 - views.py - Module:views - Func:create_storage - 61035 - Thread-8 - Save new storage complete, status: True.
+2020-04-15 18:18:52,622 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.py:127 - views.py - Module:views - Func:delete_storge - 61098 - Thread-58 - Delete the storage with id: 2 success.
