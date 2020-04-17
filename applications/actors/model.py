@@ -50,7 +50,7 @@ class Actor(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    sex = db.Column(db.Boolean)
+    sex = db.Column(db.Integer)  # 0 is male, 1 is female.
     country = db.Column(db.String(50))
     description = db.Column(db.Text)
     thumb = db.Column(db.Integer)  # the record id in photo table.

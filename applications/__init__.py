@@ -59,5 +59,9 @@ def create_app():
     from applications.storage.views import storage
     app.register_blueprint(storage)
 
+    # register actor blueprint
+    from applications.actors.views import actor
+    app.register_blueprint(actor)
+
     return app
 
