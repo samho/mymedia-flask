@@ -41,9 +41,10 @@ class EBook(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50))
-    mediatype = db.Column(db.String(100)) # with the media type id
+    mediatype = db.Column(db.String(100))  # with the media type id, split with comma
     storage = db.Column(db.Integer)
     file_path = db.Column(db.String(500))
+    actors = db.Column(db.String(100))  # The list of author.
 
     def __repr__(self):
         return '<EBook %r>' % self.name

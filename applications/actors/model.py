@@ -54,6 +54,7 @@ class Actor(db.Model):
     country = db.Column(db.String(50))
     description = db.Column(db.Text)
     thumb = db.Column(db.Integer)  # the record id in photo table.
+    type = db.Column(db.String(100))  # the mediatype list for the actor.
 
     def __repr__(self):
         return '<Actor %r>' % self.name

@@ -28,6 +28,7 @@ class Photo(db.Model):
     name = db.Column(db.String(100))
     ext = db.Column(db.String(10))
     content = db.Column(db.LargeBinary)
+    type = db.Column(db.String(100))  # list of type, split with comma
 
     def __repr__(self):
         return '<Photo %r>' % self.name

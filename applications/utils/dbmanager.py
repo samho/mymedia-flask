@@ -9,7 +9,7 @@ from applications.ebooks.model import EBook
 from applications.movies.model import Movie
 import datetime
 from applications.utils import logger
-from applications import create_app
+from applications.config import DEFAULT_PAGE_SIZE
 
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
@@ -32,7 +32,6 @@ def save_mediatype(name, parent):
         return {"err_msg": "Save media type fail.", "obj": None, "op_status": False}
 
 
-
 def find_mediatype_by_id(id):
     return MediaType.query.filter_by(id=id).first()
 
@@ -46,6 +45,11 @@ def find_all_mediatypes():
     if mediatype_list is None:
         return None
     return mediatype_list
+
+
+def find_mediatypes_pagenate(index=1):
+    return MediaType.query.paginate(index, DEFAULT_PAGE_SIZE)
+
 
 
 def update_mediatype(id, name, parent):
@@ -363,8 +367,9 @@ def delete_movie(id):
 
 
 if __name__ == '__main__':
-    mediatypes = find_mediatype_by_id(1)
-    print mediatypes["id"]
+    mediatypes = find_mediatypes_pagenate(2).prev()
+    for item in mediatypes.items:
+        print(item.name)
     #save_user("samho", "19781117")
     #user = find_user_by_name("samho")
     #print user.username, user.password

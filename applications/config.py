@@ -15,4 +15,5 @@ MAIL_USE_TLS = True
 MAIL_USERNAME = os.environ.get('MAIL_USERNAME') or 'samhocngz@gmail.com'
 MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD') or '19781117samho'
 SQLALCHEMY_DATABASE_URI = os.environ.get('DEV_DATABASE_URL') or 'sqlite:///' + os.path.join(basedir, 'dev.sqlite')
+DEFAULT_PAGE_SIZE = 20
 
