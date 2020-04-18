@@ -34,17 +34,20 @@
                                         {% if storage_list %}
                                             {% for actor in actor_list %}
                                             <tr class="tr-shadow">
-                                                <td>{{ actor.id }}</td>
+                                                <td><a href="/actor/detals/{{ actor.id }}">{{ actor.id }}</a></td>
                                                 <td>{{ actor.name }}</td>
                                                 <td>{{ actor.sex }}</td>
                                                 <td>{{ actor.country }}</td>
                                                 <td>{{ actor.description }}</td>
                                                 <td>
                                                     <div class="table-data-feature">
-                                                        <a href="./edit/{{ storage.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <a href="./detail/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Details">
+                                                            <i class="zmdi zmdi-folder"></i>
+                                                        </a>
+                                                        <a href="./edit/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                                                             <i class="zmdi zmdi-edit"></i>
                                                         </a>
-                                                        <a href="./delete_confirm/{{ storage.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <a href="./delete_confirm/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
                                                             <i class="zmdi zmdi-delete"></i>
                                                         </a>
                                                     </div>
@@ -67,6 +70,9 @@
                                             <td>None</td>
                                             <td>
                                                 <div class="table-data-feature">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="View" disabled="disabled">
+                                                        <i class="zmdi zmdi-folder"></i>
+                                                    </button>
                                                     <button class="item" data-toggle="tooltip" data-placement="top" title="Edit" disabled="disabled">
                                                         <i class="zmdi zmdi-edit"></i>
                                                     </button>

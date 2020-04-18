@@ -72,6 +72,22 @@ def delete_mediatype(id):
         db.session.commit()
         return {"err_msg": "Delete success.", "obj": None, "op_status": True}
 
+
+def get_type_name_list_by_id(id):
+    type_name_list = []
+    parent = find_mediatype_by_id(id)
+    if parent is None:
+        return None
+    else:
+        type_name_list.append({"name":parent.name, "id": parent.id})
+        sons = MediaType.query.filter(MediaType.parent==id).all()
+        if sons is None:
+            return type_name_list
+        else:
+            for s in sons:
+                type_name_list.append({"name": s.name, "id": s.id})
+            return type_name_list
+
 # DB Operations for User
 
 
@@ -367,9 +383,12 @@ def delete_movie(id):
 
 
 if __name__ == '__main__':
-    mediatypes = find_mediatypes_pagenate(2).prev()
-    for item in mediatypes.items:
-        print(item.name)
+    n_list = get_type_name_list_by_id(find_mediatype_by_name("Actor")[0].id)
+    for n in n_list:
+        print n["name"]
+    #mediatypes = find_mediatypes_pagenate(2).prev()
+    #for item in mediatypes.items:
+    #    print(item.name)
     #save_user("samho", "19781117")
     #user = find_user_by_name("samho")
     #print user.username, user.password

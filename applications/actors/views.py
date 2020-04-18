@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger
+from applications.actors.forms import ActorForm
 
 
 actor = Blueprint("actor",
@@ -33,14 +34,14 @@ def actor_index():
             return render_template("actors.html", pagename="Actors", logon_user=session['username'], actor_list=actor_list)
 
 
-# @storage.route('/new')
-# def new_storage():
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     storageform = StorageForm()
-#     return render_template("create_storage.html", pagename="New Storage", logon_ueer=session['username'], storageform=storageform)
-#
+@actor.route('/new')
+def new_actor():
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    actorform = ActorForm()
+    return render_template("create_actor.html", pagename="New Actor", logon_ueer=session['username'], actorform=actorform)
+
 #
 # @storage.route('/create_storage', methods=['GET', 'POST'])
 # def create_storage():
