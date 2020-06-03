@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger
 from applications.actors.forms import ActorForm
+from applications.config import TEM_PATH
 
 
 actor = Blueprint("actor",
@@ -42,29 +43,32 @@ def new_actor():
     actorform = ActorForm()
     return render_template("create_actor.html", pagename="New Actor", logon_ueer=session['username'], actorform=actorform)
 
-#
-# @storage.route('/create_storage', methods=['GET', 'POST'])
-# def create_storage():
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     storageform = StorageForm()
-#     if storageform.validate_on_submit():
-#         storage = dbmanager.find_storage_by_name(storageform.name.data.strip())
-#         if len(storage) == 0:
-#             logger.info("Saving new media type to db.")
-#             op_result = dbmanager.save_storage(storageform.name.data.strip(), storageform.mediatype.data, float(storageform.size.data))
-#             logger.info("Save new storage complete, status: %s." % op_result["op_status"])
-#             return redirect("/storage/all")
-#         else:
-#             logger.info("The storage with name %s is existed." % storageform.name.data.strip())
-#             storageform.name.errors.append("Storage with name '%s' is existed." % storageform.name.data.strip())
-#             return render_template("create_storage.html", pagename="Create Storage", logon_user=session['username'], storageform=storageform)
-#
-#     logger.error("Create new storage fail.")
-#     return render_template("create_storage.html", pagename="Create Storage", logon_user=session['username'], storageform=storageform)
-#
-#
+
+@actor.route('/create_actor', methods=['GET', 'POST'])
+def create_storage():
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    actorform = ActorForm()
+    if actorform.validate_on_submit():
+        actors = dbmanager.find_storage_by_name(actorform.name.data.strip())
+        if len(actors) == 0:
+            logger.info("Saving new actor to db.")
+            if
+            op_result = dbmanager.save_actor(name=actorform.name.data.strip(), sex=actorform.sex.data, country=actorform.country.data.strip(),
+                                             description=actorform.description.data.strip(), thumb=actorform.thumb.data.strip(),
+                                             thumb_path=actorform.thumb.data.strip())
+            logger.info("Save new storage complete, status: %s." % op_result["op_status"])
+            return redirect("/actor/all")
+        else:
+            logger.info("The actor with name %s is existed." % actorform.name.data.strip())
+            actorform.name.errors.append("Storage with name '%s' is existed." % actorform.name.data.strip())
+            return render_template("create_actor.html", pagename="Create Actor", logon_user=session['username'], actorform=actorform)
+
+    logger.error("Create new actor fail.")
+    return render_template("create_actor.html", pagename="Create Actof", logon_user=session['username'], actorform=actorform)
+
+
 # @storage.route('/edit/<int:storage_id>', methods=['GET', 'POST'])
 # def edit_storage(storage_id):
 #     if 'username' not in session:

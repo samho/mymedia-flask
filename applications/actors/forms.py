@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SelectField, RadioField, SelectMultipleField, FileField
+from wtforms import StringField, RadioField, SelectMultipleField, FileField
 from wtforms.validators import DataRequired, Length
 from applications.utils import dbmanager
 from applications.config import MEDIA_ACTOR_ID
@@ -25,19 +25,23 @@ class ActorForm(FlaskForm):
         super(ActorForm, self).validate()
 
         if self.name.data.strip() == "":
-            self.name.errors.append("Media type can not be empty.")
+            self.name.errors.append("Actor name can not be empty.")
             return False
 
         if self.country.data.strip() == "":
-            self.country.errors.append("Media type can not be empty.")
+            self.country.errors.append("Actor country can not be empty.")
             return False
 
         if self.sex.data.strip() == "":
-            self.sex.errors.append("Media type can not be empty.")
+            self.sex.errors.append("Actor sex can not be empty.")
             return False
 
         if self.types.data.strip() == "":
-            self.types.errors.append("Media type can not be empty.")
+            self.types.errors.append("Actor type list can not be empty.")
+            return False
+
+        if self.thumb.data.strip() == "" and self.thumb_path.data.strip() == "":
+            self.thumb.errors.append("Actor thumb can not be empty.")
             return False
 
         return True

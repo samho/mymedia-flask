@@ -287,9 +287,9 @@ def delete_ebook(id):
 # DB Operations for Actor
 
 
-def save_actor(name, sex, country, description, thumb):
+def save_actor(name, sex, country, description, thumb, thumb_path):
     try:
-        new_actor = Actor(name=name, sex=sex, country=country, description=description, thumb=thumb)
+        new_actor = Actor(name=name, sex=sex, country=country, description=description, thumb=thumb, thumb_path=thumb_path)
         db.session.add(new_actor)
         db.session.commit()
         return {"err_msg": "Save actor success.", "obj": None, "op_status": True}
