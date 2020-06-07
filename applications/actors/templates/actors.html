@@ -26,12 +26,12 @@
                                             <th>Actor Name</th>
                                             <th>Sex</th>
                                             <th>Country</th>
-                                            <th>Type List</th>
+                                            <th>Description</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if storage_list %}
+                                        {% if actor_list %}
                                             {% for actor in actor_list %}
                                             <tr class="tr-shadow">
                                                 <td><a href="/actor/detals/{{ actor.id }}">{{ actor.id }}</a></td>

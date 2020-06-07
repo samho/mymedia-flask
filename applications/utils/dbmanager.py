@@ -26,7 +26,7 @@ def save_mediatype(name, parent):
         new_mediatype = MediaType(name=name, parent=parent)
         db.session.add(new_mediatype)
         db.session.commit()
-        return {"err_msg": "Save media type success.", "obj": None, "op_status": True}
+        return {"err_msg": "Save media type success.", "obj": None, "op_status": True, "new_id": new_mediatype.id}
     except Exception as e:
         logger.error(e)
         return {"err_msg": "Save media type fail.", "obj": None, "op_status": False}
@@ -97,7 +97,7 @@ def save_user(username, password):
         new_user.set_password(password)
         db.session.add(new_user)
         db.session.commit()
-        return {"err_mst": "Save user success.", "obj": None, "op_status": True}
+        return {"err_mst": "Save user success.", "obj": None, "op_status": True, "new_id": new_user.id}
     except Exception as e:
         logger.error(e)
         return {"err_mst": "Save user fail.", "obj": None, "op_status": False}
@@ -156,7 +156,7 @@ def save_storage(name, mediatype, size):
         new_storage = Storage(name=name, mediatype=mediatype, size=size)
         db.session.add(new_storage)
         db.session.commit()
-        return {"err_msg": "Save stage success.", "obj": None, "op_status": True}
+        return {"err_msg": "Save stage success.", "obj": None, "op_status": True, "new_id": new_storage.id}
     except Exception as e:
         logger.error(e)
         return {"err_msg": "Save stage fail.", "obj": None, "op_status": False}
@@ -197,15 +197,26 @@ def delete_storage(id):
 # DB Operations for Photo
 
 
-def save_photo(name, ext, content):
+def save_photo(name, ext, content, photo_type=""):
     try:
-        new_photo = Photo(name=name, ext=ext, content=content)
+        new_photo = Photo(name=name, ext=ext, content=content, type=photo_type)
         db.session.add(new_photo)
         db.session.commit()
-        return {"err_msg": "Save photo success.", "obj": None, "op_status": True}
+        return {"err_msg": "Save photo success.", "obj": None, "op_status": True, "new_id": new_photo.id}
     except Exception as e:
         logger.error(e)
         return {"err_msg": "Save photo fail.", "obj": None, "op_status": False}
+
+
+def save_photo_with_string(name, ext, photo_type, path=""):
+    try:
+        new_photo = Photo(name=name, ext=ext, path=path, type=photo_type)
+        db.session.add(new_photo)
+        db.session.commit()
+        return {"err_msg": "Save photo with string success.", "obj": None, "op_status": True, "new_id": new_photo.id}
+    except Exception as e:
+        logger.error(e)
+        return {"err_msg": "Save photo with string fail.", "obj": None, "op_status": False}
 
 
 def find_photo_by_id(id):
@@ -245,7 +256,7 @@ def save_ebook(name, mediatype, storage, file_path):
         new_ebook = EBook(name=name, mediatype=mediatype, storage=storage, file_path=file_path)
         db.session.add(new_ebook)
         db.session.commit()
-        return {"err_msg": "Save book success.", "obj": None, "op_status": True}
+        return {"err_msg": "Save book success.", "obj": None, "op_status": True, "new_id": new_ebook.id}
     except Exception as e:
         logger.error(e)
         return {"err_msg": "Save book fail.", "obj": None, "op_status": False}
@@ -287,16 +298,15 @@ def delete_ebook(id):
 # DB Operations for Actor
 
 
-def save_actor(name, sex, country, description, thumb, thumb_path):
+def save_actor(name, sex, country, description, thumb, types):
     try:
-        new_actor = Actor(name=name, sex=sex, country=country, description=description, thumb=thumb, thumb_path=thumb_path)
+        new_actor = Actor(name=name, sex=sex, country=country, description=description, thumb=thumb, type=types)
         db.session.add(new_actor)
         db.session.commit()
-        return {"err_msg": "Save actor success.", "obj": None, "op_status": True}
+        return {"err_msg": "Save actor success.", "obj": None, "op_status": True, "new_id": new_actor.id}
     except Exception as e:
         logger.error(e)
         return {"err_msg": "Save actor fail.", "obj": None, "op_status": False}
-
 
 
 def find_actor_by_id(id):
@@ -339,7 +349,7 @@ def save_movie(name, actors, snapshots, types, provider, storage, file_path):
         new_movie = Movie(name=name, actors=actors, snapshots=snapshots, types=types, provider=provider, storage=storage, file_path=file_path)
         db.session.add(new_movie)
         db.session.commit()
-        return {"err_msg": "Save Movie sucess.", "obj": None, "op_status": True}
+        return {"err_msg": "Save Movie sucess.", "obj": None, "op_status": True, "new_id": new_movie.id}
     except Exception as e:
         logger.error(e)
         return {"err_msg": "Save Movie fail.", "obj": None, "op_status": False}

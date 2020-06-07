@@ -18,7 +18,7 @@ class ActorForm(FlaskForm):
     sex = RadioField("Select the sex of Actor.", validators=[DataRequired()], choices=sex_choices, coerce=int)
     types = SelectMultipleField("Select the type of Actor.", validators=[DataRequired()], choices=media_choices, coerce=int)
     description = StringField("The description of the Actor.", validators=[Length(max=500)])
-    thumb = FileField("Upload file and store image fele into db.")
+    thumb = FileField("Upload file and store image file into db.")
     thumb_path = StringField("The file path or url of the actor thumb.", validators=[Length(max=255)])
 
     def validate(self):
@@ -32,15 +32,15 @@ class ActorForm(FlaskForm):
             self.country.errors.append("Actor country can not be empty.")
             return False
 
-        if self.sex.data.strip() == "":
+        if self.sex.data is None:
             self.sex.errors.append("Actor sex can not be empty.")
             return False
 
-        if self.types.data.strip() == "":
+        if len(self.types.data) == 0:
             self.types.errors.append("Actor type list can not be empty.")
             return False
 
-        if self.thumb.data.strip() == "" and self.thumb_path.data.strip() == "":
+        if self.thumb.data.filename.strip() == "" and self.thumb_path.data.strip() == "":
             self.thumb.errors.append("Actor thumb can not be empty.")
             return False
 

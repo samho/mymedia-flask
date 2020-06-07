@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
 from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
-from applications.utils import dbmanager, logger
+from applications.utils import dbmanager, logger, combineIntegerToStr
 from applications.actors.forms import ActorForm
-from applications.config import TEM_PATH
+from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE
+import uuid
+import os
 
 
 actor = Blueprint("actor",
@@ -30,7 +33,7 @@ def actor_index():
                 else:
                     cur_sex = "Female"
 
-                actor_list.append({"id": a.id, "name": s.name, "sex": cur_sex, "country": a.country, "description": a.description})
+                actor_list.append({"id": a.id, "name": a.name, "sex": cur_sex, "country": a.country, "description": a.description})
 
             return render_template("actors.html", pagename="Actors", logon_user=session['username'], actor_list=actor_list)
 
@@ -51,15 +54,30 @@ def create_storage():
 
     actorform = ActorForm()
     if actorform.validate_on_submit():
-        actors = dbmanager.find_storage_by_name(actorform.name.data.strip())
+        actors = dbmanager.find_actor_by_name(actorform.name.data.strip())
         if len(actors) == 0:
             logger.info("Saving new actor to db.")
-            if
-            op_result = dbmanager.save_actor(name=actorform.name.data.strip(), sex=actorform.sex.data, country=actorform.country.data.strip(),
-                                             description=actorform.description.data.strip(), thumb=actorform.thumb.data.strip(),
-                                             thumb_path=actorform.thumb.data.strip())
-            logger.info("Save new storage complete, status: %s." % op_result["op_status"])
-            return redirect("/actor/all")
+            if actorform.thumb.data.filename.strip() != "":
+                if MEDIA_SAVE_TO_DB:
+                    pass
+                else:
+                    upload_file = actorform.thumb.data.filename
+                    logger.info("Upload file %s" % upload_file)
+                    upload_filename = os.path.splitext(upload_file)[0]
+                    upload_suffix = os.path.splitext(upload_file)[1]
+                    save_filename = str(uuid.uuid3(uuid.NAMESPACE_URL, upload_filename.encode('utf-8')))
+                    save_fullfilename = save_filename + upload_suffix
+                    save_path = MEDIA_LOCAL_PATH + save_fullfilename
+                    logger.info("Save path is %s" % save_path)
+                    actorform.thumb.data.save(save_path)
+                    op_photo_result = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["NORMAL"])
+                    type_list = combineIntegerToStr(actorform.types.data)
+                    op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
+                                                      type_list)
+                    logger.info("Save new storage complete, status: %s." % op_result["op_status"])
+                    return redirect("/actor/all")
+            else:
+                pass
         else:
             logger.info("The actor with name %s is existed." % actorform.name.data.strip())
             actorform.name.errors.append("Storage with name '%s' is existed." % actorform.name.data.strip())

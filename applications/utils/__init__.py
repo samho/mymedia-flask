@@ -11,6 +11,13 @@ def splitStrIdToInteger(str_id_list):
     return int_list
 
 
+def combineIntegerToStr(int_list):
+    tmp_str = []
+    for tmp_int in int_list:
+        tmp_str.append(str(tmp_int))
+    return ",".join(tmp_str)
+
+
 def splitStr(str_list):
     return str_list.split(',')
 
