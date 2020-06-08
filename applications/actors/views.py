@@ -74,17 +74,45 @@ def create_storage():
                     type_list = combineIntegerToStr(actorform.types.data)
                     op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
                                                       type_list)
-                    logger.info("Save new storage complete, status: %s." % op_result["op_status"])
+                    logger.info("Save new actor complete, status: %s." % op_result["op_status"])
                     return redirect("/actor/all")
             else:
-                pass
+                thumb_url = actorform.thumb_path.data.strip()
+                logger.info("Upload file path is %s" % thumb_url)
+                thumb_url_name = os.path.splitext(thumb_url.split("/")[-1])[0]
+                thumb_url_suffix = os.path.splitext(thumb_url.split("/")[-1])[1]
+                op_photo_result = dbmanager.save_photo_with_string(thumb_url_name, thumb_url_suffix, PHOTO_TYPE["NORMAL"], thumb_url)
+                type_list = combineIntegerToStr(actorform.types.data)
+                op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
+                                                 type_list)
+                logger.info("Save new actor with url thumb complete, status is %s: " % op_result["op_status"])
+                return redirect("/actor/all")
         else:
             logger.info("The actor with name %s is existed." % actorform.name.data.strip())
-            actorform.name.errors.append("Storage with name '%s' is existed." % actorform.name.data.strip())
+            actorform.name.errors.append("Actor with name '%s' is existed." % actorform.name.data.strip())
             return render_template("create_actor.html", pagename="Create Actor", logon_user=session['username'], actorform=actorform)
 
     logger.error("Create new actor fail.")
-    return render_template("create_actor.html", pagename="Create Actof", logon_user=session['username'], actorform=actorform)
+    return render_template("create_actor.html", pagename="Create Actor", logon_user=session['username'], actorform=actorform)
+
+
+@actor.route('/detail/<int:actor_id>', methods=['GET', 'POST'])
+def view_actor_detail(actor_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    actor = dbmanager.find_actor_by_id(actor_id)
+    if actor is None:
+        logger.error("There is not any actor with id %d is existd" % actor_id)
+        return redirect("/actor/all")
+    else:
+        if actor.sex == 0:
+            sex = "Male"
+        else:
+            sex = "Female"
+
+    return render_template("actor.html", pagename="Actor Details", logon_user=session['username'])
+
 
 
 # @storage.route('/edit/<int:storage_id>', methods=['GET', 'POST'])

@@ -105,10 +105,10 @@
                                         </div>
                                         <div class="row form-group">
                                             <div class="col col-md-3">
-                                                <label for="text-input" class="form-control-label">Actor thumb file path:</label>
+                                                <label for="text-input" class="form-control-label">Actor thumb file URL:</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                {{ actorform.thumb_path(type="text",id="new_thumb_path",placeholder="The file path or url of thumb for the Actor",class="form-control col-md-6") }}
+                                                {{ actorform.thumb_path(type="text",id="new_thumb_path",placeholder="The url of thumb for the Actor",class="form-control col-md-6") }}
                                                 {%  if actorform.thumb_path.errors %}
                                                     {% for error in actorform.thumb_path.errors %}
                                                         <div class="alert alert-danger col-md-6" role="alert">
@@ -116,7 +116,7 @@
                                                         </div>
                                                     {% endfor %}
                                                 {% else %}
-                                                    <span class="help-block">Please enter the thumb file path of Actor.</span>
+                                                    <span class="help-block">Please enter the url of thumb file for Actor.</span>
                                                 {% endif %}
                                             </div>
                                         </div>
