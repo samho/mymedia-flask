@@ -4457,9 +4457,18 @@ section {
     color: #808080;
 }
 
+*#actor-description {
+    color: #4272d7;
+    text-align: left;
+}
+
 .table-top-campaign.table tr td:last-child {
     color: #4272d7;
     text-align: right;
+}
+
+*#actor-description-title {
+    border-bottom: none;
 }
 
 .table-top-campaign.table tr:last-child td {
