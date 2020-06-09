@@ -7,28 +7,29 @@
             <section class="statistic-chart">
                 <div class="container">
                     <div class="row">
+                        {% if actor %}
                         <div class="col-md-6 col-lg-8">
                             <!-- TOP CAMPAIGN-->
                             <div class="top-campaign">
-                                <h3 class="title-3 m-b-30">top campaigns</h3>
+                                <h3 class="title-3 m-b-30">Actor Details</h3>
                                 <div class="table-responsive vue-lists">
                                     <table class="table table-top-campaign">
                                         <tbody>
                                             <tr>
                                                 <td><li>Name:</li></td>
-                                                <td>$70,261.65</td>
+                                                <td>{{ actor.name }}</td>
                                             </tr>
                                             <tr>
                                                 <td><li>Sex:</li></td>
-                                                <td>$46,399.22</td>
+                                                <td>{{ actor.sex }}</td>
                                             </tr>
                                             <tr>
                                                 <td><li>Country:</li></td>
-                                                <td>$35,364.90</td>
+                                                <td>{{ actor.country }}</td>
                                             </tr>
                                             <tr>
                                                 <td><li>Type List:</li></td>
-                                                <td>$20,366.96</td>
+                                                <td>{{ actor.type_list }}</td>
                                             </tr>
                                             <tr>
                                                 <td id="actor-description-title"><li>Description:</li></td>
@@ -37,7 +38,7 @@
                                             <tr class="col col-lg-12">
                                                 <td id="actor-description" colspan="2">
                                                     <p>
-                                                        The unique stripes of zebras make them one of the animals most familiar to people. They occur in a variety of habitats, such as grasslands, savannas,
+                                                        {{ actor.description }}
                                                     </p>
                                                 </td>
                                             </tr>
@@ -50,23 +51,61 @@
                         <div class="col-md-6 col-lg-4">
                             <!-- CHART PERCENT-->
                             <div class="chart-percent-2">
-                                <h4 class="title-2 m-b-20">Chart By %</h4>
                                 <div class="mx-auto d-block">
-                                    <img class="rounded-circle mx-auto d-block" width="100%" heigth="100%" src="https://pics.javcdn.pw/actress/ow0_a.jpg" alt="Card image cap">
-                                </div>
-                                <div class="chart-info">
-                                    <div class="chart-note">
-                                        <span class="dot dot--blue"></span>
-                                        <span>products</span>
-                                    </div>
-                                    <div class="chart-note">
-                                        <span class="dot dot--red"></span>
-                                        <span>Services</span>
-                                    </div>
+                                    <img class="rounded-circle mx-auto d-block" width="100%" heigth="100%" src="{{ actor.thumb }}" alt="Actor Thumb">
                                 </div>
                             </div>
-                            <!-- END CHART PERCENT-->
                         </div>
+                        {% else %}
+                        <div class="col-md-6 col-lg-8">
+                            <!-- TOP CAMPAIGN-->
+                            <div class="top-campaign">
+                                <h3 class="title-3 m-b-30">Actor Details</h3>
+                                <div class="table-responsive vue-lists">
+                                    <table class="table table-top-campaign">
+                                        <tbody>
+                                            <tr>
+                                                <td><li>Name:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Sex:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Country:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Type List:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td id="actor-description-title"><li>Description:</li></td>
+                                                <td id="actor-description-title"></td>
+                                            </tr>
+                                            <tr class="col col-lg-12">
+                                                <td id="actor-description" colspan="2">
+                                                    <p>
+                                                        There is nothing for this actor yet, you can edit and add some description for her(him).
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END TOP CAMPAIGN-->
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <!-- CHART PERCENT-->
+                            <div class="chart-percent-2">
+                                <div class="mx-auto d-block">
+                                    <img class="rounded-circle mx-auto d-block" width="100%" heigth="100%" src="https://pics.javcdn.pw/actress/ow0_a.jpg" alt="Actor Thumb">
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
             </section>

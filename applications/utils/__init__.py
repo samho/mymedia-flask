@@ -21,7 +21,6 @@ def combineIntegerToStr(int_list):
 def splitStr(str_list):
     return str_list.split(',')
 
-
 #def getLogger(module):
 #    LOG_FILENAME = Config.LOG_FILE
 #    logger = logging.getLogger(module)

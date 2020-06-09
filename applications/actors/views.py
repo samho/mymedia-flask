@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
-from applications.utils import dbmanager, logger, combineIntegerToStr
+from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.actors.forms import ActorForm
-from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE
+from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL
 import uuid
 import os
 
@@ -101,17 +101,34 @@ def view_actor_detail(actor_id):
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
 
-    actor = dbmanager.find_actor_by_id(actor_id)
-    if actor is None:
+    db_actor = dbmanager.find_actor_by_id(actor_id)
+    sex = "Female"
+    if db_actor is None:
         logger.error("There is not any actor with id %d is existd" % actor_id)
         return redirect("/actor/all")
     else:
-        if actor.sex == 0:
+        if db_actor.sex == 0:
             sex = "Male"
-        else:
-            sex = "Female"
 
-    return render_template("actor.html", pagename="Actor Details", logon_user=session['username'])
+        int_list = splitStrIdToInteger(db_actor.type)
+        str_list = []
+        for i_type in int_list:
+            db_mediatype = dbmanager.find_mediatype_by_id(i_type)
+            str_list.append(db_mediatype.name)
+        type_list = ",".join(str_list)
+
+        if db_actor.description == "":
+            description = "The author is lazy, there is nothing for this actor yet, you can edit and add some description for her(him)."
+
+        db_thumb = dbmanager.find_photo_by_id(db_actor.thumb)
+        if db_thumb.path == "":
+            thumb = MEDIA_URL + db_thumb.name + db_thumb.ext
+        else:
+            thumb = db_thumb.path
+
+        actor = {"name": db_actor.name, "sex": sex, "country": db_actor.country, "description": description, "type_list": type_list, "thumb": thumb}
+        return render_template("actor.html", pagename="Actor Details", logon_user=session["username"], actor=actor)
+    #return render_template("actor.html", pagename="Actor Details", logon_user=session['username'])
 
 
 

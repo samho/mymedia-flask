@@ -20,7 +20,8 @@ DEFAULT_PAGE_SIZE = 20
 TEM_PATH = "/tmp"
 
 MEDIA_ACTOR_ID = 4
-MEDIA_LOCAL_PATH = "/tmp/media/"
+MEDIA_URL = "/static/media/"
+MEDIA_LOCAL_PATH = os.path.join(basedir, MEDIA_URL)
 MEDIA_SAVE_TO_DB = False
 
 PHOTO_TYPE = {"NORMAL": 6, "COVER": 7, "SNAPSHOT": 8}
