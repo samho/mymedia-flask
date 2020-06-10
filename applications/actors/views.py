@@ -47,7 +47,7 @@ def new_actor():
     return render_template("create_actor.html", pagename="New Actor", logon_ueer=session['username'], actorform=actorform)
 
 
-@actor.route('/create_actor', methods=['GET', 'POST'])
+@actor.route('/create_actor', methods=['POST'])
 def create_storage():
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
@@ -115,7 +115,7 @@ def view_actor_detail(actor_id):
         for i_type in int_list:
             db_mediatype = dbmanager.find_mediatype_by_id(i_type)
             str_list.append(db_mediatype.name)
-        type_list = ",".join(str_list)
+        type_list = ", ".join(str_list)
 
         if db_actor.description == "":
             description = "The author is lazy, there is nothing for this actor yet, you can edit and add some description for her(him)."
@@ -128,46 +128,56 @@ def view_actor_detail(actor_id):
 
         actor = {"name": db_actor.name, "sex": sex, "country": db_actor.country, "description": description, "type_list": type_list, "thumb": thumb}
         return render_template("actor.html", pagename="Actor Details", logon_user=session["username"], actor=actor)
-    #return render_template("actor.html", pagename="Actor Details", logon_user=session['username'])
 
 
+@actor.route('/edit/<int:actor_id>', methods=['GET', 'POST'])
+def edit_actor(actor_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
 
-# @storage.route('/edit/<int:storage_id>', methods=['GET', 'POST'])
-# def edit_storage(storage_id):
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     storage = dbmanager.find_storage_by_id(storage_id)
-#     if storage is None:
-#         logger.error("There is not any storage match id %d." % storage_id)
-#         return redirect("/storge/all")
-#     else:
-#         mediatype = dbmanager.find_mediatype_by_id(storage.mediatype)
-#         cur_storage = {"id": storage.id, "name": storage.name, "mediatype_name": mediatype.name, "size": storage.size}
-#         storageform = StorageForm()
-#         return render_template("edit_storage.html", pagename="Edit Storage", logon_user=session['username'], storageform=storageform, cur_storage=cur_storage)
-#
-#
-# @storage.route('/update_storage/<int:storage_id>', methods=['GET', 'POST'])
-# def update_storage(storage_id):
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     cur_storage = dbmanager.find_mediatype_by_id(storage_id)
-#     storageform = StorageForm()
-#     if storageform.validate_on_submit():
-#         storages = dbmanager.find_mediatype_by_name(storageform.name.data.strip())
-#         if len(storages) == 0:
-#             logger.info("Update new storage to db.")
-#             op_result = dbmanager.update_storage(storage_id, storageform.name.data.strip(), storageform.mediatype.data, float(storageform.size.data))
-#             logger.info("Update new storage complete, status: %s." % op_result["op_status"])
-#             return redirect("/storage/all")
-#         else:
-#             logger.info("Storage %s is existed." % storageform.name.data.strip())
-#             storageform.name.errors.append("Storage is existed.")
-#             return render_template("edit_storage.html", pagename="Edit Storage", logon_user=session['username'], storageform=storageform, cur_storage=cur_storage)
-#     else:
-#         return render_template("edit_storage.html", pagename="Edit Storage", logon_user=session['username'], storageform=storageform, cur_storage=cur_storage)
+    db_actor = dbmanager.find_actor_by_id(actor_id)
+    if db_actor is None:
+        logger.error("There is not any actor match id %d." % actor_id)
+        return redirect("/actor/all")
+    else:
+        db_photo = dbmanager.find_photo_by_id(db_actor.thumb)
+        actorform = ActorForm(name=db_actor.name, country=db_actor.country, sex=db_actor.sex, thumb_path=db_photo.path, description=db_actor.description)
+        return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform)
+
+
+@actor.route('/update_actor/<int:actor_id>', methods=['POST'])
+def update_actor(actor_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    cur_actor = dbmanager.find_actor_by_id(actor_id)
+    actorform = ActorForm()
+    actorform.set_is_not_edit(False)
+    if actorform.validate_on_submit():
+        logger.info("Prepare to update info of actor with id %d to db." % actor_id)
+        if actorform.country.data.strip() != cur_actor.country:
+            new_country = actorform.country.data.strip()
+        else:
+            new_country = cur_actor.country
+
+        if actorform.sex != cur_actor.sex:
+            new_sex = actorform.sex
+        else:
+            new_sex = cur_actor.sex
+
+        if actorform.description.data.strip() != cur_actor.description:
+            new_description = actorform.description.data.strip()
+        else:
+            new_description = cur_actor.description
+
+        
+
+
+        op_result = dbmanager.update_storage(storage_id, storageform.name.data.strip(), storageform.mediatype.data, float(storageform.size.data))
+        logger.info("Update new storage complete, status: %s." % op_result["op_status"])
+        return redirect("/storage/all")
+    else:
+        return render_template("edit_storage.html", pagename="Edit Storage", logon_user=session['username'], storageform=storageform, cur_storage=cur_storage)
 #
 #
 # @storage.route('/delete_confirm/<int:storage_id>', methods=['GET', 'POST'])

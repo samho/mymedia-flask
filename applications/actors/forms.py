@@ -6,6 +6,8 @@ from applications.config import MEDIA_ACTOR_ID
 
 
 class ActorForm(FlaskForm):
+
+    is_not_edited = True
     mediatypes = dbmanager.get_type_name_list_by_id(MEDIA_ACTOR_ID)
     media_choices = []
     for m in mediatypes:
@@ -40,8 +42,11 @@ class ActorForm(FlaskForm):
             self.types.errors.append("Actor type list can not be empty.")
             return False
 
-        if self.thumb.data.filename.strip() == "" and self.thumb_path.data.strip() == "":
+        if (self.thumb.data.filename.strip() == "" and self.thumb_path.data.strip() == "") and self.is_not_edited:
             self.thumb.errors.append("Actor thumb can not be empty.")
             return False
 
         return True
+
+    def set_is_not_edit(self, is_edit):
+        self.is_not_edited = is_edit

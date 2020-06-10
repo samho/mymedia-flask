@@ -81,10 +81,10 @@ def update_storage(storage_id):
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
 
-    cur_storage = dbmanager.find_mediatype_by_id(storage_id)
+    cur_storage = dbmanager.find_storage_by_id(storage_id)
     storageform = StorageForm()
     if storageform.validate_on_submit():
-        storages = dbmanager.find_mediatype_by_name(storageform.name.data.strip())
+        storages = dbmanager.find_storage_by_name(storageform.name.data.strip())
         if len(storages) == 0:
             logger.info("Update new storage to db.")
             op_result = dbmanager.update_storage(storage_id, storageform.name.data.strip(), storageform.mediatype.data, float(storageform.size.data))
@@ -121,7 +121,7 @@ def delete_storge(storage_id):
     storage = dbmanager.find_storage_by_id(storage_id)
     if storage is None:
         logger.error("There is not any storage match id %d." % storage_id)
-        return redirect("/mediatype/all")
+        return redirect("/storage/all")
     else:
         op_result = dbmanager.delete_storage(storage_id)
         logger.info("Delete the storage with id: %d success." % storage_id)

@@ -1,10 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Create Actors {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+         <div class="page-wrapper">
+         <div class="page-content--bge5">
+            <!--DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <form action="/actor/update_actor" method="POST" enctype="multipart/form-data" class="">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">Actor Name:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ actorform.name(type="text",id="new_actor",placeholder="Actor name..",class="form-control col-md-6", disabled="disabled") }}
+                                                <span class="help-block">The Actor name cannot be edited.</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">Country:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ actorform.country(type="text",id="new_country",placeholder="Country of Actor..",class="form-control col-md-6") }}
+                                                {%  if actorform.country.errors %}
+                                                    {% for error in actorform.country.errors %}
+                                                    <div class="alert alert-danger col-md-6" role="alert">
+                                                        {{ error }}
+                                                    </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the new country of Actor.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label class=" form-control-label">Inline Radios</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                <div class="form-check-inline form-check">
+                                                    <label for="inline-radio1" class="form-check-label ">
+                                                        {{ actorform.sex(type="radio",id="inline-radio1",class="form-check-input")}}
+                                                        {%  if actorform.sex.errors %}
+                                                            {% for error in actorform.sex.errors %}
+                                                                <div class="alert alert-danger col-md-6" role="alert">
+                                                                    {{ error }}
+                                                                </div>
+                                                            {% endfor %}
+                                                        {% else %}
+                                                            <span class="help-block">Please enter the sex of Actor.</span>
+                                                        {% endif %}
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="multiple-select" class=" form-control-label">Actor Type Select:</label>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                {{ actorform.types(id="multiple-select",multiple="",class="form-control") }}
+                                                </select>
+                                                {%  if actorform.types.errors %}
+                                                    {% for error in actorform.types.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the new types of Actor.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="file-input" class=" form-control-label">Actor thumb file upload:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ actorform.thumb(id="thumb-upload", class="form-control-file") }}
+                                                {%  if actorform.thumb.errors %}
+                                                    {% for error in actorform.thumb.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the thumb of Actor.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">Actor thumb file URL:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ actorform.thumb_path(type="text",id="new_thumb_path",placeholder="The url of thumb for the Actor",class="form-control col-md-6") }}
+                                                {%  if actorform.thumb_path.errors %}
+                                                    {% for error in actorform.thumb_path.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the url of thumb file for Actor.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-dot-circle-o"></i> Save Change
+                                            </button>
+                                            <button type="reset" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-eraser"></i> Clear Change
+                                            </button>
+                                            <a type="button" class="btn btn-warning btn-sm" href="/actor/all">
+                                                <i class="fa fa-angle-double-left"></i>&nbsp;Back to All
+                                            </a>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+         </div>
+         </div>
+{% endblock %}
