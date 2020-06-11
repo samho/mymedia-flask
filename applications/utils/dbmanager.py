@@ -321,13 +321,13 @@ def find_all_actors():
     return Actor.query.all()
 
 
-def update_actor(id, name, sex, country, description, thumb):
+def update_actor(id, name, sex, country, description, thumb, types):
 
     update_actor = find_actor_by_id(id)
     if update_actor is None:
         return {"err_msg": "The actor with id %d is not existed." % id, "obj": None, "op_status": False}
     else:
-        db.session.query(Actor).filter_by(id=id).update({"name": name, "sex": sex, "country": country, "description": description, "thumb": thumb})
+        db.session.query(Actor).filter_by(id=id).update({"name": name, "sex": sex, "country": country, "description": description, "thumb": thumb, "type": types})
         db.session.commit()
         return {"err_msg": "Update success.", "obj": None, "op_status": True}
 

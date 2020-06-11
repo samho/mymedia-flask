@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.actors.forms import ActorForm
-from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL
+from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL, basedir
 import uuid
 import os
 
@@ -142,7 +142,7 @@ def edit_actor(actor_id):
     else:
         db_photo = dbmanager.find_photo_by_id(db_actor.thumb)
         actorform = ActorForm(name=db_actor.name, country=db_actor.country, sex=db_actor.sex, thumb_path=db_photo.path, description=db_actor.description)
-        return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform)
+        return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform, actor_id=actor_id)
 
 
 @actor.route('/update_actor/<int:actor_id>', methods=['POST'])
@@ -151,7 +151,7 @@ def update_actor(actor_id):
         return render_template('login.html', form=LoginForm())
 
     cur_actor = dbmanager.find_actor_by_id(actor_id)
-    actorform = ActorForm()
+    actorform = ActorForm(name=cur_actor.name)
     actorform.set_is_not_edit(False)
     if actorform.validate_on_submit():
         logger.info("Prepare to update info of actor with id %d to db." % actor_id)
@@ -160,7 +160,7 @@ def update_actor(actor_id):
         else:
             new_country = cur_actor.country
 
-        if actorform.sex != cur_actor.sex:
+        if actorform.sex.data != cur_actor.sex:
             new_sex = actorform.sex
         else:
             new_sex = cur_actor.sex
@@ -170,16 +170,43 @@ def update_actor(actor_id):
         else:
             new_description = cur_actor.description
 
-        
+        new_type_list = combineIntegerToStr(actorform.types.data)
 
+        # Process the photo update.
+        if actorform.thumb.data.filename.strip() == "":
+            new_thumb = cur_actor.thumb
+        else:
+            if MEDIA_SAVE_TO_DB:
+                pass
+            else:
+                upload_file = actorform.thumb.data.filename
+                logger.info("Upload file %s" % upload_file)
+                upload_filename = os.path.splitext(upload_file)[0]
+                upload_suffix = os.path.splitext(upload_file)[1]
+                save_filename = str(uuid.uuid3(uuid.NAMESPACE_URL, upload_filename.encode('utf-8')))
+                save_fullfilename = save_filename + upload_suffix
+                save_path = MEDIA_LOCAL_PATH + save_fullfilename
+                print(MEDIA_LOCAL_PATH, save_fullfilename)
+                logger.info("Save path is %s" % save_path)
+                actorform.thumb.data.save(save_path)
+                op_photo_result = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["NORMAL"])
+                new_thumb = op_photo_result["new_id"]
 
-        op_result = dbmanager.update_storage(storage_id, storageform.name.data.strip(), storageform.mediatype.data, float(storageform.size.data))
-        logger.info("Update new storage complete, status: %s." % op_result["op_status"])
-        return redirect("/storage/all")
+        if new_thumb == cur_actor.thumb and actorform.thumb_path.data.strip() != "":
+            thumb_url = actorform.thumb_path.data.strip()
+            logger.info("Upload file path is %s" % thumb_url)
+            thumb_url_name = os.path.splitext(thumb_url.split("/")[-1])[0]
+            thumb_url_suffix = os.path.splitext(thumb_url.split("/")[-1])[1]
+            op_photo_result = dbmanager.save_photo_with_string(thumb_url_name, thumb_url_suffix, PHOTO_TYPE["NORMAL"], thumb_url)
+            new_thumb = op_photo_result["new_id"]
+
+        op_result = dbmanager.update_actor(id=actor_id, name=cur_actor.name, country=new_country, sex=new_sex, types=new_type_list, description=new_description, thumb=new_thumb)
+        logger.info("Update actor with new data complete, status: %s." % op_result["op_status"])
+        return redirect("/actor/all")
     else:
-        return render_template("edit_storage.html", pagename="Edit Storage", logon_user=session['username'], storageform=storageform, cur_storage=cur_storage)
-#
-#
+        return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform, actor_id=actor_id)
+
+
 # @storage.route('/delete_confirm/<int:storage_id>', methods=['GET', 'POST'])
 # def delete_confirm(storage_id):
 #     if 'username' not in session:

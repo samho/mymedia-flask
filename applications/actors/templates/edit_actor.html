@@ -12,14 +12,14 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body card-block">
-                                    <form action="/actor/update_actor" method="POST" enctype="multipart/form-data" class="">
+                                    <form action="/actor/update_actor/{{ actor_id }}" method="POST" enctype="multipart/form-data" class="">
                                         <div class="row form-group">
                                             <div class="col col-md-3">
                                                 <label for="text-input" class="form-control-label">Actor Name:</label>
                                             </div>
                                             <div class="col-12 col-md-9">
-                                                {{ actorform.name(type="text",id="new_actor",placeholder="Actor name..",class="form-control col-md-6", disabled="disabled") }}
-                                                <span class="help-block">The Actor name cannot be edited.</span>
+                                                {{ actorform.name(type="text",id="new_actor",placeholder="Actor name..",class="form-control col-md-6") }}
+                                                <span class="help-block">The Actor name cannot be changed, change will be ignored.</span>
                                             </div>
                                         </div>
                                         <div class="row form-group">
