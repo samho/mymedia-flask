@@ -119,6 +119,8 @@ def view_actor_detail(actor_id):
 
         if db_actor.description == "":
             description = "The author is lazy, there is nothing for this actor yet, you can edit and add some description for her(him)."
+        else:
+            description = db_actor.description
 
         db_thumb = dbmanager.find_photo_by_id(db_actor.thumb)
         if db_thumb.path == "":
@@ -231,6 +233,8 @@ def delete_confirm(actor_id):
 
         if cur_actor.description == "":
             description = "The author is lazy, there is nothing for this actor yet, you can edit and add some description for her(him)."
+        else:
+            description = cur_actor.description
 
         db_thumb = dbmanager.find_photo_by_id(cur_actor.thumb)
         if db_thumb.path == "":

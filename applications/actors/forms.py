@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, RadioField, SelectMultipleField, FileField
+from wtforms import StringField, RadioField, SelectMultipleField, FileField, TextAreaField
 from wtforms.validators import DataRequired, Length, URL
 from applications.utils import dbmanager
 from applications.config import MEDIA_ACTOR_ID
@@ -19,7 +19,7 @@ class ActorForm(FlaskForm):
     country = StringField("The nation of the Actor.", validators=[DataRequired(), Length(max=255)])
     sex = RadioField("Select the sex of Actor.", validators=[DataRequired()], choices=sex_choices, coerce=int)
     types = SelectMultipleField("Select the type of Actor.", validators=[DataRequired()], choices=media_choices, coerce=int)
-    description = StringField("The description of the Actor.", validators=[Length(max=500)])
+    description = TextAreaField("The description of the Actor.", validators=[Length(max=500)])
     thumb = FileField("Upload file and store image file into db.")
     thumb_path = StringField("The file path or url of the actor thumb.", validators=[Length(max=255), URL(message="Must be a valid URL.")])
 

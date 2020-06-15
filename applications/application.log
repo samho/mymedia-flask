@@ -233,3 +233,6 @@
 2020-06-15 15:20:53,543 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:88 - views.py - Module:views - Func:create_storage - 62691 - Thread-6 - Save new actor with url thumb complete, status is True: 
 2020-06-15 15:24:19,419 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:257 - views.py - Module:views - Func:delete_actor - 62902 - Thread-32 - Delete photo with id 5 is success.
 2020-06-15 15:24:19,422 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:263 - views.py - Module:views - Func:delete_actor - 62902 - Thread-32 - Delete actor with id 3 is success.
+2020-06-15 15:46:49,377 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:59 - views.py - Module:views - Func:create_storage - 63611 - Thread-36 - Saving new actor to db.
+2020-06-15 15:46:49,378 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:81 - views.py - Module:views - Func:create_storage - 63611 - Thread-36 - Upload file path is https://pics.javcdn.pw/actress/2jv_a.jpg
+2020-06-15 15:46:49,390 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:88 - views.py - Module:views - Func:create_storage - 63611 - Thread-36 - Save new actor with url thumb complete, status is True: 
