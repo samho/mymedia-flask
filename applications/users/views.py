@@ -32,9 +32,9 @@ def delete_confirm(user_id):
 
     user = dbmanager.find_user_by_id(user_id)
     if user is None:
-        return render_template('delete_confirm.html', pagename="User Delete Confirm", logon_user=session['username'])
+        return render_template('delete_actor_confirm.html', pagename="User Delete Confirm", logon_user=session['username'])
     else:
-        return render_template('delete_confirm.html', pagename="User Delete Confirm", logon_user=session['username'], user=user)
+        return render_template('delete_actor_confirm.html', pagename="User Delete Confirm", logon_user=session['username'], user=user)
 
 
 @users.route('/new')

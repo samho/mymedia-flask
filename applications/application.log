@@ -228,3 +228,8 @@
 2020-06-11 16:13:20,848 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:157 - views.py - Module:views - Func:update_actor - 14373 - Thread-6 - Prepare to update info of actor with id 1 to db.
 2020-06-11 16:13:35,555 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:197 - views.py - Module:views - Func:update_actor - 14373 - Thread-6 - Upload file path is https://faws.xcity.jp/actress/large/image/person/1559.jpg
 2020-06-11 16:14:36,117 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:204 - views.py - Module:views - Func:update_actor - 14373 - Thread-6 - Update actor with new data complete, status: True.
+2020-06-15 15:20:53,532 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:59 - views.py - Module:views - Func:create_storage - 62691 - Thread-6 - Saving new actor to db.
+2020-06-15 15:20:53,532 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:81 - views.py - Module:views - Func:create_storage - 62691 - Thread-6 - Upload file path is https://pics.javcdn.pw/actress/2jv_a.jpg
+2020-06-15 15:20:53,543 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:88 - views.py - Module:views - Func:create_storage - 62691 - Thread-6 - Save new actor with url thumb complete, status is True: 
+2020-06-15 15:24:19,419 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:257 - views.py - Module:views - Func:delete_actor - 62902 - Thread-32 - Delete photo with id 5 is success.
+2020-06-15 15:24:19,422 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.py:263 - views.py - Module:views - Func:delete_actor - 62902 - Thread-32 - Delete actor with id 3 is success.

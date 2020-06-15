@@ -207,33 +207,60 @@ def update_actor(actor_id):
         return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform, actor_id=actor_id)
 
 
-# @storage.route('/delete_confirm/<int:storage_id>', methods=['GET', 'POST'])
-# def delete_confirm(storage_id):
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     storage = dbmanager.find_storage_by_id(storage_id)
-#     if storage is None:
-#         logger.error("There is not any storage match id %d." % storage_id)
-#         return redirect("/storage/all")
-#     else:
-#         mediatype = dbmanager.find_mediatype_by_id(storage.mediatype)
-#         cur_storage = {"id": storage.id, "name": storage.name, "mediatype_name": mediatype.name, "size": storage.size}
-#         return render_template("delete_storage_confirm.html", pagename="Delete Storage Confirm", logon_user=session['username'], cur_storage=cur_storage)
-#
-#
-# @storage.route('/delete_storage/<int:storage_id>')
-# def delete_storge(storage_id):
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     storage = dbmanager.find_storage_by_id(storage_id)
-#     if storage is None:
-#         logger.error("There is not any storage match id %d." % storage_id)
-#         return redirect("/mediatype/all")
-#     else:
-#         op_result = dbmanager.delete_storage(storage_id)
-#         logger.info("Delete the storage with id: %d success." % storage_id)
-#         return redirect("/storage/all")
-#
+@actor.route('/delete_confirm/<int:actor_id>', methods=['GET'])
+def delete_confirm(actor_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
 
+    cur_actor = dbmanager.find_actor_by_id(actor_id)
+    if cur_actor is None:
+        logger.error("There is not any actor match id %d." % actor_id)
+        return redirect("/actor/all")
+    else:
+        if cur_actor.sex == 0:
+            sex = "Male"
+        else:
+            sex = 'Female'
+
+        int_list = splitStrIdToInteger(cur_actor.type)
+        str_list = []
+        for i_type in int_list:
+            db_mediatype = dbmanager.find_mediatype_by_id(i_type)
+            str_list.append(db_mediatype.name)
+        type_list = ", ".join(str_list)
+
+        if cur_actor.description == "":
+            description = "The author is lazy, there is nothing for this actor yet, you can edit and add some description for her(him)."
+
+        db_thumb = dbmanager.find_photo_by_id(cur_actor.thumb)
+        if db_thumb.path == "":
+            thumb = MEDIA_URL + db_thumb.name + db_thumb.ext
+        else:
+            thumb = db_thumb.path
+
+        actor = {"id": actor_id, "name": cur_actor.name, "sex": sex, "country": cur_actor.country, "description": description, "type_list": type_list, "thumb": thumb}
+        return render_template("delete_actor_confirm.html", pagename="Actor Delete Confirm", logon_user=session["username"], actor=actor)
+
+
+@actor.route('/delete_actor/<int:actor_id>')
+def delete_actor(actor_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    cur_actor = dbmanager.find_actor_by_id(actor_id)
+    if cur_actor is None:
+        logger.error("There is not any actor match id %d." % actor_id)
+        return redirect("/actor/all")
+    else:
+        op_photo_delete = dbmanager.delete_photo(cur_actor.thumb)
+        if op_photo_delete["op_status"]:
+            logger.info("Delete photo with id %d is success." % cur_actor.thumb)
+        else:
+            logger.error("Delete photo with id %d is fail." % cur_actor.thumb)
+
+        op_actor_delete = dbmanager.delete_actor(actor_id)
+        if op_actor_delete["op_status"]:
+            logger.info("Delete actor with id %d is success." % actor_id)
+        else:
+            logger.error("Delete actor with id %d fail." % actor_id)
+    return redirect("/actor/all")

@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}Media Type List {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+         <div class="page-content--bgf7">
+            <section class="statistic-chart">
+                <div class="container">
+                    <div class="row">
+                        {% if actor %}
+                        <div class="col-md-6 col-lg-8">
+                            <!-- TOP CAMPAIGN-->
+                            <div class="top-campaign">
+                                <h3 class="title-3 m-b-30">Actor Delete Confirm</h3>
+                                <div class="table-responsive vue-lists">
+                                    <table class="table table-top-campaign">
+                                        <tbody>
+                                            <tr>
+                                                <td><li>Name:</li></td>
+                                                <td>{{ actor.name }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Sex:</li></td>
+                                                <td>{{ actor.sex }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Country:</li></td>
+                                                <td>{{ actor.country }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Type List:</li></td>
+                                                <td>{{ actor.type_list }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td id="actor-description-title"><li>Description:</li></td>
+                                                <td id="actor-description-title"></td>
+                                            </tr>
+                                            <tr class="col col-lg-12">
+                                                <td id="actor-description" colspan="2">
+                                                    <p>
+                                                        {{ actor.description }}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <a role="button" href="/actor/delete_actor/{{ actor.id }}" class="btn btn-danger btn-sm">
+                                    <i class="fa fa-eraser">&nbsp;Delete</i>
+                                </a>
+                                <a type="button" class="btn btn-warning btn-sm" href="/actor/all">
+                                    <i class="fa fa-angle-double-left"></i>&nbsp;Cancel and Back
+                                </a>
+                            </div>
+                            <!-- END TOP CAMPAIGN-->
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <!-- CHART PERCENT-->
+                            <div class="chart-percent-2">
+                                <div class="mx-auto d-block">
+                                    <img class="rounded-circle mx-auto d-block" width="100%" heigth="100%" src="{{ actor.thumb }}" alt="Actor Thumb">
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="col-md-6 col-lg-8">
+                            <!-- TOP CAMPAIGN-->
+                            <div class="top-campaign">
+                                <h3 class="title-3 m-b-30">Actor Delete Confirm</h3>
+                                <div class="table-responsive vue-lists">
+                                    <table class="table table-top-campaign">
+                                        <tbody>
+                                            <tr>
+                                                <td><li>Name:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Sex:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Country:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td><li>Type List:</li></td>
+                                                <td>None</td>
+                                            </tr>
+                                            <tr>
+                                                <td id="actor-description-title"><li>Description:</li></td>
+                                                <td id="actor-description-title"></td>
+                                            </tr>
+                                            <tr class="col col-lg-12">
+                                                <td id="actor-description" colspan="2">
+                                                    <p>
+                                                        There is nothing for this actor yet, you can edit and add some description for her(him).
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <a type="button" class="btn btn-warning btn-sm" href="/actor/all">
+                                    <i class="fa fa-angle-double-left"></i>&nbsp;Back to All
+                                </a>
+                            </div>
+                            <!-- END TOP CAMPAIGN-->
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <!-- CHART PERCENT-->
+                            <div class="chart-percent-2">
+                                <div class="mx-auto d-block">
+                                    <img class="rounded-circle mx-auto d-block" width="100%" heigth="100%" src="https://pics.javcdn.pw/actress/ow0_a.jpg" alt="Actor Thumb">
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </section>
+         </div>
+{% endblock %}
