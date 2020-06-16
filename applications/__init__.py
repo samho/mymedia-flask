@@ -63,5 +63,9 @@ def create_app():
     from applications.actors.views import actor
     app.register_blueprint(actor)
 
+    # register photo blueprint
+    from applications.photo.views import photo
+    app.register_blueprint(photo)
+
     return app
 

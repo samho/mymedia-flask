@@ -1,120 +1,107 @@
-/* File Created: 十二月 28, 2011 */
-       $(document).ready(function () {
-           LayObj.initObj(); //加载样式
-           LayObj.LayMove(); //加载移动
-           LayObj.Click();
-       });
-       var LayUrl = {
-           path: function() {
-               var strFullPath = window.document.location.href;
-               var strPath = window.document.location.pathname;
-               var pos = strFullPath.indexOf(strPath);
-               var prePath = strFullPath.substring(0, pos);
-               var postPath = strPath.substring(0, strPath.substr(1).indexOf('/') + 1);
-               return (prePath + postPath);
-           }
-       };
-       var LayObj = {
-           initObj: function () {
-               var url = LayUrl.path() + "/LayPannel/Default/image/pic12.gif";
-               var divobj = '<div id="LayMain" class="LayMain LayDashed">';
-               divobj += '<div id="LayMainAll" class="LayMainAll ">';
-               divobj += '<div id="LayMainTop" class="LayMainTop LayDashed">信息提示<span id="LaySpan" title="关闭" class="LaySpan"><img src="' + url + '"></span></div>';
-               divobj += '<div id="LayMainMiddle" class="LayMainMiddle">LayMainMiddle</div>';
-               divobj += '<div id="LayMainFooter" class="LayMainFooter">LayMainFooter</div>';
-               divobj += '</div></div><div id="LayShade" class="LayShade"></div>';
-               document.body.innerHTML += divobj;
-           },
-           LayMove: function () {
-               var bool = false;
-               var offsetX = 0;
-               var offsetY = 0;
-               $("#LayMainTop").mousedown(function (event) {
-                   bool = true;
-                   offsetX = event.offsetX ? event.offsetX : event.layerX;
-                   offsetY = event.offsetY ? event.offsetY : event.layerY;
-                   $("#LayMainTop").css('cursor', 'move');
-               })
-                .mouseup(function () {
-                    bool = false;
-                    $("#LayMainTop").css('cursor', 'default');
-                })
-               $(document).mousemove(function (event) {
-                   if (!bool) {
-                       return;
-                   }
-                   else {
-                       var x = event.clientX - offsetX;
-                       var y = event.clientY - offsetY;
-                       $("#LayMain").css("left", x);
-                       $("#LayMain").css("top", y);
-                   }
-               })
-           },
-           Open: function () {
-               $("#LayMain").show(); $("#LayShade").show();
-           },
-           Close: function () {
-               $("#LayMain").hide(); $("#LayShade").hide();
-           },
-           Click: function () {
-               $("#LaySpan").click(function () {
-                   LayObj.Close();
-               });
+$(function () {
+    skinChanger();
+    activateNotificationAndTasksScroll();
 
-           },
-           image: function (value) {
-               var url = LayUrl.path() + "/LayPannel/Default/image/messager_info.gif";
-               if (value == 1) { url = LayUrl.path() + "/LayPannel/Default/image/messager_question.gif"; }
-               return url;
-           },
-           SetLayMainMiddle: function (Value) {
-               $("#LayMainMiddle").html(Value);
-           },
-           SetLayMainFooter: function (Value) {
-               $("#LayMainFooter").html(Value);
-           },
-           SetSize: function (width, height) {
-               $("#LayMain").css({ width: width, height: height });
-               $("#LayMainAll").css({ width: width - 4, height: height - 4 });
-               $("#LayMainMiddle").css({ height: height - 34 - 35 });
-           }
-       };
-       var Message = {
-           alter: function (message) {
-               var info = '<div id="MegInfo" class="MegInfo"><img src="' + LayObj.image(0) + '">' + message + '</div>';
-               LayObj.SetSize(300, 150);
-               var btn = '<input type="button" class="LayBtn LayDashed"  id="LayOK"  value="OK">';
-               LayObj.SetLayMainFooter(btn);
-               LayObj.SetLayMainMiddle(info);
-               LayObj.Open();
-               $("#LayOK").click(function () {
-                   LayObj.Close();
-               });
-           },
-           config: function (message,fn) {
-               var info = '<div id="MegInfo" class="MegInfo"><img src="' + LayObj.image(1) + '">' + message + '</div>';
-               LayObj.SetSize(300, 150);
-               var btn = '<input type="button" class="LayBtn LayDashed" id="LayBtnOK" value="OK">';
-               btn += '<input type="button" class="LayBtn LayDashed" id="LayBtnCancel" value="Cancel">';
-               LayObj.SetLayMainFooter(btn);
-               LayObj.SetLayMainMiddle(info);
-               LayObj.Open();
-               $("#LayBtnOK").click(function () {
-                   LayObj.Close();
-                   if (fn) {
-                       fn(true);
-                       return true;
-                   }
-               });
-               $("#LayBtnCancel").click(function () {
-                   LayObj.Close();
-                   if (fn) {
-                       fn(false);
-                       return true;
-                   }
-               });
-           }
-       };
+    setSkinListHeightAndScroll(true);
+    setSettingListHeightAndScroll(true);
+    $(window).resize(function () {
+        setSkinListHeightAndScroll(false);
+        setSettingListHeightAndScroll(false);
+    });
+});
 
+//Skin changer
+function skinChanger() {
+    $('.right-sidebar .demo-choose-skin li').on('click', function () {
+        var $body = $('body');
+        var $this = $(this);
 
+        var existTheme = $('.right-sidebar .demo-choose-skin li.active').data('theme');
+        $('.right-sidebar .demo-choose-skin li').removeClass('active');
+        $body.removeClass('theme-' + existTheme);
+        $this.addClass('active');
+
+        $body.addClass('theme-' + $this.data('theme'));
+    });
+}
+
+//Skin tab content set height and show scroll
+function setSkinListHeightAndScroll(isFirstTime) {
+    var height = $(window).height() - ($('.navbar').innerHeight() + $('.right-sidebar .nav-tabs').outerHeight());
+    var $el = $('.demo-choose-skin');
+
+    if (!isFirstTime){
+      $el.slimScroll({ destroy: true }).height('auto');
+      $el.parent().find('.slimScrollBar, .slimScrollRail').remove();
+    }
+
+    $el.slimscroll({
+        height: height + 'px',
+        color: 'rgba(0,0,0,0.5)',
+        size: '6px',
+        alwaysVisible: false,
+        borderRadius: '0',
+        railBorderRadius: '0'
+    });
+}
+
+//Setting tab content set height and show scroll
+function setSettingListHeightAndScroll(isFirstTime) {
+    var height = $(window).height() - ($('.navbar').innerHeight() + $('.right-sidebar .nav-tabs').outerHeight());
+    var $el = $('.right-sidebar .demo-settings');
+
+    if (!isFirstTime){
+      $el.slimScroll({ destroy: true }).height('auto');
+      $el.parent().find('.slimScrollBar, .slimScrollRail').remove();
+    }
+
+    $el.slimscroll({
+        height: height + 'px',
+        color: 'rgba(0,0,0,0.5)',
+        size: '6px',
+        alwaysVisible: false,
+        borderRadius: '0',
+        railBorderRadius: '0'
+    });
+}
+
+//Activate notification and task dropdown on top right menu
+function activateNotificationAndTasksScroll() {
+    $('.navbar-right .dropdown-menu .body .menu').slimscroll({
+        height: '254px',
+        color: 'rgba(0,0,0,0.5)',
+        size: '4px',
+        alwaysVisible: false,
+        borderRadius: '0',
+        railBorderRadius: '0'
+    });
+}
+
+//Google Analiytics ======================================================================================
+addLoadEvent(loadTracking);
+var trackingId = 'UA-30038099-6';
+
+function addLoadEvent(func) {
+    var oldonload = window.onload;
+    if (typeof window.onload != 'function') {
+        window.onload = func;
+    } else {
+        window.onload = function () {
+            oldonload();
+            func();
+        }
+    }
+}
+
+function loadTracking() {
+    (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', trackingId, 'auto');
+    ga('send', 'pageview');
+}
+//========================================================================================================
