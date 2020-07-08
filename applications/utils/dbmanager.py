@@ -9,7 +9,7 @@ from applications.ebooks.model import EBook
 from applications.movies.model import Movie
 import datetime
 from applications.utils import logger
-from applications.config import DEFAULT_PAGE_SIZE
+from applications.config import DEFAULT_PAGE_SIZE, PHOTO_TYPE, PHOTO_PER_PAGE
 
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
@@ -227,6 +227,26 @@ def find_all_photo():
     return Photo.query.all()
 
 
+def find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=1):
+    return Photo.query.paginate(page=page, per_page=per_page)
+
+
+def get_count_of_all_photos():
+    return db.session.query(Photo.id).count()
+
+
+def find_all_photo_with_type(photo_type):
+    return Photo.query.filter_by(type=photo_type).all()
+
+
+def get_count_of_all_photos_with_type(photo_type):
+    return Photo.query.filter_by(type=photo_type).count()
+
+
+def find_all_photo_with_type_by_page(photo_type, per_page=PHOTO_PER_PAGE, page=1):
+    return Photo.query.filter_by(type=photo_type).paginate(page=page, per_page=per_page)
+
+
 def update_photo(id, name, ext, content):
 
     update_photo = find_photo_by_id(id)
@@ -393,9 +413,9 @@ def delete_movie(id):
 
 
 if __name__ == '__main__':
-    n_list = get_type_name_list_by_id(find_mediatype_by_name("Actor")[0].id)
-    for n in n_list:
-        print n["name"]
+    #n_list = get_type_name_list_by_id(find_mediatype_by_name("Actor")[0].id)
+    #for n in n_list:
+    #    print n["name"]
     #mediatypes = find_mediatypes_pagenate(2).prev()
     #for item in mediatypes.items:
     #    print(item.name)
@@ -431,4 +451,10 @@ if __name__ == '__main__':
     #        output_file.write(marshal.loads(p.content))
     #except Exception:
     #    print "file not existed."
+    p = get_count_of_all_photos()
+    if p < PHOTO_PER_PAGE:
+        a = find_all_photo_by_page(per_page=p, page=2)
+    else:
+        a = find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=2)
 
+    print(a.items[0].path)

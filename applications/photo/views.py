@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.actors.forms import ActorForm
-from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL, basedir
+from applications.config import PHOTO_PER_PAGE, PHOTO_TYPE, MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL, basedir
 import uuid
 import os
 
@@ -17,16 +17,21 @@ photo = Blueprint("photo",
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
 
-@photo.route('/all')
-def photo_index():
+@photo.route('/all/<int:page_id>')
+def photo_index(page_id):
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
     else:
-        photoes = dbmanager.find_all_photo()
-        if photoes is None:
+        count_photos = dbmanager.get_count_of_all_photos()
+        if count_photos < PHOTO_PER_PAGE:
+            photos = dbmanager.find_all_photo_by_page(per_page=count_photos, page=page_id)
+        else:
+            photos = dbmanager.find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=page_id)
+
+        if photos is None:
             return render_template("photoes.html", pagename="Photos", logon_user=session['username'])
         else:
-            return render_template("photoes.html", pagename="Photos", logon_user=session['username'])
+            return render_template("photoes.html", pagename="Photos", logon_user=session['username'], photos=photos, count_photos=count_photos)
 
 #
 # @actor.route('/new')
