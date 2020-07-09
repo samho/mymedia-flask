@@ -21,13 +21,13 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">Photo List</h3>
+                            <h3 class="title-5 m-b-35">{{ pagename }}</h3>
                             <div class="table-data__tool">
                                 <div class="table-data__tool-left">
                                 </div>
                                 <div class="table-data__tool-right">
-                                    <a id="new_user" href="./new" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                        <i class="zmdi zmdi-plus"></i>add item</a>
+                                    <!--a id="new_user" href="./new" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                        <i class="zmdi zmdi-plus"></i>add item</a-->
                                 </div>
                             </div>
                         </div>
@@ -47,20 +47,33 @@
                         <div class="row">
                             <div class="table-data__tool">
                             <div class="table-data__tool-left">
-                                <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+                                <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing {{ min_item }} to {{ max_item }} of {{ count_photos }} entries</div>
                             </div>
                             <div class="table-data__tool-right">
                                 <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
                                     <ul class="pagination">
-                                        <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
-                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
-                                        </li>
+                                        {% if photos.has_prev %}
+                                            <li class="paginate_button previous" id="DataTables_Table_0_previous">
+                                                <a href="./{{ photos.prev_num }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                            </li>
+                                        {% endif %}
                                         <li class="paginate_button active">
-                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
+                                            <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
                                         </li>
-                                        <li class="paginate_button next" id="DataTables_Table_0_next">
-                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
-                                        </li>
+                                        {% if photos.has_next %}
+                                            <li class="paginate_button next" id="DataTables_Table_0_next">
+                                                <a href="./{{ photos.next_num }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                            </li>
+                                        {% endif %}
+
                                     </ul>
                                 </div>
                             </div>
