@@ -5,8 +5,6 @@ from applications.actors.model import Actor
 from applications.storage.model import Storage
 from applications.photo.model import Photo
 
-
-
 # db = SQLAlchemy(create_app(config['development']))
 #
 #
@@ -73,6 +71,7 @@ class Movie(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
     actors = db.Column(db.String(100))  # with the actor id list: 1,2,3
+    cover = db.Column(db.Integer)   # withe the photo id, type is Cover
     snapshots = db.Column(db.String(100))  # with the photo id list: 1,2,3
     types = db.Column(db.String(100))  # with the media type id list: 1,2,3
     provider = db.Column(db.String(100))  # the provider of the movie

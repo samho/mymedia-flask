@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Actor List {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+    <!-- Bootstrap Core Css -->
+    <link href="/static/css/photos.css" rel="stylesheet" >
+    <!-- Custom Css -->
+    <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+         <div class="page-content--bgf7">
+            <!-- DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="mr-2 fa fa-align-justify"></i>
+									<strong class="card-title" v-if="headerText">Modals</strong>
+								</div>
+								<div class="card-body">
+                                    <!-- Button trigger modal -->
+                                    <div id="aniimated-thumbnials" class="list-unstyled row clearfix">
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                            <div class="mb-1">
+                                                <img class="img-responsive thumbnail" data-toggle="modal" data-target="#1" src="https://faws.xcity.jp/actress/large/image/person/thumb_1576137497.jpg">
+                                            </div>
+                                			<!-- modal small -->
+                                			<div class="modal fade text-center" id="1" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+                                				<div class="modal-dialog modal-lg" style="display: inline-block; width: auto;" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-body">
+                                                            <img src="https://faws.xcity.jp/actress/large/image/person/thumb_1576137497.jpg">
+                                                        </div>
+                                                    </div>
+                                				</div>
+                                			</div>
+                                            <!-- end modal small -->
+                                		</div>
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                            <div class="mb-1">
+                                                <img class="img-responsive thumbnail" data-toggle="modal" data-target="#largeModal" src="/static/media/image-gallery/4.jpg">
+                                            </div>
+                                            <!-- modal large -->
+    			                            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true">
+                                				<div class="modal-dialog modal-lg" role="document">
+    				                            	<div class="modal-content">
+                                						<div class="modal-body">
+                                                            <img src="/static/media/image-gallery/4.jpg">
+    						                            </div>
+    				                            	</div>
+    				                            </div>
+                                			</div>
+                                			<!-- end modal large -->
+                                        </div>
+                                    </div>
+								</div>
+                            </div>
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row">
+                                    <div class="table-data__tool">
+                                        <div class="table-data__tool-left">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
+                                        </div>
+                                        <div class="table-data__tool-right">
+                                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                <ul class="pagination">
+                                                    <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                    </li>
+                                                    <li class="paginate_button active">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
+                                                    </li>
+                                                    <li class="paginate_button next" id="DataTables_Table_0_next">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+         </div>
+
+{% endblock %}
