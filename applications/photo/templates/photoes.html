@@ -3,17 +3,10 @@
 {% block body %}
          {% include 'top.html' %}
          {% include 'breadcrumb.html' %}
-         <!-- Bootstrap Core Css -->
-         <link href="/static/plugins/bootstrap/css/bootstrap.css" rel="stylesheet">
-         <!-- Waves Effect Css -->
-         <link href="/static/plugins/node-waves/waves.css" rel="stylesheet">
-         <!-- Animation Css -->
-         <link href="/static/plugins/animate-css/animate.css" rel="stylesheet">
-         <!-- Light Gallery Plugin Css -->
-         <link href="/static/plugins/light-gallery/css/lightgallery.css" rel="stylesheet">
-         <!-- Custom Css -->
-         <link href="/static/css/style.css" rel="stylesheet">
-         <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+    <!-- Bootstrap Core Css -->
+    <link href="/static/css/photos.css" rel="stylesheet" >
+    <!-- Custom Css -->
+    <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
          <div class="page-content--bgf7">
             <!-- DATA TABLE-->
             <section class="p-t-20">
@@ -21,206 +14,130 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">{{ pagename }}</h3>
-                            <div class="table-data__tool">
-                                <div class="table-data__tool-left">
-                                </div>
-                                <div class="table-data__tool-right">
-                                    <!--a id="new_user" href="./new" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                        <i class="zmdi zmdi-plus"></i>add item</a-->
-                                </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="mr-2 fa fa-align-justify"></i>
+									<strong class="card-title" v-if="headerText">{{ pagename }}</strong>
+								</div>
+								<div class="card-body">
+                                    <!-- Button trigger modal -->
+                                    <div id="aniimated-thumbnials" class="list-unstyled row clearfix">
+                                        {%  for photo in photos.items %}
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                            <div class="mb-1">
+                                                <img class="img-responsive thumbnail" data-toggle="modal" data-target="#{{ photo.id }}" src="{{ photo.path }}">
+                                            </div>
+                                            <!-- modal large -->
+    			                            <div class="modal fade text-center" id="{{ photo.id }}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true">
+                                				<div class="modal-dialog modal-lg" style="display: inline-block; width: auto;" role="document">
+    				                            	<div class="modal-content">
+                                						<div class="modal-body">
+                                                            <img src="{{ photo.path }}">
+    						                            </div>
+    				                            	</div>
+    				                            </div>
+                                			</div>
+                                			<!-- end modal large -->
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+								</div>
                             </div>
-                        </div>
-                        <div class="body">
-                            <div id="aniimated-thumbnials" class="list-unstyled row clearfix">
-                                {%  for photo in photos.items %}
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="{{ photo.path }}" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="{{ photo.path }}">
-                                    </a>
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row">
+                                    <div class="table-data__tool">
+                                        <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                        <div class="table-data__tool-left">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing {{ min_item }} to {{ max_item }} of {{ count_photos }} entries</div>
+                                        </div>
+                                        <div class="table-data__tool-right">
+                                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                <ul class="pagination">
+                                                {% if photos.has_prev %}
+                                                    <li class="paginate_button previous" id="DataTables_Table_0_previous">
+                                                        <a href="./{{ photos.prev_num }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                        <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                    </li>
+                                                {% endif %}
+                                                    <li class="paginate_button active">
+                                                        <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
+                                                    </li>
+                                                {% if photos.has_next %}
+                                                    <li class="paginate_button next" id="DataTables_Table_0_next">
+                                                        <a href="./{{ photos.next_num }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                    </li>
+                                                {% else %}
+                                                    <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                        <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                    </li>
+                                                {% endif %}
+                                                </ul>
+                                             </div>
+                                         </div>
+                                    </div>
                                 </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                        <div class="row">
-                            <div class="table-data__tool">
-                            <div class="table-data__tool-left">
-                                <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing {{ min_item }} to {{ max_item }} of {{ count_photos }} entries</div>
-                            </div>
-                            <div class="table-data__tool-right">
-                                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                                    <ul class="pagination">
-                                        {% if photos.has_prev %}
-                                            <li class="paginate_button previous" id="DataTables_Table_0_previous">
-                                                <a href="./{{ photos.prev_num }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
-                                            </li>
-                                        {% else %}
-                                            <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
-                                                <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
-                                            </li>
-                                        {% endif %}
-                                        <li class="paginate_button active">
-                                            <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
-                                        </li>
-                                        {% if photos.has_next %}
-                                            <li class="paginate_button next" id="DataTables_Table_0_next">
-                                                <a href="./{{ photos.next_num }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
-                                            </li>
-                                        {% else %}
-                                            <li class="paginate_button next disabled" id="DataTables_Table_0_next">
-                                                <a href="./{{ photos.page }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
-                                            </li>
-                                        {% endif %}
-
-                                    </ul>
-                                </div>
-                            </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 {% else %}
-                                <div class="container">
+                <div class="container">
                     <div class="row">
                         <div class="col-md-12">
-                            <h3 class="title-5 m-b-35">Photo List</h3>
-                            <div class="table-data__tool">
-                                <div class="table-data__tool-left">
-                                </div>
-                                <div class="table-data__tool-right">
-                                    <a id="new_user" href="./new" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                        <i class="zmdi zmdi-plus"></i>add item</a>
-                                </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <i class="mr-2 fa fa-align-justify"></i>
+									<strong class="card-title" v-if="headerText">Photo List</strong>
+								</div>
+								<div class="card-body">
+                                    <!-- Button trigger modal -->
+                                    <div id="aniimated-thumbnials" class="list-unstyled row clearfix">
+                                        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                            <div class="mb-1">
+                                                <img class="img-responsive thumbnail" data-toggle="modal" data-target="#defaultmodal" src="/static/media/image-gallery/4.jpg">
+                                            </div>
+                                            <!-- modal large -->
+    			                            <div class="modal fade" id="defaultmodal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true">
+                                				<div class="modal-dialog modal-lg" role="document">
+    				                            	<div class="modal-content">
+                                						<div class="modal-body">
+                                                            <img src="/static/media/image-gallery/4.jpg">
+    						                            </div>
+    				                            	</div>
+    				                            </div>
+                                			</div>
+                                			<!-- end modal large -->
+                                        </div>
+                                    </div>
+								</div>
                             </div>
-                        </div>
-                        <div class="body">
-                            <div id="aniimated-thumbnials" class="list-unstyled row clearfix">
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="https://faws.xcity.jp/actress/large/image/person/thumb_1576137497.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="https://faws.xcity.jp/actress/large/image/person/thumb_1576137497.jpg">
-                                    </a>
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row">
+                                    <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                    <div class="table-data__tool">
+                                        <div class="table-data__tool-left">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div>
+                                        </div>
+                                        <div class="table-data__tool-right">
+                                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                <ul class="pagination">
+                                                    <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                    </li>
+                                                    <li class="paginate_button active">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
+                                                    </li>
+                                                    <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                    </li>
+                                                </ul>
+                                             </div>
+                                         </div>
+                                    </div>
                                 </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="https://faws.xcity.jp/actress/large/image/person/125.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="https://faws.xcity.jp/actress/large/image/person/125.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="https://faws.xcity.jp/actress/large/image/person/1559.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="https://faws.xcity.jp/actress/large/image/person/1559.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/4.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/4.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/5.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/5.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/6.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/6.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/7.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/7.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/8.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/8.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/9.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/9.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/10.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/10.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/11.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/11.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/12.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/12.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/13.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/13.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/14.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/14.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/15.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/15.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/16.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/16.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/17.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/17.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/18.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/18.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/19.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/19.jpg">
-                                    </a>
-                                </div>
-                                <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                                    <a href="/static/media/image-gallery/20.jpg" data-sub-html="Demo Description">
-                                        <img class="img-responsive thumbnail" src="/static/media/image-gallery/20.jpg">
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
-                        <div class="row">
-                            <div class="table-data__tool">
-                            <div class="table-data__tool-left">
-                                <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>
-                            </div>
-                            <div class="table-data__tool-right">
-                                <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
-                                    <ul class="pagination">
-                                        <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
-                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
-                                        </li>
-                                        <li class="paginate_button active">
-                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
-                                        </li>
-                                        <li class="paginate_button next" id="DataTables_Table_0_next">
-                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
                             </div>
                         </div>
                     </div>
@@ -229,29 +146,5 @@
             </section>
             <!-- END DATA TABLE-->
          </div>
-         <!-- Jquery Core Js -->
-         <script src="/static/plugins/jquery/jquery.min.js"></script>
-
-         <!-- Bootstrap Core Js -->
-         <script src="/static/plugins/bootstrap/js/bootstrap.js"></script>
-
-         <!-- Select Plugin Js -->
-         <script src="/static/plugins/bootstrap-select/js/bootstrap-select.js"></script>
-
-         <!-- Slimscroll Plugin Js -->
-         <script src="/static/plugins/jquery-slimscroll/jquery.slimscroll.js"></script>
-
-         <!-- Waves Effect Plugin Js -->
-         <script src="/static/plugins/node-waves/waves.js"></script>
-
-         <!-- Light Gallery Plugin Js -->
-         <script src="/static/plugins/light-gallery/js/lightgallery-all.js"></script>
-
-         <!-- Custom Js -->
-         <script src="/static/js/pages/medias/image-gallery.js"></script>
-         <script src="/static/js/admin.js"></script>
-
-         <!-- Demo Js -->
-         <script src="/static/js/demo.js"></script>
 
 {% endblock %}

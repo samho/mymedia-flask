@@ -14,14 +14,6 @@ photo = Blueprint("photo",
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
 
-@photo.route('/demo')
-def photo_demo():
-    if 'username' not in session:
-        return render_template('login.html', form=LoginForm())
-    else:
-        return render_template("demo_photo.html", pagename="Photos", logon_user=session['username'])
-
-
 @photo.route('/<string:photo_type>/<int:page_id>')
 def photo_index_with_type(photo_type, page_id):
     if 'username' not in session:
