@@ -25,7 +25,7 @@
                                         {%  for photo in photos.items %}
                                         <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                                             <div class="mb-1">
-                                                <img class="img-responsive thumbnail" data-toggle="modal" data-target="#{{ photo.id }}" src="{{ photo.path }}">
+                                                <img class="img-responsive thumbnail" alt="{{ photo.name }}" data-toggle="modal" data-target="#{{ photo.id }}" src="{{ photo.path }}">
                                             </div>
                                             <!-- modal large -->
     			                            <div class="modal fade text-center" id="{{ photo.id }}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true">
