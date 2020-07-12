@@ -2,8 +2,8 @@
 from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
-from applications.actors.forms import ActorForm
-from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL, basedir
+from applications.movies.forms import MovieRegularForm, MovieAdultForm
+from applications.config import ACTOR_TYPE
 import uuid
 import os
 
@@ -39,15 +39,22 @@ def movie_index():
         return render_template("movie.html", pagename="Movie", logon_user=session['username'])
 
 
-# @actor.route('/new')
-# def new_actor():
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     actorform = ActorForm()
-#     return render_template("create_actor.html", pagename="New Actor", logon_ueer=session['username'], actorform=actorform)
-#
-#
+@movie.route('/new/<string:movie_type>')
+def new_movie(movie_type):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    if movie_type == "adult":
+        movieform = MovieAdultForm()
+        return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
+                               movieform=movieform)
+
+    if movie_type == "regular":
+        movieform = MovieRegularForm()
+        return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
+                               movieform=movieform)
+
+
 # @actor.route('/create_actor', methods=['POST'])
 # def create_storage():
 #     if 'username' not in session:

@@ -1,15 +1,17 @@
-from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
-from applications.mediatype.model import MediaType
-from applications.users.model import User
-from applications.storage.model import Storage
-from applications.photo.model import Photo
-from applications.actors.model import Actor
-from applications.ebooks.model import EBook
-from applications.movies.model import Movie
 import datetime
+
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+from applications.actors.model import Actor
+from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, ACTOR_TYPE
+from applications.ebooks.model import EBook
+from applications.mediatype.model import MediaType
+from applications.movies.model import Movie
+from applications.photo.model import Photo
+from applications.storage.model import Storage
+from applications.users.model import User
 from applications.utils import logger
-from applications.config import DEFAULT_PAGE_SIZE, PHOTO_TYPE, PHOTO_PER_PAGE
 
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
@@ -337,6 +339,10 @@ def find_actor_by_name(name):
     return Actor.query.filter_by(name=name).all()
 
 
+def find_actor_by_type(type_name):
+    return db.session.query(Actor).filter(Actor.type.like('%'+str(type_name)+'%')).all()
+
+
 def find_all_actors():
     return Actor.query.all()
 
@@ -451,10 +457,13 @@ if __name__ == '__main__':
     #        output_file.write(marshal.loads(p.content))
     #except Exception:
     #    print "file not existed."
-    p = get_count_of_all_photos()
-    if p < PHOTO_PER_PAGE:
-        a = find_all_photo_by_page(per_page=p, page=2)
-    else:
-        a = find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=2)
-
-    print(a.items[0].path)
+    # p = get_count_of_all_photos()
+    # if p < PHOTO_PER_PAGE:
+    #     a = find_all_photo_by_page(per_page=p, page=2)
+    # else:
+    #     a = find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=2)
+    #
+    # print(a.items[0].path)
+    actors = find_actor_by_type(ACTOR_TYPE["REGULAR"])
+    for actor in actors:
+        print(actor.name)

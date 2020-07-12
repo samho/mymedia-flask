@@ -1,10 +1,121 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Create Movie {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+         <div class="page-wrapper">
+         <div class="page-content--bge5">
+            <!--DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <form action="/movie/create_movie" method="POST" enctype="multipart/form-data" class="">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">Movie Name:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ movieform.name(type="text",id="new_movie",placeholder="Movie name..",class="form-control col-md-6") }}
+                                                {%  if movieform.name.errors %}
+                                                    {% for error in movieform.name.errors %}
+                                                    <div class="alert alert-danger col-md-6" role="alert">
+                                                        {{ error }}
+                                                    </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the new Movie name.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">Provider:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ movieform.provider(type="text",id="new_porvider",placeholder="Provider of Movie...",class="form-control col-md-6") }}
+                                                <span class="help-block">Please enter the provider of new Movie.</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="multiple-select" class=" form-control-label">Actor Select:</label>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                {{ movieform.actors(id="multiple-select",multiple="",class="form-control") }}
+                                                <span class="help-block">Please select the actor for new Movie.</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="multiple-select" class=" form-control-label">Storage Select:</label>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                {{ movieform.storage(id="select",class="form-control") }}
+                                                {%  if movieform.storage.errors %}
+                                                    {% for error in movieform.storage.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please select the storage of the new Movie.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">File Path:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ movieform.storage_path(type="text",id="new_filepath",placeholder="File path in stoage...",class="form-control col-md-6") }}
+                                                {%  if movieform.storage_path.errors %}
+                                                    {% for error in movieform.storage_path.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the file path in storage of new Movie.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="file-input" class=" form-control-label">Cover file upload:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ movieform.cover(id="cover-upload", class="form-control-file") }}
+                                                <span class="help-block">Please enter the image cover of Movie.</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="file-input" class=" form-control-label">Snapshot file(s) upload:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ movieform.snapshots(id="snapshots-upload", multiple="", class="form-control-file") }}
+                                                <span class="help-block">Please enter the image snapshot(s) of Movie.</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-dot-circle-o"></i> Submit
+                                            </button>
+                                            <button type="reset" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-ban"></i> Reset
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+         </div>
+         </div>
+{% endblock %}
