@@ -4,7 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from applications.actors.model import Actor
-from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, ACTOR_TYPE
+from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE
 from applications.ebooks.model import EBook
 from applications.mediatype.model import MediaType
 from applications.movies.model import Movie
@@ -370,9 +370,9 @@ def delete_actor(id):
 # DB Operations for Movie
 
 
-def save_movie(name, actors, snapshots, types, provider, storage, file_path):
+def save_movie(name, actors, snapshots, cover, types, provider, storage, file_path):
     try:
-        new_movie = Movie(name=name, actors=actors, snapshots=snapshots, types=types, provider=provider, storage=storage, file_path=file_path)
+        new_movie = Movie(name=name, actors=actors, cover=cover, snapshots=snapshots, types=types, provider=provider, storage=storage, file_path=file_path)
         db.session.add(new_movie)
         db.session.commit()
         return {"err_msg": "Save Movie sucess.", "obj": None, "op_status": True, "new_id": new_movie.id}
@@ -464,6 +464,6 @@ if __name__ == '__main__':
     #     a = find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=2)
     #
     # print(a.items[0].path)
-    actors = find_actor_by_type(ACTOR_TYPE["REGULAR"])
+    actors = find_actor_by_type(MOVIE_TYPE["REGULAR"])
     for actor in actors:
         print(actor.name)

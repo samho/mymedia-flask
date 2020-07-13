@@ -1,10 +1,177 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Actor List {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+    <!-- Bootstrap Core Css -->
+    <link href="/static/css/photos.css" rel="stylesheet" >
+    <!-- Custom Css -->
+    <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+         <div class="page-content--bgf7">
+            <!-- DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                        {% if movies %}
+                            <h3 class="title-5 m-b-35">{{ pagename }}</h3>
+                            <div class="table-data__tool">
+                                <div class="table-data__tool-left">
+                                </div>
+                                <div class="table-data__tool-right">
+                                    <a id="new_user" href="./new/regular" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                        <i class="zmdi zmdi-plus"></i>add Regular</a>
+                                    <a id="new_user" href="./new/adult" class="au-btn au-btn-icon au-btn--blue2 au-btn--small">
+                                        <i class="zmdi zmdi-plus"></i>add Adult</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive table-responsive-data2">
+                                <table class="table table-data2">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Movie Name</th>
+                                            <th>Provider</th>
+                                            <th>Type</th>
+                                            <th>Actor(s)</th>
+                                            <th>Storage</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for movie in movies.item %}
+                                        <tr class="tr-shadow">
+                                            <td><a href="/movie/details/{{ movie.id }}">{{ movie.id }}</a></td>
+                                            <td>{{ movie.name }}</td>
+                                            <td>{{ movie.provider }}</td>
+                                            <td>{{ movie.type }}</td>
+                                            <td>{{ movie.actors }}</td>
+                                            <td>{{ movie.storage }}</td>
+                                            <td>
+                                                <div class="table-data-feature">
+                                                    <a href="./detail/{{ movie.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Details">
+                                                        <i class="zmdi zmdi-folder"></i>
+                                                    </a>
+                                                    <a href="./delete_confirm/{{ movie.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="spacer"></tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row">
+                                    <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                    <div class="table-data__tool">
+                                        <div class="table-data__tool-left">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div>
+                                        </div>
+                                        <div class="table-data__tool-right">
+                                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                <ul class="pagination">
+                                                    <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                    </li>
+                                                    <li class="paginate_button active">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
+                                                    </li>
+                                                    <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                    </li>
+                                                </ul>
+                                             </div>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <h3 class="title-5 m-b-35">Movie List</h3>
+                            <div class="table-data__tool">
+                                <div class="table-data__tool-left">
+                                </div>
+                                <div class="table-data__tool-right">
+                                    <a id="new_user" href="./new/regular" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                        <i class="zmdi zmdi-plus"></i>add Regular</a>
+                                    <a id="new_user" href="./new/adult" class="au-btn au-btn-icon au-btn--blue2 au-btn--small">
+                                        <i class="zmdi zmdi-plus"></i>add Adult</a>
+                                </div>
+                            </div>
+                            <div class="table-responsive table-responsive-data2">
+                                <table class="table table-data2">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Movie Name</th>
+                                            <th>Provider</th>
+                                            <th>Type</th>
+                                            <th>Actor(s)</th>
+                                            <th>Storage</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="tr-shadow">
+                                            <!--td>
+                                                <label class="au-checkbox">
+                                                    <input type="checkbox">
+                                                    <span class="au-checkmark"></span>
+                                                </label>
+                                            </td-->
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>None</td>
+                                            <td>
+                                                <div class="table-data-feature">
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="View" disabled="disabled">
+                                                        <i class="zmdi zmdi-folder"></i>
+                                                    </button>
+                                                    <button class="item" data-toggle="tooltip" data-placement="top" title="Delete" disabled="disabled">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="spacer"></tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row">
+                                    <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                    <div class="table-data__tool">
+                                        <div class="table-data__tool-left">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div>
+                                        </div>
+                                        <div class="table-data__tool-right">
+                                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                <ul class="pagination">
+                                                    <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                    </li>
+                                                    <li class="paginate_button active">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
+                                                    </li>
+                                                    <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                    </li>
+                                                </ul>
+                                             </div>
+                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+         </div>
+{% endblock %}

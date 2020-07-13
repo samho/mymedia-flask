@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block title %}Create Movie {% endblock %}
 {% block body %}
-         {% include 'top.html' %}
-         {% include 'breadcrumb.html' %}
-         <div class="page-wrapper">
-         <div class="page-content--bge5">
+    {% include 'top.html' %}
+    {% include 'breadcrumb.html' %}
+    <div class="page-wrapper">
+        <div class="page-content--bge5">
             <!--DATA TABLE-->
             <section class="p-t-20">
                 <div class="container">
@@ -12,7 +12,7 @@
                         <div class="col-md-12">
                             <div class="card">
                                 <div class="card-body card-block">
-                                    <form action="/movie/create_movie" method="POST" enctype="multipart/form-data" class="">
+                                    <form action="/movie/create_movie/{{ movie_type }}" method="POST" enctype="multipart/form-data" class="">
                                         <div class="row form-group">
                                             <div class="col col-md-3">
                                                 <label for="text-input" class="form-control-label">Movie Name:</label>
@@ -116,6 +116,6 @@
                 </div>
             </section>
             <!-- END DATA TABLE-->
-         </div>
-         </div>
+        </div>
+    </div>
 {% endblock %}

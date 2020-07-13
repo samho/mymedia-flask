@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from flask import Blueprint, render_template, session, redirect, url_for
+from flask import request, Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.movies.forms import MovieRegularForm, MovieAdultForm
-from applications.config import ACTOR_TYPE
+from applications.config import MOVIE_TYPE, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL
 import uuid
 import os
 
@@ -36,7 +36,7 @@ def movie_index():
         #         actor_list.append({"id": a.id, "name": a.name, "sex": cur_sex, "country": a.country, "description": a.description})
         #
         #     return render_template("actors.html", pagename="Actors", logon_user=session['username'], actor_list=actor_list)
-        return render_template("movie.html", pagename="Movie", logon_user=session['username'])
+        return render_template("movies.html", pagename="Movie", logon_user=session['username'])
 
 
 @movie.route('/new/<string:movie_type>')
@@ -47,61 +47,79 @@ def new_movie(movie_type):
     if movie_type == "adult":
         movieform = MovieAdultForm()
         return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
-                               movieform=movieform)
+                               movieform=movieform, movie_type=movie_type)
 
     if movie_type == "regular":
         movieform = MovieRegularForm()
         return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
-                               movieform=movieform)
+                               movieform=movieform, movie_type=movie_type)
 
 
-# @actor.route('/create_actor', methods=['POST'])
-# def create_storage():
-#     if 'username' not in session:
-#         return render_template('login.html', form=LoginForm())
-#
-#     actorform = ActorForm()
-#     if actorform.validate_on_submit():
-#         actors = dbmanager.find_actor_by_name(actorform.name.data.strip())
-#         if len(actors) == 0:
-#             logger.info("Saving new actor to db.")
-#             if actorform.thumb.data.filename.strip() != "":
-#                 if MEDIA_SAVE_TO_DB:
-#                     pass
-#                 else:
-#                     upload_file = actorform.thumb.data.filename
-#                     logger.info("Upload file %s" % upload_file)
-#                     upload_filename = os.path.splitext(upload_file)[0]
-#                     upload_suffix = os.path.splitext(upload_file)[1]
-#                     save_filename = str(uuid.uuid3(uuid.NAMESPACE_URL, upload_filename.encode('utf-8')))
-#                     save_fullfilename = save_filename + upload_suffix
-#                     save_path = MEDIA_LOCAL_PATH + save_fullfilename
-#                     logger.info("Save path is %s" % save_path)
-#                     actorform.thumb.data.save(save_path)
-#                     op_photo_result = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["NORMAL"])
-#                     type_list = combineIntegerToStr(actorform.types.data)
-#                     op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
-#                                                       type_list)
-#                     logger.info("Save new actor complete, status: %s." % op_result["op_status"])
-#                     return redirect("/actor/all")
-#             else:
-#                 thumb_url = actorform.thumb_path.data.strip()
-#                 logger.info("Upload file path is %s" % thumb_url)
-#                 thumb_url_name = os.path.splitext(thumb_url.split("/")[-1])[0]
-#                 thumb_url_suffix = os.path.splitext(thumb_url.split("/")[-1])[1]
-#                 op_photo_result = dbmanager.save_photo_with_string(thumb_url_name, thumb_url_suffix, PHOTO_TYPE["NORMAL"], thumb_url)
-#                 type_list = combineIntegerToStr(actorform.types.data)
-#                 op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
-#                                                  type_list)
-#                 logger.info("Save new actor with url thumb complete, status is %s: " % op_result["op_status"])
-#                 return redirect("/actor/all")
-#         else:
-#             logger.info("The actor with name %s is existed." % actorform.name.data.strip())
-#             actorform.name.errors.append("Actor with name '%s' is existed." % actorform.name.data.strip())
-#             return render_template("create_actor.html", pagename="Create Actor", logon_user=session['username'], actorform=actorform)
-#
-#     logger.error("Create new actor fail.")
-#     return render_template("create_actor.html", pagename="Create Actor", logon_user=session['username'], actorform=actorform)
+@movie.route('/create_movie/<string:movie_type>', methods=['POST'])
+def create_movie(movie_type):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+
+    if movie_type == "regular":
+        movieform = MovieRegularForm()
+
+    if movie_type == "adult":
+        movieform = MovieAdultForm()
+
+    if movieform.validate_on_submit():
+        cur_movie = dbmanager.find_movie_by_name(movieform.name.data.strip())
+        if len(cur_movie) == 0:
+            logger.info("Saving new movie to db.")
+            new_name = movieform.name.data.strip()
+
+            if movieform.provider.data.strip() == "":
+                new_provider = "Default Provider"
+
+            new_actor_list = combineIntegerToStr(movieform.actors.data)
+            new_storage = movieform.storage.data
+            new_filepath = movieform.storage_path.data.strip()
+            # Save the cover file
+            cover_file = movieform.cover.data.filename
+            logger.info("Upload file %s" % cover_file)
+            upload_filename = os.path.splitext(cover_file)[0]
+            upload_suffix = os.path.splitext(cover_file)[1]
+            save_filename = str(uuid.uuid3(uuid.NAMESPACE_URL, upload_filename.encode('utf-8')))
+            save_fullfilename = save_filename + upload_suffix
+            save_path = MEDIA_LOCAL_PATH + save_fullfilename
+            logger.info("Save path is %s" % save_path)
+            movieform.cover.data.save(save_path)
+            op_cover_save = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["COVER"], MEDIA_URL+save_fullfilename)
+            # end of saving cover file
+            # Save snapshot files
+            snapshot_list = request.files.getlist('snapshots')
+            op_snapshots = []
+            for snapshot in snapshot_list:
+                # Save the snapshot file
+                snapshot_file = snapshot.filename
+                logger.info("Upload file %s" % snapshot_file)
+                snapshot_filename = os.path.splitext(snapshot_file)[0]
+                snapshot_suffix = os.path.splitext(snapshot_file)[1]
+                snapshot_filename = str(uuid.uuid3(uuid.NAMESPACE_URL, snapshot_filename.encode('utf-8')))
+                snapshot_fullfilename = snapshot_filename + snapshot_suffix
+                snapshot_path = MEDIA_LOCAL_PATH + snapshot_fullfilename
+                logger.info("Save path is %s" % snapshot_path)
+                movieform.cover.data.save(snapshot_path)
+                op_snapshot_save = dbmanager.save_photo_with_string(snapshot_filename, snapshot_suffix, PHOTO_TYPE["COVER"], MEDIA_URL+save_fullfilename)
+                op_snapshots.append(op_snapshot_save["new_id"])
+                # end of saving cover file
+            op_movie_save = dbmanager.save_movie(name=new_name, actors=new_actor_list, 
+                                                 snapshots=combineIntegerToStr(op_snapshots), 
+                                                 cover=op_cover_save["new_id"], types=MOVIE_TYPE[movie_type.upper()],
+                                                 provider=new_provider, storage=new_storage,
+                                                 file_path=new_filepath)
+            return redirect("/movie/all")
+        else:
+            logger.info("The movie with name %s seems existed." % movieform.name.strip())
+            return render_template("create_movie.html", pagename="New Movie", loggon_user=session['username'],
+                                   movieform=movieform, movie_type=movie_type)
+    else:
+        return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
+                               movieform=movieform, movie_type=movie_type)
 
 
 # @actor.route('/detail/<int:actor_id>', methods=['GET', 'POST'])

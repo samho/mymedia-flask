@@ -20,7 +20,7 @@ class MovieAdultForm(FlaskForm):
 
     name = StringField("The name of the Movie.", validators=[DataRequired(), Length(max=255)])
     provider = StringField("The Provider of the Movie.", validators=[Length(max=255)])
-    actors = SelectMultipleField("Select the Actor of the Movie.", choices=actors_choices, coerce=int)
+    actors = SelectMultipleField("Select the Actor of the Movie.", validators=[DataRequired()], choices=actors_choices, coerce=int)
     storage = SelectField("Select the storage of the Movie.", validators=[DataRequired()], choices=storages_choices, coerce=int)
     storage_path = StringField("The file path of the movie in storage.", validators=[Length(max=255)])
     cover = FileField("Upload cover file of the movie.")

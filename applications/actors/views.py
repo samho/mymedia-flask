@@ -70,7 +70,7 @@ def create_storage():
                     save_path = MEDIA_LOCAL_PATH + save_fullfilename
                     logger.info("Save path is %s" % save_path)
                     actorform.thumb.data.save(save_path)
-                    op_photo_result = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["NORMAL"])
+                    op_photo_result = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["NORMAL"], MEDIA_URL+save_fullfilename)
                     type_list = combineIntegerToStr(actorform.types.data)
                     op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
                                                       type_list)
