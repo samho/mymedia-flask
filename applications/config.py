@@ -21,13 +21,13 @@ TEM_PATH = "/tmp"
 
 MEDIA_ACTOR_ID = 4
 MEDIA_URL = "/static/media/"
-MEDIA_LOCAL_PATH = basedir + MEDIA_URL
+MEDIA_LOCAL_PATH = "/Users/samho/workspace/mymedia-upload"
 MEDIA_SAVE_TO_DB = False
 
 PHOTO_TYPE = {"NORMAL": 6, "COVER": 7, "SNAPSHOT": 8}
 PHOTO_PER_PAGE = 20
 
 MOVIE_TYPE = {"REGULAR": 13, "ADULT": 14}
-MOVIE_PER_PAGE = 20
+MOVIE_PER_PAGE = 2
 
 

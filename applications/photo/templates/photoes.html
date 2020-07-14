@@ -28,8 +28,8 @@
                                                 <img class="img-responsive thumbnail" alt="{{ photo.name }}" data-toggle="modal" data-target="#{{ photo.id }}" src="{{ photo.path }}">
                                             </div>
                                             <!-- modal large -->
-    			                            <div class="modal fade text-center" id="{{ photo.id }}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true">
-                                				<div class="modal-dialog modal-lg" style="display: inline-block; width: auto;" role="document">
+    			                            <div class="modal fade text-center" id="{{ photo.id }}" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true">
+                                				<div class="modal-dialog modal-lg" style="display: inline-block; width: auto; max-width: inherit; max-height: inherit;" role="document">
     				                            	<div class="modal-content">
                                 						<div class="modal-body">
                                                             <img src="{{ photo.path }}">

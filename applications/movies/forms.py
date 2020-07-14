@@ -22,7 +22,7 @@ class MovieAdultForm(FlaskForm):
     provider = StringField("The Provider of the Movie.", validators=[Length(max=255)])
     actors = SelectMultipleField("Select the Actor of the Movie.", validators=[DataRequired()], choices=actors_choices, coerce=int)
     storage = SelectField("Select the storage of the Movie.", validators=[DataRequired()], choices=storages_choices, coerce=int)
-    storage_path = StringField("The file path of the movie in storage.", validators=[Length(max=255)])
+    storage_path = StringField("The file path of the movie in storage.", validators=[DataRequired(), Length(max=255)])
     cover = FileField("Upload cover file of the movie.")
     snapshots = FileField("Upload the snapshot files of the movie.")
 
@@ -31,10 +31,6 @@ class MovieAdultForm(FlaskForm):
 
         if self.name.data.strip() == "":
             self.name.errors.append("Movie name can not be empty.")
-            return False
-
-        if len(self.storage.data) == 0:
-            self.storage.errors.append("The storage can not be empty.")
             return False
 
         if self.storage_path.data.strip() == "":

@@ -4,7 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from applications.actors.model import Actor
-from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE
+from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE, MOVIE_PER_PAGE
 from applications.ebooks.model import EBook
 from applications.mediatype.model import MediaType
 from applications.movies.model import Movie
@@ -397,6 +397,26 @@ def find_all_movies():
     return Movie.query.all()
 
 
+def find_all_movie_by_page(per_page=MOVIE_PER_PAGE, page=1):
+    return Movie.query.paginate(page=page, per_page=per_page)
+
+
+def get_count_of_all_movies():
+    return db.session.query(Movie.id).count()
+
+
+def find_all_movie_with_type(movie_type):
+    return Movie.query.filter_by(types=movie_type).all()
+
+
+def get_count_of_all_movies_with_type(movie_type):
+    return Movie.query.filter_by(types=movie_type).count()
+
+
+def find_all_movie_with_type_by_page(movie_type, per_page=MOVIE_PER_PAGE, page=1):
+    return Movie.query.filter_by(types=movie_type).paginate(page=page, per_page=per_page)
+
+
 def update_movie(id, name, actors, snapshots, types, provider, storage, file_path):
 
     update_movie = find_movie_by_id(id)
@@ -464,6 +484,13 @@ if __name__ == '__main__':
     #     a = find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=2)
     #
     # print(a.items[0].path)
-    actors = find_actor_by_type(MOVIE_TYPE["REGULAR"])
-    for actor in actors:
-        print(actor.name)
+    # actors = find_actor_by_type(MOVIE_TYPE["REGULAR"])
+    # for actor in actors:
+    #     print(actor.name)
+    p = get_count_of_all_movies()
+    if p < MOVIE_PER_PAGE:
+        a = find_all_movie_by_page(per_page=p, page=1)
+    else:
+        a = find_all_movie_by_page(per_page=MOVIE_PER_PAGE, page=1)
+
+    print(a.items[0].name)

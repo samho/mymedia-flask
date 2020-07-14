@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, url_for, flash, redirect, session
+from flask import Blueprint, render_template, url_for, flash, redirect, session, send_from_directory
 from forms import LoginForm
 from applications.utils import dbmanager
+from applications.config import MEDIA_LOCAL_PATH
 
 
 main = Blueprint("main", __name__)
@@ -42,4 +43,8 @@ def index():
 def demo():
     return render_template('demo.html')
 
+
+@main.route('/static/media/<string:filename>', methods=['GET', 'POST'])
+def get_upload_res(filename):
+    return send_from_directory(MEDIA_LOCAL_PATH, filename)
 

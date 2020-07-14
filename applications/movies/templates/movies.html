@@ -19,9 +19,9 @@
                                 <div class="table-data__tool-left">
                                 </div>
                                 <div class="table-data__tool-right">
-                                    <a id="new_user" href="./new/regular" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                    <a id="new_user" href="/movie/new/regular" class="au-btn au-btn-icon au-btn--green au-btn--small">
                                         <i class="zmdi zmdi-plus"></i>add Regular</a>
-                                    <a id="new_user" href="./new/adult" class="au-btn au-btn-icon au-btn--blue2 au-btn--small">
+                                    <a id="new_user" href="/movie/new/adult" class="au-btn au-btn-icon au-btn--blue2 au-btn--small">
                                         <i class="zmdi zmdi-plus"></i>add Adult</a>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {% for movie in movies.item %}
+                                    {% for movie in movies %}
                                         <tr class="tr-shadow">
                                             <td><a href="/movie/details/{{ movie.id }}">{{ movie.id }}</a></td>
                                             <td>{{ movie.name }}</td>
@@ -65,26 +65,38 @@
                             </div>
                             <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
                                 <div class="row">
-                                    <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                     <div class="table-data__tool">
+                                        <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                         <div class="table-data__tool-left">
-                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing 1 to 1 of 1 entries</div>
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing {{ min_item }} to {{ max_item }} of {{ count_photos }} entries</div>
                                         </div>
                                         <div class="table-data__tool-right">
                                             <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
                                                 <ul class="pagination">
-                                                    <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
-                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
-                                                    </li>
+                                                    {% if has_prev %}
+                                                        <li class="paginate_button previous" id="DataTables_Table_0_previous">
+                                                            <a href="./{{ prev_num }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                            <a href="./{{ page }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                        </li>
+                                                    {% endif %}
                                                     <li class="paginate_button active">
-                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">1</a>
+                                                        <a href="./{{ page }}" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">{{ page }}</a>
                                                     </li>
-                                                    <li class="paginate_button next disabled" id="DataTables_Table_0_next">
-                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
-                                                    </li>
+                                                    {% if has_next %}
+                                                        <li class="paginate_button next" id="DataTables_Table_0_next">
+                                                            <a href="./{{ next_num }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                            <a href="./{{ page }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                        </li>
+                                                    {% endif %}
                                                 </ul>
-                                             </div>
-                                         </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -94,9 +106,9 @@
                                 <div class="table-data__tool-left">
                                 </div>
                                 <div class="table-data__tool-right">
-                                    <a id="new_user" href="./new/regular" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                    <a id="new_user" href="/movie/new/regular" class="au-btn au-btn-icon au-btn--green au-btn--small">
                                         <i class="zmdi zmdi-plus"></i>add Regular</a>
-                                    <a id="new_user" href="./new/adult" class="au-btn au-btn-icon au-btn--blue2 au-btn--small">
+                                    <a id="new_user" href="/movie/new/adult" class="au-btn au-btn-icon au-btn--blue2 au-btn--small">
                                         <i class="zmdi zmdi-plus"></i>add Adult</a>
                                 </div>
                             </div>

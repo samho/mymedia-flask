@@ -3,7 +3,7 @@ from flask import request, Blueprint, render_template, session, redirect, url_fo
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.movies.forms import MovieRegularForm, MovieAdultForm
-from applications.config import MOVIE_TYPE, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL
+from applications.config import MOVIE_TYPE, MEDIA_LOCAL_PATH, MEDIA_URL, MOVIE_PER_PAGE, PHOTO_TYPE
 import uuid
 import os
 
@@ -17,26 +17,70 @@ movie = Blueprint("movie",
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
 
-@movie.route('/all')
-def movie_index():
+@movie.route('/<string:movie_type>/<int:page_id>')
+def movie_index(movie_type, page_id):
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
     else:
-        # actors = dbmanager.find_all_actors()
-        # if actors is None:
-        #     return render_template("actors.html", pagename="Actors", logon_user=session['username'])
-        # else:
-        #     actor_list = []
-        #     for a in actors:
-        #         if a.sex == 0:
-        #             cur_sex = "Male"
-        #         else:
-        #             cur_sex = "Female"
-        #
-        #         actor_list.append({"id": a.id, "name": a.name, "sex": cur_sex, "country": a.country, "description": a.description})
-        #
-        #     return render_template("actors.html", pagename="Actors", logon_user=session['username'], actor_list=actor_list)
-        return render_template("movies.html", pagename="Movie", logon_user=session['username'])
+        movies = None
+        if movie_type == "all":
+            count_movies = dbmanager.get_count_of_all_movies()
+            if count_movies < MOVIE_PER_PAGE:
+                movies = dbmanager.find_all_movie_by_page(per_page=count_movies, page=page_id)
+            else:
+                movies = dbmanager.find_all_movie_by_page(per_page=MOVIE_PER_PAGE, page=page_id)
+
+        if movie_type == "regular":
+            count_movies = dbmanager.get_count_of_all_movies_with_type(MOVIE_TYPE["REGULAR"])
+            if count_movies < MOVIE_PER_PAGE:
+                movies = dbmanager.find_all_movie_with_type_by_page(MOVIE_TYPE["REGULAR"], per_page=count_movies, page=page_id)
+            else:
+                movies = dbmanager.find_all_movie_with_type_by_page(MOVIE_TYPE["REGULAR"], per_page=MOVIE_PER_PAGE, page=page_id)
+
+        if movie_type == "adult":
+            count_movies = dbmanager.get_count_of_all_movies_with_type(MOVIE_TYPE["ADULT"])
+            if count_movies < MOVIE_PER_PAGE:
+                movies = dbmanager.find_all_movie_with_type_by_page(MOVIE_TYPE["ADULT"], per_page=count_movies, page=page_id)
+            else:
+                movies = dbmanager.find_all_movie_with_type_by_page(MOVIE_TYPE["ADULT"], per_page=MOVIE_PER_PAGE, page=page_id)
+
+        if movies is None:
+            return render_template("movies.html", pagename="Movie", logon_user=session['username'])
+        else:
+            min_item = (page_id - 1) * MOVIE_PER_PAGE + 1
+            if page_id * MOVIE_PER_PAGE >= count_movies:
+                max_item = count_movies
+            else:
+                max_item = page_id * MOVIE_PER_PAGE
+
+            movies_list = []
+            for m in movies.items:
+                types_list = []
+                for type_id in splitStrIdToInteger(m.types):
+                    tmp_type = dbmanager.find_mediatype_by_id(type_id)
+                    types_list.append(tmp_type.name)
+                types = ", ".join(types_list)
+                actors_list = []
+                for actor_id in splitStrIdToInteger(m.actors):
+                    tmp_actor = dbmanager.find_actor_by_id(actor_id)
+                    actors_list.append(tmp_actor.name)
+                actors = ", ".join(actors_list)
+                storage = dbmanager.find_storage_by_id(m.storage)
+                tmp_movie = {"id": m.id, "name": m.name, "provider": m.provider, "type": types, "actors": actors, "storage": storage.name}
+                movies_list.append(tmp_movie)
+
+            return render_template("movies.html",
+                                   pagename="%s Movies" % movie_type.title(),
+                                   logon_user=session['username'],
+                                   movies=movies_list,
+                                   count_movies=count_movies,
+                                   min_item=min_item,
+                                   max_item=max_item,
+                                   has_prev=movies.has_prev,
+                                   has_next=movies.has_next,
+                                   prev_num=movies.prev_num,
+                                   page=movies.page,
+                                   next_num=movies.next_num)
 
 
 @movie.route('/new/<string:movie_type>')
@@ -74,6 +118,8 @@ def create_movie(movie_type):
 
             if movieform.provider.data.strip() == "":
                 new_provider = "Default Provider"
+            else:
+                new_provider = movieform.provider.data.strip()
 
             new_actor_list = combineIntegerToStr(movieform.actors.data)
             new_storage = movieform.storage.data
@@ -103,8 +149,8 @@ def create_movie(movie_type):
                 snapshot_fullfilename = snapshot_filename + snapshot_suffix
                 snapshot_path = MEDIA_LOCAL_PATH + snapshot_fullfilename
                 logger.info("Save path is %s" % snapshot_path)
-                movieform.cover.data.save(snapshot_path)
-                op_snapshot_save = dbmanager.save_photo_with_string(snapshot_filename, snapshot_suffix, PHOTO_TYPE["COVER"], MEDIA_URL+save_fullfilename)
+                snapshot.save(snapshot_path)
+                op_snapshot_save = dbmanager.save_photo_with_string(snapshot_filename, snapshot_suffix, PHOTO_TYPE["SNAPSHOT"], MEDIA_URL+snapshot_fullfilename)
                 op_snapshots.append(op_snapshot_save["new_id"])
                 # end of saving cover file
             op_movie_save = dbmanager.save_movie(name=new_name, actors=new_actor_list, 
@@ -112,7 +158,7 @@ def create_movie(movie_type):
                                                  cover=op_cover_save["new_id"], types=MOVIE_TYPE[movie_type.upper()],
                                                  provider=new_provider, storage=new_storage,
                                                  file_path=new_filepath)
-            return redirect("/movie/all")
+            return redirect("/movie/all/1")
         else:
             logger.info("The movie with name %s seems existed." % movieform.name.strip())
             return render_template("create_movie.html", pagename="New Movie", loggon_user=session['username'],
