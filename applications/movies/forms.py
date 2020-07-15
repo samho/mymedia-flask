@@ -72,10 +72,6 @@ class MovieRegularForm(FlaskForm):
             self.name.errors.append("Movie name can not be empty.")
             return False
 
-        if len(self.storage.data) == 0:
-            self.storage.errors.append("The storage can not be empty.")
-            return False
-
         if self.storage_path.data.strip() == "":
             self.storage_path.errors.append("The path in storage for movie can not be empty.")
             return False
