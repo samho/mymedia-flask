@@ -4,7 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from applications.actors.model import Actor
-from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE, MOVIE_PER_PAGE
+from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE, MOVIE_PER_PAGE, EBOOK_PER_PAGE
 from applications.ebooks.model import EBook
 from applications.mediatype.model import MediaType
 from applications.movies.model import Movie
@@ -51,7 +51,6 @@ def find_all_mediatypes():
 
 def find_mediatypes_pagenate(index=1):
     return MediaType.query.paginate(index, DEFAULT_PAGE_SIZE)
-
 
 
 def update_mediatype(id, name, parent):
@@ -273,9 +272,9 @@ def delete_photo(id):
 # DB Operations for EBook
 
 
-def save_ebook(name, mediatype, storage, file_path):
+def save_ebook(name, actors, mediatype, storage, file_path):
     try:
-        new_ebook = EBook(name=name, mediatype=mediatype, storage=storage, file_path=file_path)
+        new_ebook = EBook(name=name, actors=actors, mediatype=mediatype, storage=storage, file_path=file_path)
         db.session.add(new_ebook)
         db.session.commit()
         return {"err_msg": "Save book success.", "obj": None, "op_status": True, "new_id": new_ebook.id}
@@ -294,6 +293,26 @@ def find_ebook_by_name(name):
 
 def find_all_ebooks():
     return EBook.query.all()
+
+
+def find_all_ebooks_by_page(per_page=EBOOK_PER_PAGE, page=1):
+    return EBook.query.paginate(page=page, per_page=per_page)
+
+
+def get_count_of_all_ebooks():
+    return db.session.query(EBook.id).count()
+
+
+def find_all_ebooks_with_type(ebook_type):
+    return EBook.query.filter_by(mediatype=ebook_type).all()
+
+
+def get_count_of_all_ebooks_with_type(ebook_type):
+    return EBook.query.filter_by(mediatype=ebook_type).count()
+
+
+def find_all_ebooks_with_type_by_page(ebook_type, per_page=EBOOK_PER_PAGE, page=1):
+    return EBook.query.filter_by(mediatype=ebook_type).paginate(page=page, per_page=per_page)
 
 
 def update_ebook(id, name, mediatype, storage, file_path):

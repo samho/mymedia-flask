@@ -71,5 +71,9 @@ def create_app():
     from applications.movies.views import movie
     app.register_blueprint(movie)
 
+    # register ebook blueprint
+    from applications.ebooks.views import ebook
+    app.register_blueprint(ebook)
+
     return app
 

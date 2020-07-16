@@ -1,10 +1,111 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %}Create Movie {% endblock %}
+{% block body %}
+    {% include 'top.html' %}
+    {% include 'breadcrumb.html' %}
+    <div class="page-wrapper">
+        <div class="page-content--bge5">
+            <!--DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body card-block">
+                                    <form action="/ebook/create_ebook" method="POST" enctype="multipart/form-data" class="">
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">eBook Name:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ ebookform.name(type="text",id="new_ebook",placeholder="eBook name...",class="form-control col-md-6") }}
+                                                {%  if ebookform.name.errors %}
+                                                    {% for error in ebookform.name.errors %}
+                                                    <div class="alert alert-danger col-md-6" role="alert">
+                                                        {{ error }}
+                                                    </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the new eBook name.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="multiple-select" class=" form-control-label">Writer:</label>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                {{ ebookform.actors(type="text",id="new_writer",placeholder="eBook writer...",class="form-control col-md-6") }}
+                                                {%  if ebookform.actors.errors %}
+                                                    {% for error in ebookform.actors.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the writer of new eBook.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="multiple-select" class=" form-control-label">eBook Type:</label>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                {{ ebookform.types(id="multiple-select",multiple="",class="form-control") }}
+                                                <span class="help-block">Please select the types for new eBook.</span>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="multiple-select" class=" form-control-label">Storage Select:</label>
+                                            </div>
+                                            <div class="col-12 col-md-5">
+                                                {{ ebookform.storage(id="select",class="form-control") }}
+                                                {%  if ebookform.storage.errors %}
+                                                    {% for error in ebookform.storage.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please select the storage of the new eBook.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+                                            <div class="col col-md-3">
+                                                <label for="text-input" class="form-control-label">File Path:</label>
+                                            </div>
+                                            <div class="col-12 col-md-9">
+                                                {{ ebookform.storage_path(type="text",id="new_filepath",placeholder="File path in stoage...",class="form-control col-md-6") }}
+                                                {%  if ebookform.storage_path.errors %}
+                                                    {% for error in ebookform.storage_path.errors %}
+                                                        <div class="alert alert-danger col-md-6" role="alert">
+                                                            {{ error }}
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <span class="help-block">Please enter the file path in storage of new eBook.</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary btn-sm">
+                                                <i class="fa fa-dot-circle-o"></i> Submit
+                                            </button>
+                                            <button type="reset" class="btn btn-danger btn-sm">
+                                                <i class="fa fa-ban"></i> Reset
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+        </div>
+    </div>
+{% endblock %}
