@@ -315,13 +315,13 @@ def find_all_ebooks_with_type_by_page(ebook_type, per_page=EBOOK_PER_PAGE, page=
     return EBook.query.filter_by(mediatype=ebook_type).paginate(page=page, per_page=per_page)
 
 
-def update_ebook(id, name, mediatype, storage, file_path):
+def update_ebook(id, name, actors, mediatype, storage, file_path):
 
     update_ebook = find_ebook_by_id(id)
     if update_ebook is None:
         return {"err_msg": "The ebook with id %d is not existed." % id, "obj": None, "op_status": False}
     else:
-        db.session.query(EBook).filter_by(id=id).update({"name": name, "mediatype": mediatype, "storage": storage, "file_path": file_path})
+        db.session.query(EBook).filter_by(id=id).update({"name": name, "actors": actors, "mediatype": mediatype, "storage": storage, "file_path": file_path})
         db.session.commit()
         return {"err_msg": "Update success.", "obj": None, "op_status": True}
 

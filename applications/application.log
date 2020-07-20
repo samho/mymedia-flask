@@ -328,3 +328,11 @@
 2020-07-16 17:33:34,451 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.pyc:50 - views.py - Module:views - Func:create_storage - 79368 - Thread-6 - Saving new media type to db.
 2020-07-16 17:33:34,457 - INFO - /Users/samho/workspace/mymedia-flask/applications/storage/views.pyc:52 - views.py - Module:views - Func:create_storage - 79368 - Thread-6 - Save new storage complete, status: True.
 2020-07-16 17:36:22,153 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.pyc:130 - views.py - Module:views - Func:crate_ebook - 79668 - Thread-38 - Save new ebook success, new id is: 1
+2020-07-17 17:13:22,321 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:162 - views.py - Module:views - Func:update_ebook - 96374 - Thread-32 - Prepare to update info of eBook with id 1 to db.
+2020-07-17 17:13:22,324 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:182 - views.py - Module:views - Func:update_ebook - 96374 - Thread-32 - Update ebook with new data complete, status: True.
+2020-07-17 17:13:35,548 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:162 - views.py - Module:views - Func:update_ebook - 96374 - Thread-45 - Prepare to update info of eBook with id 1 to db.
+2020-07-17 17:13:35,552 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:182 - views.py - Module:views - Func:update_ebook - 96374 - Thread-45 - Update ebook with new data complete, status: True.
+2020-07-17 17:13:50,023 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:162 - views.py - Module:views - Func:update_ebook - 96374 - Thread-53 - Prepare to update info of eBook with id 1 to db.
+2020-07-17 17:13:50,027 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:182 - views.py - Module:views - Func:update_ebook - 96374 - Thread-53 - Update ebook with new data complete, status: True.
+2020-07-20 14:53:04,951 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:130 - views.py - Module:views - Func:crate_ebook - 10436 - Thread-5 - Save new ebook success, new id is: 2
+2020-07-20 15:06:52,188 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:222 - views.py - Module:views - Func:delete_ebook - 10947 - Thread-37 - The ebook with id 2 has been deleted.
