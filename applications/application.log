@@ -336,3 +336,9 @@
 2020-07-17 17:13:50,027 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:182 - views.py - Module:views - Func:update_ebook - 96374 - Thread-53 - Update ebook with new data complete, status: True.
 2020-07-20 14:53:04,951 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:130 - views.py - Module:views - Func:crate_ebook - 10436 - Thread-5 - Save new ebook success, new id is: 2
 2020-07-20 15:06:52,188 - INFO - /Users/samho/workspace/mymedia-flask/applications/ebooks/views.py:222 - views.py - Module:views - Func:delete_ebook - 10947 - Thread-37 - The ebook with id 2 has been deleted.
+2020-07-21 11:25:49,344 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:80 - views.py - Module:views - Func:create_storage - 23039 - Thread-64 - Saving new actor to db.
+2020-07-21 11:25:49,344 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:86 - views.py - Module:views - Func:create_storage - 23039 - Thread-64 - Upload file avatar-01.jpg
+2020-07-21 11:25:49,346 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:92 - views.py - Module:views - Func:create_storage - 23039 - Thread-64 - Save path is /Users/samho/workspace/mymedia-upload7c60cf3b-7d74-312f-aa57-70b4c1701bed.jpg
+2020-07-21 11:25:49,356 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:98 - views.py - Module:views - Func:create_storage - 23039 - Thread-64 - Save new actor complete, status: True.
+2020-07-21 11:33:42,999 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:282 - views.py - Module:views - Func:delete_actor - 23451 - Thread-19 - Delete photo with id 18 is success.
+2020-07-21 11:33:43,002 - INFO - /Users/samho/workspace/mymedia-flask/applications/actors/views.pyc:288 - views.py - Module:views - Func:delete_actor - 23451 - Thread-19 - Delete actor with id 6 is success.

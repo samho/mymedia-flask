@@ -1,8 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}Actor List {% endblock %}
 {% block body %}
-         {% include 'top.html' %}
-         {% include 'breadcrumb.html' %}
+    {% include 'top.html' %}
+    {% include 'breadcrumb.html' %}
+    <!-- Bootstrap Core Css -->
+    <link href="/static/css/photos.css" rel="stylesheet" >
+    <!-- Custom Css -->
+    <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
          <div class="page-content--bgf7">
             <!-- DATA TABLE-->
             <section class="p-t-20">
@@ -14,10 +18,11 @@
                                 <div class="table-data__tool-left">
                                 </div>
                                 <div class="table-data__tool-right">
-                                    <a id="new_user" href="./new" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                    <a id="new_user" href="/actor/new" class="au-btn au-btn-icon au-btn--green au-btn--small">
                                         <i class="zmdi zmdi-plus"></i>add item</a>
                                 </div>
                             </div>
+                            {% if actor_list %}
                             <div class="table-responsive table-responsive-data2">
                                 <table class="table table-data2">
                                     <thead>
@@ -31,38 +36,84 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {% if actor_list %}
-                                            {% for actor in actor_list %}
-                                            <tr class="tr-shadow">
-                                                <td><a href="/actor/detals/{{ actor.id }}">{{ actor.id }}</a></td>
-                                                <td>{{ actor.name }}</td>
-                                                <td>{{ actor.sex }}</td>
-                                                <td>{{ actor.country }}</td>
-                                                <td>{{ actor.description }}</td>
-                                                <td>
-                                                    <div class="table-data-feature">
-                                                        <a href="./detail/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Details">
-                                                            <i class="zmdi zmdi-folder"></i>
-                                                        </a>
-                                                        <a href="./edit/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
-                                                            <i class="zmdi zmdi-edit"></i>
-                                                        </a>
-                                                        <a href="./delete_confirm/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
-                                                            <i class="zmdi zmdi-delete"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr class="spacer"></tr>
-                                            {% endfor %}
-                                        {% else %}
+                                    {% for actor in actor_list %}
                                         <tr class="tr-shadow">
-                                            <!--td>
-                                                <label class="au-checkbox">
-                                                    <input type="checkbox">
-                                                    <span class="au-checkmark"></span>
-                                                </label>
-                                            </td-->
+                                            <td><a href="/actor/detals/{{ actor.id }}">{{ actor.id }}</a></td>
+                                            <td>{{ actor.name }}</td>
+                                            <td>{{ actor.sex }}</td>
+                                            <td>{{ actor.country }}</td>
+                                            <td>{{ actor.description }}</td>
+                                            <td>
+                                                <div class="table-data-feature">
+                                                    <a href="/actor/detail/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Details">
+                                                        <i class="zmdi zmdi-folder"></i>
+                                                    </a>
+                                                    <a href="/actor/edit/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                                                        <i class="zmdi zmdi-edit"></i>
+                                                    </a>
+                                                    <a href="/actor/delete_confirm/{{ actor.id }}" class="item" data-toggle="tooltip" data-placement="top" title="Delete">
+                                                        <i class="zmdi zmdi-delete"></i>
+                                                    </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr class="spacer"></tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <div class="row">
+                                    <div class="table-data__tool">
+                                        <div>&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                        <div class="table-data__tool-left">
+                                            <div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">Showing {{ min_item }} to {{ max_item }} of {{ count_actors }} entries</div>
+                                        </div>
+                                        <div class="table-data__tool-right">
+                                            <div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+                                                <ul class="pagination">
+                                                    {% if has_prev %}
+                                                        <li class="paginate_button previous" id="DataTables_Table_0_previous">
+                                                            <a href="./{{ prev_num }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    <li class="paginate_button active">
+                                                        <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0">{{ page }}</a>
+                                                    </li>
+                                                    {% if has_next %}
+                                                        <li class="paginate_button next" id="DataTables_Table_0_next">
+                                                            <a href="./{{ next_num }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                            <a href="#" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                        </li>
+                                                    {% endif %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="table-responsive table-responsive-data2">
+                                <table class="table table-data2">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Actor Name</th>
+                                            <th>Sex</th>
+                                            <th>Country</th>
+                                            <th>Description</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="tr-shadow">
                                             <td>None</td>
                                             <td>None</td>
                                             <td>None</td>
@@ -83,10 +134,10 @@
                                             </td>
                                         </tr>
                                         <tr class="spacer"></tr>
-                                        {% endif %}
                                     </tbody>
                                 </table>
                             </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

@@ -4,7 +4,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 from applications.actors.model import Actor
-from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE, MOVIE_PER_PAGE, EBOOK_PER_PAGE
+from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE, MOVIE_PER_PAGE, EBOOK_PER_PAGE, ACTOR_PER_PAGE
 from applications.ebooks.model import EBook
 from applications.mediatype.model import MediaType
 from applications.movies.model import Movie
@@ -366,6 +366,26 @@ def find_all_actors():
     return Actor.query.all()
 
 
+def find_all_actors_by_page(per_page=ACTOR_PER_PAGE, page=1):
+    return Actor.query.paginate(page=page, per_page=per_page)
+
+
+def get_count_of_all_actors():
+    return db.session.query(Actor.id).count()
+
+
+def find_all_actors(actor_type):
+    return db.session.query(Actor).filter(Actor.type.like('%'+str(actor_type)+'%')).all()
+
+
+def get_count_of_all_actors_with_type(actor_type):
+    return db.session.query(Actor).filter(Actor.type.like('%'+str(actor_type)+'%')).count()
+
+
+def find_all_actors_with_type_by_page(actor_type, per_page=ACTOR_PER_PAGE, page=1):
+    return db.session.query(Actor).filter(Actor.type.like('%'+str(actor_type)+'%')).paginate(page=page, per_page=per_page)
+
+
 def update_actor(id, name, sex, country, description, thumb, types):
 
     update_actor = find_actor_by_id(id)
@@ -503,13 +523,17 @@ if __name__ == '__main__':
     #     a = find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=2)
     #
     # print(a.items[0].path)
-    # actors = find_actor_by_type(MOVIE_TYPE["REGULAR"])
-    # for actor in actors:
-    #     print(actor.name)
-    p = get_count_of_all_movies()
-    if p < MOVIE_PER_PAGE:
-        a = find_all_movie_by_page(per_page=p, page=1)
-    else:
-        a = find_all_movie_by_page(per_page=MOVIE_PER_PAGE, page=1)
+    #actors = find_actor_by_type(MOVIE_TYPE["REGULAR"])
+    #actors = find_all_actors_by_page(per_page=2, page=1)
+    actors = get_count_of_all_actors_with_type(actor_type=4)
+    actors = find_all_actors_with_type_by_page(actor_type=14, per_page=2, page=2)
+    # print actors
+    for actor in actors.items:
+        print(actor.name)
+    # p = get_count_of_all_movies()
+    # if p < MOVIE_PER_PAGE:
+    #     a = find_all_movie_by_page(per_page=p, page=1)
+    # else:
+    #     a = find_all_movie_by_page(per_page=MOVIE_PER_PAGE, page=1)
 
-    print(a.items[0].name)
+    # print(a.items[0].name)

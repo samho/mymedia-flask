@@ -3,7 +3,7 @@ from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.actors.forms import ActorForm
-from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL, basedir
+from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL, ACTOR_PER_PAGE, ACTOR_TYPE
 import uuid
 import os
 
@@ -17,17 +17,44 @@ actor = Blueprint("actor",
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
 
-@actor.route('/all')
-def actor_index():
+@actor.route('/<string:actor_type>/<int:page_id>')
+def actor_index(actor_type, page_id):
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
     else:
-        actors = dbmanager.find_all_actors()
+        actors = None
+        if actor_type == "all":
+            count_actor = dbmanager.get_count_of_all_actors()
+            if count_actor < ACTOR_PER_PAGE:
+                actors = dbmanager.find_all_actors_by_page(per_page=count_actor, page=page_id)
+            else:
+                actors = dbmanager.find_all_actors_by_page(per_page=ACTOR_PER_PAGE, page=page_id)
+
+        if actor_type == "regular":
+            count_actor = dbmanager.get_count_of_all_actors_with_type(ACTOR_TYPE["REGULAR"])
+            if count_actor < ACTOR_PER_PAGE:
+                actors = dbmanager.find_all_actors_with_type_by_page(actor_type=ACTOR_TYPE["REGULAR"], per_page=count_actor, page=page_id)
+            else:
+                actors = dbmanager.find_all_actors_with_type_by_page(actor_type=ACTOR_TYPE["REGULAR"], per_page=ACTOR_PER_PAGE, page=page_id)
+
+        if actor_type == "adult":
+            count_actor = dbmanager.get_count_of_all_actors_with_type(ACTOR_TYPE["ADULT"])
+            if count_actor < ACTOR_PER_PAGE:
+                actors = dbmanager.find_all_actors_with_type_by_page(actor_type=ACTOR_TYPE["ADULT"], per_page=count_actor, page=page_id)
+            else:
+                actors = dbmanager.find_all_actors_with_type_by_page(actor_type=ACTOR_TYPE["ADULT"], per_page=ACTOR_PER_PAGE, page=page_id)
+
         if actors is None:
             return render_template("actors.html", pagename="Actors", logon_user=session['username'])
         else:
+            min_item = (page_id - 1) * ACTOR_PER_PAGE + 1
+            if page_id * ACTOR_PER_PAGE >= count_actor:
+                max_item = count_actor
+            else:
+                max_item = page_id * ACTOR_PER_PAGE
+
             actor_list = []
-            for a in actors:
+            for a in actors.items:
                 if a.sex == 0:
                     cur_sex = "Male"
                 else:
@@ -35,7 +62,19 @@ def actor_index():
 
                 actor_list.append({"id": a.id, "name": a.name, "sex": cur_sex, "country": a.country, "description": a.description})
 
-            return render_template("actors.html", pagename="Actors", logon_user=session['username'], actor_list=actor_list)
+            return render_template("actors.html",
+                                   pagename="Actors",
+                                   logon_user=session['username'],
+                                   actor_list=actor_list,
+                                   has_prev=actors.has_prev,
+                                   has_next=actors.has_next,
+                                   page=actors.page,
+                                   prev_num=actors.prev_num,
+                                   next_num=actors.next_num,
+                                   min_item=min_item,
+                                   max_item=max_item,
+                                   count_actors=count_actor
+                                   )
 
 
 @actor.route('/new')
@@ -75,7 +114,7 @@ def create_storage():
                     op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
                                                       type_list)
                     logger.info("Save new actor complete, status: %s." % op_result["op_status"])
-                    return redirect("/actor/all")
+                    return redirect("/actor/all/1")
             else:
                 thumb_url = actorform.thumb_path.data.strip()
                 logger.info("Upload file path is %s" % thumb_url)
@@ -86,7 +125,7 @@ def create_storage():
                 op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
                                                  type_list)
                 logger.info("Save new actor with url thumb complete, status is %s: " % op_result["op_status"])
-                return redirect("/actor/all")
+                return redirect("/actor/all/1")
         else:
             logger.info("The actor with name %s is existed." % actorform.name.data.strip())
             actorform.name.errors.append("Actor with name '%s' is existed." % actorform.name.data.strip())
@@ -105,7 +144,7 @@ def view_actor_detail(actor_id):
     sex = "Female"
     if db_actor is None:
         logger.error("There is not any actor with id %d is existd" % actor_id)
-        return redirect("/actor/all")
+        return redirect("/actor/all/1")
     else:
         if db_actor.sex == 0:
             sex = "Male"
@@ -140,7 +179,7 @@ def edit_actor(actor_id):
     db_actor = dbmanager.find_actor_by_id(actor_id)
     if db_actor is None:
         logger.error("There is not any actor match id %d." % actor_id)
-        return redirect("/actor/all")
+        return redirect("/actor/all/1")
     else:
         db_photo = dbmanager.find_photo_by_id(db_actor.thumb)
         actorform = ActorForm(name=db_actor.name, country=db_actor.country, sex=db_actor.sex, thumb_path=db_photo.path, description=db_actor.description)
@@ -204,7 +243,7 @@ def update_actor(actor_id):
 
         op_result = dbmanager.update_actor(id=actor_id, name=cur_actor.name, country=new_country, sex=new_sex, types=new_type_list, description=new_description, thumb=new_thumb)
         logger.info("Update actor with new data complete, status: %s." % op_result["op_status"])
-        return redirect("/actor/all")
+        return redirect("/actor/all/1")
     else:
         return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform, actor_id=actor_id)
 
@@ -217,7 +256,7 @@ def delete_confirm(actor_id):
     cur_actor = dbmanager.find_actor_by_id(actor_id)
     if cur_actor is None:
         logger.error("There is not any actor match id %d." % actor_id)
-        return redirect("/actor/all")
+        return redirect("/actor/all/1")
     else:
         if cur_actor.sex == 0:
             sex = "Male"
@@ -254,7 +293,7 @@ def delete_actor(actor_id):
     cur_actor = dbmanager.find_actor_by_id(actor_id)
     if cur_actor is None:
         logger.error("There is not any actor match id %d." % actor_id)
-        return redirect("/actor/all")
+        return redirect("/actor/all/1")
     else:
         op_photo_delete = dbmanager.delete_photo(cur_actor.thumb)
         if op_photo_delete["op_status"]:
@@ -267,4 +306,5 @@ def delete_actor(actor_id):
             logger.info("Delete actor with id %d is success." % actor_id)
         else:
             logger.error("Delete actor with id %d fail." % actor_id)
-    return redirect("/actor/all")
+    return redirect("/actor/all/1")
+
