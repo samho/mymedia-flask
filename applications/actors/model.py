@@ -60,3 +60,12 @@ class Actor(db.Model):
         return '<Actor %r>' % self.name
 
 
+class Actor_Type(db.Model):
+    __tablename__ = 'actor_type_ref'
+
+    id = db.Column(db.Integer, primary_key=True)
+    actor_id = db.Column(db.Integer)
+    type_id = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Actor id %d map to Type id %d>' % (self.actor_id, self.type_id)

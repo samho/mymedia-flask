@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from flask import request, Blueprint, render_template, session, redirect, url_for
+from flask import request, Blueprint, render_template, session, redirect
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.ebooks.forms import eBookForm
@@ -77,8 +77,8 @@ def movie_index(ebook_type, page_id):
             ebooks_list = []
             for b in ebooks.items:
                 types_list = []
-                for type_id in splitStrIdToInteger(b.mediatype):
-                    tmp_type = dbmanager.find_mediatype_by_id(type_id)
+                for e_type in dbmanager.find_ebook_type_by_ebook_id(b.id):
+                    tmp_type = dbmanager.find_mediatype_by_id(e_type.type_id)
                     types_list.append(tmp_type.name)
                 types = ", ".join(types_list)
                 actors = b.actors
@@ -126,6 +126,9 @@ def crate_ebook():
         new_path = ebookform.storage_path.data.strip()
         
         op_save_ebook = dbmanager.save_ebook(name=new_name, actors=new_actors, mediatype=new_types, storage=new_storage, file_path=new_path)
+        for type_id in ebookform.types.data:
+            op_save_e_type = dbmanager.save_ebook_type(op_save_ebook["new_id"], type_id)
+
         if op_save_ebook["op_status"]:
             logger.info("Save new ebook success, new id is: %d" % op_save_ebook["new_id"])
             return redirect("/ebook/all/1")
@@ -176,6 +179,13 @@ def update_ebook(ebook_id):
             new_path = db_ebook.file_path
 
         new_types = combineIntegerToStr(ebookform.types.data)
+        # Clear the ebook type mapping
+        for e_type in dbmanager.find_ebook_type_by_ebook_id(ebook_id):
+            op_delete_e_type = dbmanager.delete_ebook_type(e_type.id)
+        # Save new type
+        for new_e_type in ebookform.types.data:
+            ob_update_e_type = dbmanager.save_ebook_type(ebook_id, new_e_type)
+
         new_storage = ebookform.storage.data
 
         op_ebook_resp = dbmanager.update_ebook(id=ebook_id, name=new_name, actors=new_actors, mediatype=new_types, storage=new_storage, file_path=new_path)
@@ -215,6 +225,10 @@ def confirm_delete_ebook(ebook_id):
 def delete_ebook(ebook_id):
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
+
+    # Clear the mapping
+    for e_type in dbmanager.find_ebook_type_by_ebook_id(ebook_id):
+        op_delete_e_type = dbmanager.delete_ebook_type(e_type.id)
 
     op_result = dbmanager.delete_ebook(ebook_id)
 

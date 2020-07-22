@@ -50,3 +50,13 @@ class EBook(db.Model):
         return '<EBook %r>' % self.name
 
 
+class EBook_Type(db.Model):
+    __tablename__ = 'ebook_type_ref'
+
+    id = db.Column(db.Integer, primary_key=True)
+    ebook_id = db.Column(db.Integer)
+    type_id = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<EBook id %d map to MediaType id %d>' % (self.ebook_id, self.type_id)
+

@@ -21,7 +21,7 @@ class eBookForm(FlaskForm):
 
     name = StringField("The name of the eBook.", validators=[DataRequired(), Length(max=255)])
     actors = StringField("The writer of the eBook.", validators=[DataRequired(), Length(max=100)])
-    types = SelectMultipleField("Select the type of the eBook.", choices=media_choices, coerce=int)
+    types = SelectMultipleField("Select the type of the eBook.", validators=[DataRequired()], choices=media_choices, coerce=int)
     storage = SelectField("Select the storage of the eBook.", validators=[DataRequired()], choices=storages_choices, coerce=int)
     storage_path = StringField("The file path of the ebook in storage.", validators=[DataRequired(), Length(max=255)])
 
@@ -33,7 +33,11 @@ class eBookForm(FlaskForm):
             return False
 
         if self.storage_path.data.strip() == "":
-            self.storage_path.errors.append("The path in storage for movie can not be empty.")
+            self.storage_path.errors.append("The path in storage for ebook can not be empty.")
+            return False
+
+        if len(self.types.data) == 0:
+            self.types.errors.append("The types for ebook can not be empty.")
             return False
 
         return True

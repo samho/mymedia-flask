@@ -80,3 +80,37 @@ class Movie(db.Model):
 
     def __repr__(self):
         return '<Movie %r>' % self.name
+
+
+class Movie_Actor(db.Model):
+    __tablename__ = 'movie_actor_ref'
+
+    id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer)
+    actor_id = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Movie id %d map to Actor id %d>' % (self.movie_id, self.actor_id)
+
+
+class Movie_Photo(db.Model):
+    __tablename__ = 'movie_photo_ref'
+
+    id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer)
+    photo_id = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Movie id %d map to Photo id %d>' % (self.movie_id, self.photo_id)
+
+
+
+class Movie_Type(db.Model):
+    __tablename__ = 'movie_type_ref'
+
+    id = db.Column(db.Integer, primary_key=True)
+    movie_id = db.Column(db.Integer)
+    type_id = db.Column(db.Integer)
+
+    def __repr__(self):
+        return '<Movie id %d map to Type id %d>' % (self.movie_id, self.type_id)

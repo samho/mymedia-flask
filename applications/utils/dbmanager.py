@@ -3,11 +3,11 @@ import datetime
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
-from applications.actors.model import Actor
-from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_TYPE, MOVIE_PER_PAGE, EBOOK_PER_PAGE, ACTOR_PER_PAGE
-from applications.ebooks.model import EBook
+from applications.actors.model import Actor, Actor_Type
+from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_PER_PAGE, EBOOK_PER_PAGE, ACTOR_PER_PAGE
+from applications.ebooks.model import EBook, EBook_Type
 from applications.mediatype.model import MediaType
-from applications.movies.model import Movie
+from applications.movies.model import Movie, Movie_Actor, Movie_Photo, Movie_Type
 from applications.photo.model import Photo
 from applications.storage.model import Storage
 from applications.users.model import User
@@ -477,63 +477,323 @@ def delete_movie(id):
         return {"err_msg": "Delete success.", "obj": None, "op_status": True}
 
 
+# Movie type mapping
+
+def save_movie_type(movie_id, type_id):
+    try:
+        new_movie_type = Movie_Type(movie_id=movie_id, type_id=type_id)
+        db.session.add(new_movie_type)
+        db.session.commit()
+        return {"err_msg": "Save Movie and Type mapping sucess.", "obj": None, "op_status": True, "new_id": new_movie_type.id}
+    except Exception as e:
+        logger.error(e)
+        return {"err_msg": "Save Movie and MediaType mapping fail.", "obj": None, "op_status": False}
+
+
+def update_movie_type(id, movie_id, type_id):
+
+    u_movie_type = find_movie_type_by_id(id)
+    if u_movie_type is None:
+        return {"err_msg": "The mapping of Movie and MediaType with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Movie_Type).filter_by(id=id).update({"movie_id": movie_id, "type_id": type_id})
+        db.session.commit()
+        return {"err_msg": "Update success.", "obj": None, "op_status": True}
+
+
+def delete_movie_type(id):
+    delete_movie_type = find_movie_type_by_id(id)
+    if delete_movie_type is None:
+        return {"err_msg": "The mapping of Movie and MediaType with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Movie_Type).filter_by(id=id).delete()
+        db.session.commit()
+        return {"err_msg": "Delete success.", "obj": None, "op_status": True}
+
+
+def find_movie_type_by_id(id):
+    return Movie_Type.query.filter_by(id=id).first()
+
+
+def find_movie_type_by_movie_id(movie_id):
+    return Movie_Type.query.filter_by(movie_id=movie_id).all()
+
+
+def find_movie_type_by_type_id(type_id):
+    return Movie_Type.query.filter_by(type_id=type_id).all()
+
+
+def find_all_movie_type():
+    return Movie_Type.query.all()
+
+
+def get_count_of_all_movie_type():
+    return db.session.query(Movie_Type.id).count()
+
+
+def get_count_of_all_movie_type_with_type(type_id):
+    return Movie_Type.query.filter_by(type_id=type_id).count()
+
+
+def get_count_of_all_movie_type_with_movie(movie_id):
+    return Movie_Type.query.filter_by(movie_id=movie_id).count()
+
+
+# Movie actor mapping
+
+def save_movie_actor(movie_id, actor_id):
+    try:
+        new_movie_actor = Movie_Actor(movie_id=movie_id, actor_id=actor_id)
+        db.session.add(new_movie_actor)
+        db.session.commit()
+        return {"err_msg": "Save Movie and Actor mapping sucess.", "obj": None, "op_status": True, "new_id": new_movie_actor.id}
+    except Exception as e:
+        logger.error(e)
+        return {"err_msg": "Save Movie and Actor mapping fail.", "obj": None, "op_status": False}
+
+
+def update_movie_actor(id, movie_id, actor_id):
+
+    u_movie_actor = find_movie_actor_by_id(id)
+    if u_movie_actor is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Movie_Actor).filter_by(id=id).update({"movie_id": movie_id, "actor_id": actor_id})
+        db.session.commit()
+        return {"err_msg": "Update success.", "obj": None, "op_status": True}
+
+
+def delete_movie_actor(id):
+    delete_movie_actor = find_movie_actor_by_id(id)
+    if delete_movie_actor is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Movie_Actor).filter_by(id=id).delete()
+        db.session.commit()
+        return {"err_msg": "Delete success.", "obj": None, "op_status": True}
+
+
+def find_movie_actor_by_id(id):
+    return Movie_Actor.query.filter_by(id=id).first()
+
+
+def find_movie_actor_by_movie_id(movie_id):
+    return Movie_Actor.query.filter_by(movie_id=movie_id).all()
+
+
+def find_movie_actor_by_actor_id(actor_id):
+    return Movie_Actor.query.filter_by(actor_id=actor_id).all()
+
+
+def find_all_movie_actor():
+    return Movie_Actor.query.all()
+
+
+def get_count_of_all_movie_actor():
+    return db.session.query(Movie_Actor.id).count()
+
+
+def get_count_of_all_movie_actor_with_actor(actor_id):
+    return Movie_Actor.query.filter_by(actor_id=actor_id).count()
+
+
+def get_count_of_all_movie_actor_with_movie(movie_id):
+    return Movie_Actor.query.filter_by(movie_id=movie_id).count()
+
+
+# Movie photo mapping
+
+def save_movie_photo(movie_id, photo_id):
+    try:
+        new_movie_photo = Movie_Photo(movie_id=movie_id, photo_id=photo_id)
+        db.session.add(new_movie_photo)
+        db.session.commit()
+        return {"err_msg": "Save Movie and Actor mapping sucess.", "obj": None, "op_status": True, "new_id": new_movie_photo.id}
+    except Exception as e:
+        logger.error(e)
+        return {"err_msg": "Save Movie and Actor mapping fail.", "obj": None, "op_status": False}
+
+
+def update_movie_photo(id, movie_id, photo_id):
+
+    u_movie_photo = find_movie_photo_by_id(id)
+    if u_movie_photo is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Movie_Photo).filter_by(id=id).update({"movie_id": movie_id, "photo_id": photo_id})
+        db.session.commit()
+        return {"err_msg": "Update success.", "obj": None, "op_status": True}
+
+
+def delete_movie_photo(id):
+    delete_movie_photo = find_movie_photo_by_id(id)
+    if delete_movie_photo is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Movie_Photo).filter_by(id=id).delete()
+        db.session.commit()
+        return {"err_msg": "Delete success.", "obj": None, "op_status": True}
+
+
+def find_movie_photo_by_id(id):
+    return Movie_Photo.query.filter_by(id=id).first()
+
+
+def find_movie_photo_by_movie_id(movie_id):
+    return Movie_Photo.query.filter_by(movie_id=movie_id).all()
+
+
+def find_movie_photo_by_photo_id(photo_id):
+    return Movie_Photo.query.filter_by(photo_id=photo_id).all()
+
+
+def find_all_movie_photo():
+    return Movie_Photo.query.all()
+
+
+def get_count_of_all_movie_photo():
+    return db.session.query(Movie_Photo.id).count()
+
+
+def get_count_of_all_movie_photo_with_photo(photo_id):
+    return Movie_Photo.query.filter_by(photo_id=photo_id).count()
+
+
+def get_count_of_all_movie_photo_with_movie(movie_id):
+    return Movie_Photo.query.filter_by(movie_id=movie_id).count()
+
+
+# Actor MediaType mapping
+
+def save_actor_type(actor_id, type_id):
+    try:
+        new_actor_type = Actor_Type(actor_id=actor_id, type_id=type_id)
+        db.session.add(new_actor_type)
+        db.session.commit()
+        return {"err_msg": "Save Movie and Actor mapping sucess.", "obj": None, "op_status": True, "new_id": new_actor_type.id}
+    except Exception as e:
+        logger.error(e)
+        return {"err_msg": "Save Movie and Actor mapping fail.", "obj": None, "op_status": False}
+
+
+def update_actor_type(id, actor_id, type_id):
+
+    u_actor_type = find_actor_type_by_id(id)
+    if u_actor_type is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Actor_Type).filter_by(id=id).update({"actor_id": actor_id, "type_id": type_id})
+        db.session.commit()
+        return {"err_msg": "Update success.", "obj": None, "op_status": True}
+
+
+def delete_actor_type(id):
+    delete_actor_type = find_actor_type_by_id(id)
+    if delete_actor_type is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(Actor_Type).filter_by(id=id).delete()
+        db.session.commit()
+        return {"err_msg": "Delete success.", "obj": None, "op_status": True}
+
+
+def find_actor_type_by_id(id):
+    return Actor_Type.query.filter_by(id=id).first()
+
+
+def find_actor_type_by_actor_id(actor_id):
+    return Actor_Type.query.filter_by(actor_id=actor_id).all()
+
+
+def find_actor_type_by_type_id(type_id):
+    return Actor_Type.query.filter_by(type_id=type_id).all()
+
+
+def find_all_actor_type():
+    return Actor_Type.query.all()
+
+
+def get_count_of_all_actor_type():
+    return db.session.query(Actor_Type.id).count()
+
+
+def get_count_of_all_actor_type_with_type(type_id):
+    return Actor_Type.query.filter_by(type_id=type_id).count()
+
+
+def get_count_of_all_actor_type_with_actor(actor_id):
+    return Actor_Type.query.filter_by(actor_id=actor_id).count()
+
+
+# EBook MediaType mapping
+
+def save_ebook_type(ebook_id, type_id):
+    try:
+        new_ebook_type = EBook_Type(ebook_id=ebook_id, type_id=type_id)
+        db.session.add(new_ebook_type)
+        db.session.commit()
+        return {"err_msg": "Save Movie and Actor mapping sucess.", "obj": None, "op_status": True, "new_id": new_ebook_type.id}
+    except Exception as e:
+        logger.error(e)
+        return {"err_msg": "Save Movie and Actor mapping fail.", "obj": None, "op_status": False}
+
+
+def update_ebook_type(id, ebook_id, type_id):
+
+    u_ebook_type = find_ebook_type_by_id(id)
+    if u_ebook_type is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(EBook_Type).filter_by(id=id).update({"ebook_id": ebook_id, "type_id": type_id})
+        db.session.commit()
+        return {"err_msg": "Update success.", "obj": None, "op_status": True}
+
+
+def delete_ebook_type(id):
+    delete_ebook_type = find_ebook_type_by_id(id)
+    if delete_ebook_type is None:
+        return {"err_msg": "The mapping of Movie and Actor with id %d is not existed." % id, "obj": None, "op_status": False}
+    else:
+        db.session.query(EBook_Type).filter_by(id=id).delete()
+        db.session.commit()
+        return {"err_msg": "Delete success.", "obj": None, "op_status": True}
+
+
+def find_ebook_type_by_id(id):
+    return EBook_Type.query.filter_by(id=id).first()
+
+
+def find_ebook_type_by_ebook_id(ebook_id):
+    return EBook_Type.query.filter_by(ebook_id=ebook_id).all()
+
+
+def find_ebook_type_by_type_id(type_id):
+    return EBook_Type.query.filter_by(type_id=type_id).all()
+
+
+def find_all_ebook_type():
+    return EBook_Type.query.all()
+
+
+def get_count_of_all_ebook_type():
+    return db.session.query(EBook_Type.id).count()
+
+
+def get_count_of_all_ebook_type_with_type(type_id):
+    return EBook_Type.query.filter_by(type_id=type_id).count()
+
+
+def get_count_of_all_ebook_type_with_ebook(ebook_id):
+    return EBook_Type.query.filter_by(ebook_id=ebook_id).count()
+
+
 if __name__ == '__main__':
-    #n_list = get_type_name_list_by_id(find_mediatype_by_name("Actor")[0].id)
-    #for n in n_list:
-    #    print n["name"]
-    #mediatypes = find_mediatypes_pagenate(2).prev()
-    #for item in mediatypes.items:
-    #    print(item.name)
-    #save_user("samho", "19781117")
-    #user = find_user_by_name("samho")
-    #print user.username, user.password
-    #print user.check_password("19781117")
-    #save_mediatype("photo", 0)
-    #mediatype = find_mediatype_by_name("photo")
-    #print mediatype.id
-
-    #update_mediatype(1, 'photo', 2)
-    #msg = delete_mediatype(1)
-    #m_list = find_all_mediatypes()
-    #for m in m_list:
-    #    print m.parent
-    #with open("/tmp/viewfile.jpg", 'rb') as input_file:
-    #    base = os.path.basename("/tmp/viewfile.jpg")
-    #    file_name, ext = os.path.splitext(base)
-    #    photo_blob = marshal.dumps(input_file.read(), 2)
-    #    save_photo(name=file_name, ext=ext, content=photo_blob)
-
-    #try:
-    #    p = find_photo_by_id(1)
-    #    name = p.name
-    #    ext = p.ext
-    #    static_path = "/tmp/"
-    #    print p.name
-    #    print p.ext
-    #    file_name = "%s%s" % (name, ext)
-    #    file_path = os.path.join(static_path, "%s" % file_name)
-    #    with open(file_path, 'wb') as output_file:
-    #        output_file.write(marshal.loads(p.content))
-    #except Exception:
-    #    print "file not existed."
-    # p = get_count_of_all_photos()
-    # if p < PHOTO_PER_PAGE:
-    #     a = find_all_photo_by_page(per_page=p, page=2)
-    # else:
-    #     a = find_all_photo_by_page(per_page=PHOTO_PER_PAGE, page=2)
-    #
-    # print(a.items[0].path)
-    #actors = find_actor_by_type(MOVIE_TYPE["REGULAR"])
-    #actors = find_all_actors_by_page(per_page=2, page=1)
-    actors = get_count_of_all_actors_with_type(actor_type=4)
-    actors = find_all_actors_with_type_by_page(actor_type=14, per_page=2, page=2)
+    #actors = get_count_of_all_actors_with_type(actor_type=4)
+    #actors = find_all_actors_with_type_by_page(actor_type=14, per_page=2, page=2)
     # print actors
-    for actor in actors.items:
-        print(actor.name)
-    # p = get_count_of_all_movies()
-    # if p < MOVIE_PER_PAGE:
-    #     a = find_all_movie_by_page(per_page=p, page=1)
-    # else:
-    #     a = find_all_movie_by_page(per_page=MOVIE_PER_PAGE, page=1)
-
-    # print(a.items[0].name)
+    #for actor in actors.items:
+    #    print(actor.name)
+    t_list = find_ebook_type_by_ebook_id(1)
+    print(type(t_list))
+    for t in t_list:
+        print(t.id)
