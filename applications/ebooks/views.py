@@ -207,8 +207,8 @@ def confirm_delete_ebook(ebook_id):
         return redirect("/ebook/all/1")
     else:
         types_list = []
-        for type_id in splitStrIdToInteger(db_ebook.mediatype):
-            tmp_type = dbmanager.find_mediatype_by_id(type_id)
+        for e_type in dbmanager.find_ebook_type_by_ebook_id(db_ebook.id):
+            tmp_type = dbmanager.find_mediatype_by_id(e_type.type_id)
             types_list.append(tmp_type.name)
         types = ", ".join(types_list)
         storage = dbmanager.find_storage_by_id(db_ebook.storage)

@@ -113,6 +113,10 @@ def create_storage():
                     type_list = combineIntegerToStr(actorform.types.data)
                     op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
                                                       type_list)
+                    # save mapping of actor and mediatype
+                    for type_id in actorform.types.data:
+                        op_a_type_result = dbmanager.save_actor_type(op_result["new_id"], type_id)
+
                     logger.info("Save new actor complete, status: %s." % op_result["op_status"])
                     return redirect("/actor/all/1")
             else:
@@ -124,6 +128,11 @@ def create_storage():
                 type_list = combineIntegerToStr(actorform.types.data)
                 op_result = dbmanager.save_actor(actorform.name.data.strip(), actorform.sex.data, actorform.country.data.strip(), actorform.description.data.strip(), op_photo_result["new_id"],
                                                  type_list)
+
+                # save mapping of actor and mediatype
+                for type_id in actorform.types.data:
+                    op_a_type_result = dbmanager.save_actor_type(op_result["new_id"], type_id)
+
                 logger.info("Save new actor with url thumb complete, status is %s: " % op_result["op_status"])
                 return redirect("/actor/all/1")
         else:
@@ -149,10 +158,12 @@ def view_actor_detail(actor_id):
         if db_actor.sex == 0:
             sex = "Male"
 
-        int_list = splitStrIdToInteger(db_actor.type)
+        # int_list = splitStrIdToInteger(db_actor.type)
+        # str_list = []
+        # for i_type in int_list:
         str_list = []
-        for i_type in int_list:
-            db_mediatype = dbmanager.find_mediatype_by_id(i_type)
+        for a_type in dbmanager.find_actor_type_by_actor_id(db_actor.id):
+            db_mediatype = dbmanager.find_mediatype_by_id(a_type.type_id)
             str_list.append(db_mediatype.name)
         type_list = ", ".join(str_list)
 
@@ -212,6 +223,12 @@ def update_actor(actor_id):
             new_description = cur_actor.description
 
         new_type_list = combineIntegerToStr(actorform.types.data)
+        # Clear the original mapping
+        for origin_map in dbmanager.find_actor_type_by_actor_id(actor_id):
+            op_origin_map_result = dbmanager.delete_actor_type(origin_map.id)
+        # Save mapping with new one
+        for new_type_id in actorform.types.data:
+            op_new_map_result = dbmanager.save_actor_type(actor_id, new_type_id)
 
         # Process the photo update.
         if actorform.thumb.data.filename.strip() == "":
@@ -263,10 +280,15 @@ def delete_confirm(actor_id):
         else:
             sex = 'Female'
 
-        int_list = splitStrIdToInteger(cur_actor.type)
+        # int_list = splitStrIdToInteger(cur_actor.type)
+        # str_list = []
+        # for i_type in int_list:
+        #     db_mediatype = dbmanager.find_mediatype_by_id(i_type)
+        #     str_list.append(db_mediatype.name)
+        # type_list = ", ".join(str_list)
         str_list = []
-        for i_type in int_list:
-            db_mediatype = dbmanager.find_mediatype_by_id(i_type)
+        for i_type in dbmanager.find_actor_type_by_actor_id(actor_id):
+            db_mediatype = dbmanager.find_mediatype_by_id(i_type.type_id)
             str_list.append(db_mediatype.name)
         type_list = ", ".join(str_list)
 
@@ -300,6 +322,13 @@ def delete_actor(actor_id):
             logger.info("Delete photo with id %d is success." % cur_actor.thumb)
         else:
             logger.error("Delete photo with id %d is fail." % cur_actor.thumb)
+
+        for map_id in dbmanager.find_actor_type_by_actor_id(actor_id):
+            op_mapping_delete = dbmanager.delete_actor_type(map_id.id)
+            if op_mapping_delete["op_status"]:
+                logger.info("Delete mapping with id %d is success." % map_id.id)
+            else:
+                logger.error("Delete mapping with id %d is fail." % map_id.id)
 
         op_actor_delete = dbmanager.delete_actor(actor_id)
         if op_actor_delete["op_status"]:

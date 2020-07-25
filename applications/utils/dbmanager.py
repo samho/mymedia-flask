@@ -2,6 +2,8 @@ import datetime
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import func
+from sqlalchemy import desc
 
 from applications.actors.model import Actor, Actor_Type
 from applications.config import DEFAULT_PAGE_SIZE, PHOTO_PER_PAGE, MOVIE_PER_PAGE, EBOOK_PER_PAGE, ACTOR_PER_PAGE
@@ -787,13 +789,23 @@ def get_count_of_all_ebook_type_with_ebook(ebook_id):
     return EBook_Type.query.filter_by(ebook_id=ebook_id).count()
 
 
+#  Statistics and analysis
+def get_top5_actor_by_movie():
+    return db.session.query(Movie_Actor.actor_id, func.count(Movie_Actor.movie_id)).group_by(Movie_Actor.actor_id).order_by(desc(func.count(Movie_Actor.movie_id))).limit(5)
+
+
+def get_top5_ebook_by_type():
+    return db.session.query(EBook_Type.type_id, func.count(EBook_Type.ebook_id)).group_by(EBook_Type.type_id).order_by(desc(func.count(EBook_Type.ebook_id))).limit(5)
+
+
 if __name__ == '__main__':
     #actors = get_count_of_all_actors_with_type(actor_type=4)
     #actors = find_all_actors_with_type_by_page(actor_type=14, per_page=2, page=2)
     # print actors
     #for actor in actors.items:
     #    print(actor.name)
-    t_list = find_ebook_type_by_ebook_id(1)
-    print(type(t_list))
-    for t in t_list:
-        print(t.id)
+    #a = get_top5_actor_by_movie()
+    a = get_top5_ebook_by_type()
+    print(type(a))
+    for r in a:
+        print(r)

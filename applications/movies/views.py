@@ -55,16 +55,19 @@ def movie_index(movie_type, page_id):
 
             movies_list = []
             for m in movies.items:
+
                 types_list = []
-                for type_id in splitStrIdToInteger(m.types):
-                    tmp_type = dbmanager.find_mediatype_by_id(type_id)
+                for m_type in dbmanager.find_movie_type_by_movie_id(m.id):
+                    tmp_type = dbmanager.find_mediatype_by_id(m_type.type_id)
                     types_list.append(tmp_type.name)
                 types = ", ".join(types_list)
+
                 actors_list = []
-                for actor_id in splitStrIdToInteger(m.actors):
-                    tmp_actor = dbmanager.find_actor_by_id(actor_id)
+                for m_actor in dbmanager.find_movie_actor_by_movie_id(m.id):
+                    tmp_actor = dbmanager.find_actor_by_id(m_actor.actor_id)
                     actors_list.append(tmp_actor.name)
                 actors = ", ".join(actors_list)
+
                 storage = dbmanager.find_storage_by_id(m.storage)
                 tmp_movie = {"id": m.id, "name": m.name, "provider": m.provider, "type": types, "actors": actors, "storage": storage.name}
                 movies_list.append(tmp_movie)
@@ -158,6 +161,18 @@ def create_movie(movie_type):
                                                  cover=op_cover_save["new_id"], types=MOVIE_TYPE[movie_type.upper()],
                                                  provider=new_provider, storage=new_storage,
                                                  file_path=new_filepath)
+
+            # Save the mapping between Movie and snapshots
+            for s_id in op_snapshots:
+                ob_map_m_s = dbmanager.save_movie_photo(op_movie_save["new_id"], s_id)
+
+            # Save the mapping between Movie and actors
+            for a_id in movieform.actors.data:
+                ob_map_m_a = dbmanager.save_movie_actor(op_movie_save["new_id"], a_id)
+
+            # Save the mapping between Movie and type
+            op_map_m_t = dbmanager.save_movie_type(op_movie_save["new_id"], MOVIE_TYPE[movie_type.upper()])
+
             return redirect("/movie/all/1")
         else:
             logger.info("The movie with name %s seems existed." % movieform.name.strip())
@@ -180,28 +195,34 @@ def view_movie_detail(movie_id):
         return redirect("/movie/all/1")
     else:
         snapshot_list = []
-        for sid in splitStrIdToInteger(db_movie.snapshots):
-            tmp_snapshot = dbmanager.find_photo_by_id(sid)
+        # for sid in splitStrIdToInteger(db_movie.snapshots):
+        for sid in dbmanager.find_movie_photo_by_movie_id(db_movie.id):
+            tmp_snapshot = dbmanager.find_photo_by_id(sid.photo_id)
             if tmp_snapshot is None:
-                logger.error("The snapshot with id %d is not existed." % sid)
+                logger.error("The snapshot with id %d is not existed." % sid.photo_id)
                 continue
             else:
                 snapshot_list.append({"id": tmp_snapshot.id, "url": tmp_snapshot.path})
 
         types_list = []
-        for type_id in splitStrIdToInteger(db_movie.types):
-            tmp_type = dbmanager.find_mediatype_by_id(type_id)
+        type_list = dbmanager.find_movie_type_by_movie_id(db_movie.id)
+        for tid in type_list:
+            tmp_type = dbmanager.find_mediatype_by_id(tid.type_id)
             types_list.append(tmp_type.name)
         types = ", ".join(types_list)
+
         actors_list = []
-        for actor_id in splitStrIdToInteger(db_movie.actors):
-            tmp_actor = dbmanager.find_actor_by_id(actor_id)
+        # for actor_id in splitStrIdToInteger(db_movie.actors):
+        for aid in dbmanager.find_movie_actor_by_movie_id(db_movie.id):
+            tmp_actor = dbmanager.find_actor_by_id(aid.actor_id)
             actors_list.append(tmp_actor.name)
         actors = ", ".join(actors_list)
+
         storage = dbmanager.find_storage_by_id(db_movie.storage)
+
         cur_cover = dbmanager.find_photo_by_id(db_movie.cover)
         if cur_cover is None:
-            logger.error("The snapshot with id %d is not existed." % sid)
+            logger.error("The Cover with id %d is not existed." % db_movie.cover)
             cover = MOVIE_DEFAULT_COVER_URL
         else:
             cover = cur_cover.path
@@ -230,25 +251,29 @@ def delete_movie_confirm(movie_id):
         return redirect("/movie/all/1")
     else:
         snapshot_list = []
-        for sid in splitStrIdToInteger(db_movie.snapshots):
-            tmp_snapshot = dbmanager.find_photo_by_id(sid)
+        for sid in dbmanager.find_movie_photo_by_movie_id(db_movie.id):
+            tmp_snapshot = dbmanager.find_photo_by_id(sid.photo_id)
             if tmp_snapshot is None:
-                logger.error("The snapshot with id %d is not existed." % sid)
+                logger.error("The snapshot with id %d is not existed." % sid.photo_id)
                 continue
             else:
                 snapshot_list.append({"id": tmp_snapshot.id, "url": tmp_snapshot.path})
 
         types_list = []
-        for type_id in splitStrIdToInteger(db_movie.types):
-            tmp_type = dbmanager.find_mediatype_by_id(type_id)
+        type_list = dbmanager.find_movie_type_by_movie_id(db_movie.id)
+        for tid in type_list:
+            tmp_type = dbmanager.find_mediatype_by_id(tid.type_id)
             types_list.append(tmp_type.name)
         types = ", ".join(types_list)
+
         actors_list = []
-        for actor_id in splitStrIdToInteger(db_movie.actors):
-            tmp_actor = dbmanager.find_actor_by_id(actor_id)
+        for aid in dbmanager.find_movie_actor_by_movie_id(db_movie.id):
+            tmp_actor = dbmanager.find_actor_by_id(aid.actor_id)
             actors_list.append(tmp_actor.name)
         actors = ", ".join(actors_list)
+
         storage = dbmanager.find_storage_by_id(db_movie.storage)
+
         cur_cover = dbmanager.find_photo_by_id(db_movie.cover)
         if cur_cover is None:
             logger.error("The snapshot with id %d is not existed." % sid)
@@ -284,13 +309,26 @@ def delete_movie(movie_id):
         else:
             logger.error("Delete cover with id %d is fail." % cur_movie.cover)
 
-        snapshot_list = splitStrIdToInteger(cur_movie.snapshots)
+        # snapshot_list = splitStrIdToInteger(cur_movie.snapshots)
+        snapshot_list = dbmanager.find_movie_photo_by_movie_id(movie_id)
         for sid in snapshot_list:
-            op_snapshots_delete = dbmanager.delete_photo(sid)
+            op_snapshots_delete = dbmanager.delete_photo(sid.photo_id)
             if op_snapshots_delete["op_status"]:
-                logger.info("Delete snapshot with id %d is success." % sid)
+                logger.info("Delete snapshot with id %d is success." % sid.photo_id)
             else:
-                logger.error("Delete snapshot with id %d is fail." % sid)
+                logger.error("Delete snapshot with id %d is fail." % sid.photo_id)
+
+        # Clear the mapping between movie and actor
+        for m_a_map in dbmanager.find_movie_actor_by_movie_id(movie_id):
+            op_m_a_result = dbmanager.delete_movie_actor(m_a_map.id)
+
+        # Clear the mapping between movie and type
+        for m_t_map in dbmanager.find_movie_type_by_movie_id(movie_id):
+            op_m_t_result = dbmanager.delete_movie_type(m_t_map.id)
+
+        # Clear the mapping between movie and photo
+        for m_p_map in dbmanager.find_movie_photo_by_movie_id(movie_id):
+            op_m_p_result = dbmanager.delete_movie_photo(m_p_map.id)
 
         op_movie_delete = dbmanager.delete_movie(movie_id)
         if op_movie_delete["op_status"]:
