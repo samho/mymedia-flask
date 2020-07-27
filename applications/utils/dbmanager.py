@@ -805,7 +805,5 @@ if __name__ == '__main__':
     #for actor in actors.items:
     #    print(actor.name)
     #a = get_top5_actor_by_movie()
-    a = get_top5_ebook_by_type()
+    a = get_count_of_all_movie_type_with_type(10)
     print(type(a))
-    for r in a:
-        print(r)

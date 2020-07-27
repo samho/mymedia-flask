@@ -2,9 +2,146 @@
 {% block title %}Index {% endblock %}
 {% block body %}
     <div class="page-wrapper">
-            {% include 'top.html' %}
-            {% include 'breadcrumb.html' %}
+        {% include 'top.html' %}
+        {% include 'breadcrumb.html' %}
+        {% if dash %}
+            <!-- WELCOME-->
+            <section class="welcome p-t-10">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h1 class="title-4">Welcome back
+                                <span>{{ logon_user }}</span>
+                            </h1>
+                            <hr class="line-seprate">
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END WELCOME-->
 
+            <!-- STATISTIC-->
+            <section class="statistic statistic2">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--green">
+                                <h2 class="number">{{ dash.ebook_count }}</h2>
+                                <span class="desc">total ebooks</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-book"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--orange">
+                                <h2 class="number">{{ dash.photo_count }}</h2>
+                                <span class="desc">total photos</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-picture-in-picture"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--blue">
+                                <h2 class="number">{{ dash.movie_count }}</h2>
+                                <span class="desc">total movies</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-movie"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="statistic__item statistic__item--red">
+                                <h2 class="number">{{ dash.actor_count }}</h2>
+                                <span class="desc">total actors</span>
+                                <div class="icon">
+                                    <i class="zmdi zmdi-account"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END STATISTIC-->
+
+            <!-- STATISTIC CHART-->
+            <section class="statistic-chart">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="title-5 m-b-35">statistics</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4">
+                            <!-- TOP CAMPAIGN-->
+                            <div class="top-campaign">
+                                <h3 class="title-3 m-b-30">Top 5 Actors </h3>
+                                <div class="table-responsive">
+                                    <table class="table table-top-campaign">
+                                        <tbody>
+                                            {% for a in dash.top5_actor %}
+                                            <tr>
+                                                <td>{{ a.name }}</td>
+                                                <td>{{ a.count }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END TOP CAMPAIGN-->
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <!-- TOP CAMPAIGN-->
+                            <div class="top-campaign">
+                                <h3 class="title-3 m-b-30">Top 5 eBook Type</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-top-campaign">
+                                        <tbody>
+                                            {% for b in dash.top5_ebook %}
+                                            <tr>
+                                                <td>{{ b.name }}</td>
+                                                <td>{{ b.count }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <!-- END TOP CAMPAIGN-->
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <!-- CHART PERCENT-->
+                            <div class="chart-percent-2">
+                                <h3 class="title-3 m-b-30">Movie Chart %</h3>
+                                <div class="chart-wrap">
+                                    <div id="movie-percent-data1" data1="{{ dash.r_movie_percent }}" style="display: none"></div>
+                                    <div id="movie-percent-data2" data2="{{ dash.a_movie_percent }}" style="display: none"></div>
+                                    <canvas id="movie-percent"></canvas>
+                                    <div id="chartjs-tooltip">
+                                        <table></table>
+                                    </div>
+                                </div>
+                                <div class="chart-info">
+                                    <div class="chart-note">
+                                        <span class="dot dot--blue"></span>
+                                        <span>Regular</span>
+                                    </div>
+                                    <div class="chart-note">
+                                        <span class="dot dot--red"></span>
+                                        <span>Adult</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- END CHART PERCENT-->
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END STATISTIC CHART-->
+        {% else %}
             <!-- WELCOME-->
             <section class="welcome p-t-10">
                 <div class="container">
@@ -169,9 +306,7 @@
                 </div>
             </section>
             <!-- END STATISTIC CHART-->
-
-        </div>
-
+        {% endif %}
     </div>
 {% endblock %}
 

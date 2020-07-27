@@ -40,8 +40,8 @@
             }
           ],
           labels: [
-            'Products',
-            'Services'
+            'Regular',
+            'Adult'
           ]
         },
         options: {
