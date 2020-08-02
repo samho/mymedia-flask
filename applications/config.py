@@ -22,7 +22,7 @@ TEM_PATH = os.environ.get('MYMEDIA_TEM_PATH') or "/tmp"
 MEDIA_ACTOR_ID = os.environ.get('MYMEDIA_MEDIA_ACTOR_ID') or 4
 MEDIA_EBOOK_ID = os.environ.get('MYMEDIA_MEDIA_EBOOK_ID') or 3
 MEDIA_URL = os.environ.get('MYMEDIA_MEDIA_URL') or "/static/media/"
-MEDIA_LOCAL_PATH = os.environ.get('MYMEDIA_MEDIA_LOCAL_PATH') or "/Users/samho/workspace/mymedia-upload"
+MEDIA_LOCAL_PATH = os.environ.get('MYMEDIA_MEDIA_LOCAL_PATH') or "/data/upload"
 MEDIA_SAVE_TO_DB = os.environ.get('MYMEDIA_MEDIA_SAVE_TO_DB') or False
 
 PHOTO_TYPE = os.environ.get('MYMEDIA_PHOTO_TYPE') or {"NORMAL": 6, "COVER": 7, "SNAPSHOT": 8}
