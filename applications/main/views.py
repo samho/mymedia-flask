@@ -35,7 +35,7 @@ def logout():
 def index():
     if 'username' in session:
         ebook_count = dbmanager.get_count_of_all_ebooks()
-        actor_count = dbmanager.get_count_of_all_movies()
+        actor_count = dbmanager.get_count_of_all_actors()
         photo_count = dbmanager.get_count_of_all_photos()
         movie_count = dbmanager.get_count_of_all_movies()
 
