@@ -128,16 +128,19 @@ def create_movie(movie_type):
             new_storage = movieform.storage.data
             new_filepath = movieform.storage_path.data.strip()
             # Save the cover file
-            cover_file = movieform.cover.data.filename
-            logger.info("Upload file %s" % cover_file)
-            upload_filename = os.path.splitext(cover_file)[0]
-            upload_suffix = os.path.splitext(cover_file)[1]
-            save_filename = str(uuid.uuid3(uuid.NAMESPACE_URL, upload_filename.encode('utf-8')))
-            save_fullfilename = save_filename + upload_suffix
-            save_path = MEDIA_LOCAL_PATH + save_fullfilename
-            logger.info("Save path is %s" % save_path)
-            movieform.cover.data.save(save_path)
-            op_cover_save = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["COVER"], MEDIA_URL+save_fullfilename)
+            if movieform.cover.data.filename == '':
+                op_cover_save = dbmanager.save_photo_with_string("nopic", ".jpg", PHOTO_TYPE["COVER"], MOVIE_DEFAULT_COVER_URL)
+            else:
+                cover_file = movieform.cover.data.filename
+                logger.info("Upload file %s" % cover_file)
+                upload_filename = os.path.splitext(cover_file)[0]
+                upload_suffix = os.path.splitext(cover_file)[1]
+                save_filename = str(uuid.uuid3(uuid.NAMESPACE_URL, upload_filename.encode('utf-8')))
+                save_fullfilename = save_filename + upload_suffix
+                save_path = MEDIA_LOCAL_PATH + save_fullfilename
+                logger.info("Save path is %s" % save_path)
+                movieform.cover.data.save(save_path)
+                op_cover_save = dbmanager.save_photo_with_string(save_filename, upload_suffix, PHOTO_TYPE["COVER"], MEDIA_URL+save_fullfilename)
             # end of saving cover file
             # Save snapshot files
             snapshot_list = request.files.getlist('snapshots')
@@ -175,7 +178,7 @@ def create_movie(movie_type):
 
             return redirect("/movie/all/1")
         else:
-            logger.info("The movie with name %s seems existed." % movieform.name.strip())
+            logger.info("The movie with name %s seems existed." % movieform.name.data.strip())
             return render_template("create_movie.html", pagename="New Movie", loggon_user=session['username'],
                                    movieform=movieform, movie_type=movie_type)
     else:

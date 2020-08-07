@@ -30,7 +30,9 @@ PHOTO_PER_PAGE = os.environ.get('MYMEDIA_PHOTO_PER_PAGE') or 20
 
 MOVIE_TYPE = os.environ.get('MYMEDIA_MOVIE_TYPE') or {"REGULAR": 9, "ADULT": 10}
 MOVIE_PER_PAGE = os.environ.get('MYMEDIA_MOVIE_PER_PAGE') or 20
-MOVIE_DEFAULT_COVER_URL = os.environ.get('MYMEDIA_MOVIE_DEFAULT_COVER_URL') or "/static/media/7c60cf3b-7d74-312f-aa57-70b4c1701bed.jpg"
+MOVIE_DEFAULT_COVER_URL = os.environ.get('MYMEDIA_MOVIE_DEFAULT_COVER_URL') or "/static/images/nopic.jpg"
+MOVIE_DEFAULT_SNAP_URL = os.environ.get('MYMEDIA_MOVIE_DEFAULT_SNAP_URL') or "/static/images/nopic.jpg"
+
 
 EBOOK_PER_PAGE = os.environ.get('MYMEDIA_EBOOK_PER_PAGE') or 20
 EBOOK_TYPE = os.environ.get('MYMEDIA_EBOOK_TYPE') or {"DEVELOPMENT": 12, "ENTERTAINMENT": 13, "PYTHON": 20, "GOLANG": 21, "KUBERNETES": 22}
