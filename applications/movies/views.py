@@ -3,7 +3,7 @@ from flask import request, Blueprint, render_template, session, redirect, url_fo
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.movies.forms import MovieRegularForm, MovieAdultForm
-from applications.config import MOVIE_TYPE, MEDIA_LOCAL_PATH, MEDIA_URL, MOVIE_PER_PAGE, PHOTO_TYPE, MOVIE_DEFAULT_COVER_URL
+from applications.config import MOVIE_TYPE, MEDIA_LOCAL_PATH, MEDIA_URL, MOVIE_PER_PAGE, PHOTO_TYPE, MOVIE_DEFAULT_COVER_URL, MOVIE_DEFAULT_SNAP_URL
 import uuid
 import os
 
@@ -129,7 +129,7 @@ def create_movie(movie_type):
             new_filepath = movieform.storage_path.data.strip()
             # Save the cover file
             if movieform.cover.data.filename == '':
-                op_cover_save = dbmanager.save_photo_with_string("nopic", ".jpg", PHOTO_TYPE["COVER"], MOVIE_DEFAULT_COVER_URL)
+                op_cover_save = dbmanager.save_photo_with_string("nopic", ".jpg", PHOTO_TYPE["COVER"], "")
             else:
                 cover_file = movieform.cover.data.filename
                 logger.info("Upload file %s" % cover_file)
@@ -205,7 +205,10 @@ def view_movie_detail(movie_id):
                 logger.error("The snapshot with id %d is not existed." % sid.photo_id)
                 continue
             else:
-                snapshot_list.append({"id": tmp_snapshot.id, "url": tmp_snapshot.path})
+                if os.path.exists(os.path.join(MEDIA_LOCAL_PATH, tmp_snapshot.name+tmp_snapshot.ext)):
+                    snapshot_list.append({"id": tmp_snapshot.id, "url": tmp_snapshot.path})
+                else:
+                    snapshot_list.append({"id": tmp_snapshot.id, "url": MOVIE_DEFAULT_SNAP_URL})
 
         types_list = []
         type_list = dbmanager.find_movie_type_by_movie_id(db_movie.id)
@@ -224,11 +227,14 @@ def view_movie_detail(movie_id):
         storage = dbmanager.find_storage_by_id(db_movie.storage)
 
         cur_cover = dbmanager.find_photo_by_id(db_movie.cover)
-        if cur_cover is None:
+        if cur_cover.path == "":
             logger.error("The Cover with id %d is not existed." % db_movie.cover)
             cover = MOVIE_DEFAULT_COVER_URL
         else:
-            cover = cur_cover.path
+            if os.path.exists(os.path.join(MEDIA_LOCAL_PATH, cur_cover.name + cur_cover.ext)):
+                cover = cur_cover.path
+            else:
+                cover = MOVIE_DEFAULT_COVER_URL
 
         movie = {"id": db_movie.id,
                  "name": db_movie.name,
@@ -260,7 +266,10 @@ def delete_movie_confirm(movie_id):
                 logger.error("The snapshot with id %d is not existed." % sid.photo_id)
                 continue
             else:
-                snapshot_list.append({"id": tmp_snapshot.id, "url": tmp_snapshot.path})
+                if os.path.exists(os.path.join(MEDIA_LOCAL_PATH, tmp_snapshot.name+tmp_snapshot.ext)):
+                    snapshot_list.append({"id": tmp_snapshot.id, "url": tmp_snapshot.path})
+                else:
+                    snapshot_list.append({"id": tmp_snapshot.id, "url": MOVIE_DEFAULT_SNAP_URL})
 
         types_list = []
         type_list = dbmanager.find_movie_type_by_movie_id(db_movie.id)
@@ -278,11 +287,14 @@ def delete_movie_confirm(movie_id):
         storage = dbmanager.find_storage_by_id(db_movie.storage)
 
         cur_cover = dbmanager.find_photo_by_id(db_movie.cover)
-        if cur_cover is None:
+        if cur_cover.path == "":
             logger.error("The snapshot with id %d is not existed." % sid)
             cover = MOVIE_DEFAULT_COVER_URL
         else:
-            cover = cur_cover.path
+            if os.path.exists(os.path.join(MEDIA_LOCAL_PATH, cur_cover.name + cur_cover.ext)):
+                cover = cur_cover.path
+            else:
+                cover = MOVIE_DEFAULT_COVER_URL
 
         movie = {"id": db_movie.id,
                  "name": db_movie.name,
