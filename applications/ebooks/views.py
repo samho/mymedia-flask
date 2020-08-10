@@ -65,6 +65,27 @@ def movie_index(ebook_type, page_id):
             else:
                 ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["KUBERNETES"], per_page=EBOOK_PER_PAGE, page=page_id)
 
+        if ebook_type == "database":
+            count_ebooks = dbmanager.get_count_of_all_ebooks_with_type(EBOOK_TYPE["DATABASE"])
+            if count_ebooks < EBOOK_PER_PAGE:
+                ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["DATABASE"], per_page=count_ebooks, page=page_id)
+            else:
+                ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["DATABASE"], per_page=EBOOK_PER_PAGE, page=page_id)
+
+        if ebook_type == "devops":
+            count_ebooks = dbmanager.get_count_of_all_ebooks_with_type(EBOOK_TYPE["DEVOPS"])
+            if count_ebooks < EBOOK_PER_PAGE:
+                ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["DEVOPS"], per_page=count_ebooks, page=page_id)
+            else:
+                ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["DEVOPS"], per_page=EBOOK_PER_PAGE, page=page_id)
+
+        if ebook_type == "system":
+            count_ebooks = dbmanager.get_count_of_all_ebooks_with_type(EBOOK_TYPE["SYSTEM"])
+            if count_ebooks < EBOOK_PER_PAGE:
+                ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["SYSTEM"], per_page=count_ebooks, page=page_id)
+            else:
+                ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["SYSTEM"], per_page=EBOOK_PER_PAGE, page=page_id)
+
         if ebooks is None:
             return render_template("ebooks.html", pagename="eBooks", logon_user=session['username'])
         else:
@@ -238,12 +259,4 @@ def delete_ebook(ebook_id):
     else:
         logger.error("There is some error appeared for deleting ebook with id %d, delete fail." % ebook_id)
         return redirect("/ebook/all/1")
-
-
-
-
-
-
-        
-
 

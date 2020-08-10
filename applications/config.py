@@ -35,7 +35,8 @@ MOVIE_DEFAULT_SNAP_URL = os.environ.get('MYMEDIA_MOVIE_DEFAULT_SNAP_URL') or "/s
 
 
 EBOOK_PER_PAGE = os.environ.get('MYMEDIA_EBOOK_PER_PAGE') or 8
-EBOOK_TYPE = os.environ.get('MYMEDIA_EBOOK_TYPE') or {"DEVELOPMENT": 12, "ENTERTAINMENT": 13, "PYTHON": 20, "GOLANG": 21, "KUBERNETES": 22}
+EBOOK_TYPE = os.environ.get('MYMEDIA_EBOOK_TYPE') or {"DEVELOPMENT": 12, "ENTERTAINMENT": 13, "PYTHON": 20, "GOLANG": 21, "KUBERNETES": 22,
+                                                      "DATABASE": 23, "DEVOPS": 24, "SYSTEM": 25}
 EBOOK_WRITER_ID = os.environ.get('MYMEDIA_EBOOK_WRITER_ID') or 17
 
 ACTOR_PER_PAGE = os.environ.get('MYMEDIA_ACTOR_PER_PAGE') or 8
