@@ -83,6 +83,7 @@ def movie_index(movie_type, page_id):
                                    has_next=movies.has_next,
                                    prev_num=movies.prev_num,
                                    page=movies.page,
+                                   pages=movies.pages,
                                    next_num=movies.next_num)
 
 

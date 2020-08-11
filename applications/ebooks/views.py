@@ -118,6 +118,7 @@ def movie_index(ebook_type, page_id):
                                    has_next=ebooks.has_next,
                                    prev_num=ebooks.prev_num,
                                    page=ebooks.page,
+                                   pages=ebooks.pages,
                                    next_num=ebooks.next_num)
 
 

@@ -69,6 +69,7 @@ def actor_index(actor_type, page_id):
                                    has_prev=actors.has_prev,
                                    has_next=actors.has_next,
                                    page=actors.page,
+                                   pages=actors.pages,
                                    prev_num=actors.prev_num,
                                    next_num=actors.next_num,
                                    min_item=min_item,
@@ -87,7 +88,7 @@ def new_actor():
 
 
 @actor.route('/create_actor', methods=['POST'])
-def create_storage():
+def create_actor():
     if 'username' not in session:
         return render_template('login.html', form=LoginForm())
 
