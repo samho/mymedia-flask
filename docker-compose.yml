@@ -1,0 +1,14 @@
+version: '3'
+services:
+  mymedia:
+    image: "ccr.ccs.tencentyun.com/iours.fun/mymedia:latest"
+    ports:
+      - 5000:5000
+    environment:
+      MYMEDIA_DATABASE_URL: "sqlite:////data/bases/dev.sqlite"
+      MYMEDIA_MEDIA_LOCAL_PATH: "/data/upload/"
+    network_mode: "host"
+    restart: always
+    volumes:
+      - "./upload:/data/upload"
+      - "./database:/data/database"
