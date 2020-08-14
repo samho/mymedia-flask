@@ -3,6 +3,7 @@ from flask import request, Blueprint, render_template, session, redirect, url_fo
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.movies.forms import MovieRegularForm, MovieAdultForm
+from applications.search.forms import SearchForm
 from applications.config import MOVIE_TYPE, MEDIA_LOCAL_PATH, MEDIA_URL, MOVIE_PER_PAGE, PHOTO_TYPE, MOVIE_DEFAULT_COVER_URL, MOVIE_DEFAULT_SNAP_URL
 import uuid
 import os
@@ -45,7 +46,7 @@ def movie_index(movie_type, page_id):
                 movies = dbmanager.find_all_movie_with_type_by_page(MOVIE_TYPE["ADULT"], per_page=MOVIE_PER_PAGE, page=page_id)
 
         if movies is None:
-            return render_template("movies.html", pagename="Movie", logon_user=session['username'])
+            return render_template("movies.html", pagename="Movie", search_form=SearchForm(), logon_user=session['username'])
         else:
             min_item = (page_id - 1) * MOVIE_PER_PAGE + 1
             if page_id * MOVIE_PER_PAGE >= count_movies:
@@ -84,7 +85,8 @@ def movie_index(movie_type, page_id):
                                    prev_num=movies.prev_num,
                                    page=movies.page,
                                    pages=movies.pages,
-                                   next_num=movies.next_num)
+                                   next_num=movies.next_num,
+                                   search_form=SearchForm())
 
 
 @movie.route('/new/<string:movie_type>')
@@ -94,12 +96,12 @@ def new_movie(movie_type):
 
     if movie_type == "adult":
         movieform = MovieAdultForm()
-        return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
+        return render_template("create_movie.html", pagename="New Movie", search_form=SearchForm(), logon_ueer=session['username'],
                                movieform=movieform, movie_type=movie_type)
 
     if movie_type == "regular":
         movieform = MovieRegularForm()
-        return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
+        return render_template("create_movie.html", pagename="New Movie", search_form=SearchForm(), logon_ueer=session['username'],
                                movieform=movieform, movie_type=movie_type)
 
 
@@ -180,10 +182,10 @@ def create_movie(movie_type):
             return redirect("/movie/all/1")
         else:
             logger.info("The movie with name %s seems existed." % movieform.name.data.strip())
-            return render_template("create_movie.html", pagename="New Movie", loggon_user=session['username'],
+            return render_template("create_movie.html", pagename="New Movie", search_form=SearchForm(), loggon_user=session['username'],
                                    movieform=movieform, movie_type=movie_type)
     else:
-        return render_template("create_movie.html", pagename="New Movie", logon_ueer=session['username'],
+        return render_template("create_movie.html", pagename="New Movie", search_form=SearchForm(), logon_ueer=session['username'],
                                movieform=movieform, movie_type=movie_type)
 
 
@@ -246,7 +248,7 @@ def view_movie_detail(movie_id):
                  "filepath": db_movie.file_path,
                  "cover": cover,
                  "snapshots": snapshot_list}
-        return render_template("movie.html", pagename="Movie Details", logon_user=session["username"], movie=movie)
+        return render_template("movie.html", pagename="Movie Details", search_form=SearchForm(), logon_user=session["username"], movie=movie)
 
 
 @movie.route('/delete_confirm/<int:movie_id>', methods=['GET', 'POST'])
@@ -306,7 +308,7 @@ def delete_movie_confirm(movie_id):
                  "filepath": db_movie.file_path,
                  "cover": cover,
                  "snapshots": snapshot_list}
-        return render_template("delete_movie_confirm.html", pagename="Movie Delete Confirm", logon_user=session["username"], movie=movie)
+        return render_template("delete_movie_confirm.html", pagename="Movie Delete Confirm", search_form=SearchForm(), logon_user=session["username"], movie=movie)
 
 
 @movie.route('/delete_movie/<int:movie_id>')
@@ -352,5 +354,51 @@ def delete_movie(movie_id):
         else:
             logger.error("Delete movie with id %d fail." % movie_id)
     return redirect("/movie/all/1")
+
+
+@movie.route('/works/actor/<int:actor_id>')
+def movie_works(actor_id):
+    if 'username' not in session:
+        return render_template('login.html', form=LoginForm())
+    else:
+        movies = []
+        movie_actor_list = dbmanager.find_movie_actor_by_actor_id(actor_id)
+        for m_a in movie_actor_list:
+            movie = dbmanager.find_movie_by_id(m_a.movie_id)
+            if movie is None:
+                pass
+            else:
+                movies.append(movie)
+
+        if len(movies) == 0:
+            return render_template("movies.html", pagename="Movie", search_form=SearchForm(), logon_user=session['username'])
+        else:
+
+            movies_list = []
+            for m in movies:
+
+                types_list = []
+                for m_type in dbmanager.find_movie_type_by_movie_id(m.id):
+                    tmp_type = dbmanager.find_mediatype_by_id(m_type.type_id)
+                    types_list.append(tmp_type.name)
+                types = ", ".join(types_list)
+
+                actors_list = []
+                for m_actor in dbmanager.find_movie_actor_by_movie_id(m.id):
+                    tmp_actor = dbmanager.find_actor_by_id(m_actor.actor_id)
+                    actors_list.append(tmp_actor.name)
+                actors = ", ".join(actors_list)
+
+                storage = dbmanager.find_storage_by_id(m.storage)
+                tmp_movie = {"id": m.id, "name": m.name, "provider": m.provider, "type": types, "actors": actors, "storage": storage.name}
+                movies_list.append(tmp_movie)
+
+                actor = dbmanager.find_actor_by_id(actor_id)
+
+            return render_template("movies.html",
+                                   pagename="Movie Works of %s" % actor.name.title(),
+                                   search_form=SearchForm(),
+                                   logon_user=session['username'],
+                                   movies=movies_list)
 
 

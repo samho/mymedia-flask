@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, session
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger
 from applications.config import PHOTO_PER_PAGE, PHOTO_TYPE
+from applications.search.forms import SearchForm
 
 
 photo = Blueprint("photo",
@@ -48,7 +49,7 @@ def photo_index_with_type(photo_type, page_id):
                 photos = dbmanager.find_all_photo_with_type_by_page(PHOTO_TYPE["SNAPSHOT"], per_page=PHOTO_PER_PAGE, page=page_id)
 
         if photos is None:
-            return render_template("photoes.html", pagename="Photos", logon_user=session['username'])
+            return render_template("photoes.html", pagename="Photos", search_form=SearchForm(), logon_user=session['username'])
         else:
             min_item = (page_id - 1) * PHOTO_PER_PAGE + 1
             if page_id * PHOTO_PER_PAGE >= count_photos:
@@ -58,6 +59,7 @@ def photo_index_with_type(photo_type, page_id):
 
             return render_template("photoes.html",
                                    pagename="%s Photos" % photo_type.title(),
+                                   search_form=SearchForm(),
                                    logon_user=session['username'],
                                    photos=photos,
                                    count_photos=count_photos,

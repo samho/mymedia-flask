@@ -3,6 +3,7 @@ from flask import request, Blueprint, render_template, session, redirect
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.ebooks.forms import eBookForm
+from applications.search.forms import SearchForm
 from applications.config import EBOOK_PER_PAGE, EBOOK_TYPE
 import uuid
 import os
@@ -87,7 +88,7 @@ def movie_index(ebook_type, page_id):
                 ebooks = dbmanager.find_all_ebooks_with_type_by_page(EBOOK_TYPE["SYSTEM"], per_page=EBOOK_PER_PAGE, page=page_id)
 
         if ebooks is None:
-            return render_template("ebooks.html", pagename="eBooks", logon_user=session['username'])
+            return render_template("ebooks.html", pagename="eBooks", search_form=SearchForm(), logon_user=session['username'])
         else:
             min_item = (page_id - 1) * EBOOK_PER_PAGE + 1
             if page_id * EBOOK_PER_PAGE >= count_ebooks:
@@ -119,7 +120,8 @@ def movie_index(ebook_type, page_id):
                                    prev_num=ebooks.prev_num,
                                    page=ebooks.page,
                                    pages=ebooks.pages,
-                                   next_num=ebooks.next_num)
+                                   next_num=ebooks.next_num,
+                                   search_form=SearchForm())
 
 
 @ebook.route('/new')
@@ -128,7 +130,7 @@ def new_ebook():
         return render_template('login.html', form=LoginForm())
 
     ebookform = eBookForm()
-    return render_template("create_ebook.html", pagename="New eBook", logon_ueer=session['username'], ebookform=ebookform)
+    return render_template("create_ebook.html", pagename="New eBook", search_form=SearchForm(), logon_ueer=session['username'], ebookform=ebookform)
 
 
 @ebook.route('/create_ebook', methods=['POST'])
@@ -156,9 +158,9 @@ def crate_ebook():
             return redirect("/ebook/all/1")
         else:
             logger.error("There is some issue for saving new ebook.")
-            return render_template("create_ebook.html", pagename="New eBook", logon_ueer=session['username'], ebookform=ebookform)
+            return render_template("create_ebook.html", pagename="New eBook", search_form=SearchForm(), logon_ueer=session['username'], ebookform=ebookform)
     else:
-        return render_template("create_ebook.html", pagename="New eBook", logon_ueer=session['username'], ebookform=ebookform)
+        return render_template("create_ebook.html", pagename="New eBook", search_form=SearchForm(), logon_ueer=session['username'], ebookform=ebookform)
 
 
 @ebook.route('/edit/<int:ebook_id>', methods=['GET', 'POST'])
@@ -172,7 +174,7 @@ def edit_ebook(ebook_id):
         return redirect("/ebook/all/1")
     else:
         ebookform = eBookForm(name=db_ebook.name, actors=db_ebook.actors, storage_path=db_ebook.file_path)
-        return render_template("edit_ebook.html", pagename="Edit eBook", logon_user=session['username'], ebookform=ebookform, ebook_id=ebook_id)
+        return render_template("edit_ebook.html", pagename="Edit eBook", search_form=SearchForm(), logon_user=session['username'], ebookform=ebookform, ebook_id=ebook_id)
 
 
 @ebook.route('/update_ebook/<int:ebook_id>', methods=['POST'])
@@ -214,7 +216,7 @@ def update_ebook(ebook_id):
         logger.info("Update ebook with new data complete, status: %s." % op_ebook_resp["op_status"])
         return redirect("/ebook/all/1")
     else:
-        return render_template("edit_ebook.html", pagename="Edit eBook", logon_user=session['username'], ebookform=ebookform, ebook_id=ebook_id)
+        return render_template("edit_ebook.html", pagename="Edit eBook", search_form=SearchForm(), logon_user=session['username'], ebookform=ebookform, ebook_id=ebook_id)
 
 
 @ebook.route('/delete/confirm/<int:ebook_id>', methods=['GET'])
@@ -240,7 +242,7 @@ def confirm_delete_ebook(ebook_id):
                      "actors": db_ebook.actors,
                      "storage": storage.name,
                      "path": db_ebook.file_path}
-        return render_template("delete_ebook_confirm.html", pagename="Delete eBook Confirm", logon_user=session['username'], cur_ebook=cur_ebook)
+        return render_template("delete_ebook_confirm.html", pagename="Delete eBook Confirm", search_form=SearchForm(), logon_user=session['username'], cur_ebook=cur_ebook)
 
 
 @ebook.route('/delete/operation/<int:ebook_id>', methods=['GET'])

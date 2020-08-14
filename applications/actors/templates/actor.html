@@ -47,9 +47,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <a type="button" class="btn btn-warning btn-sm" href="/actor/all/1">
-                                    <i class="fa fa-angle-double-left"></i>&nbsp;Back to All
-                                </a>
+                                <div class="row">
+                                    <a type="button" class="btn btn-warning btn-sm col-md-2" href="/actor/all/1">
+                                        <i class="fa fa-angle-double-left"></i>&nbsp;Back to All
+                                    </a>
+                                    <a type="button" class="btn btn-outline-success btn-sm col-md-2 ml-auto" href="/movie/works/actor/{{ actor.id }}">
+	                                    <i class="fa fa-film">
+	                                    </i>&nbsp; Movie List
+                                    </a>
+                                </div>
                             </div>
                             <!-- END TOP CAMPAIGN-->
                         </div>

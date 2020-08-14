@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import datetime
 
 from flask import Flask
@@ -14,6 +15,7 @@ from applications.photo.model import Photo
 from applications.storage.model import Storage
 from applications.users.model import User
 from applications.utils import logger
+
 
 logger = logger.Logger(formatlevel=5, callfile=__file__).get_logger()
 
@@ -293,6 +295,10 @@ def find_ebook_by_name(name):
     return EBook.query.filter_by(name=name).all()
 
 
+def find_ebook_by_name_for_search(ebook_name):
+    return db.session.query(EBook).filter(EBook.name.like('%'+str(ebook_name).decode("utf8")+'%')).all()
+
+
 def find_all_ebooks():
     return EBook.query.all()
 
@@ -364,6 +370,10 @@ def find_actor_by_type(type_name):
     return db.session.query(Actor).filter(Actor.type.like('%'+str(type_name)+'%')).all()
 
 
+def find_actor_by_name_for_search(actor_name):
+    return db.session.query(Actor).filter(Actor.name.like('%'+str(actor_name).decode("utf8")+'%')).all()
+
+
 def find_all_actors():
     return Actor.query.all()
 
@@ -428,6 +438,10 @@ def find_movie_by_id(id):
 
 def find_movie_by_name(name):
     return Movie.query.filter_by(name=name).all()
+
+
+def find_movie_by_name_for_search(movie_name):
+    return db.session.query(Movie).filter(Movie.name.like('%'+str(movie_name).decode("utf8")+'%')).all()
 
 
 def find_movie_by_provider(provider):
@@ -804,6 +818,6 @@ if __name__ == '__main__':
     # print actors
     #for actor in actors.items:
     #    print(actor.name)
-    #a = get_top5_actor_by_movie()
-    a = get_count_of_all_movie_type_with_type(10)
+    # a = get_top5_actor_by_movie()
+    a = find_actor_by_name_for_search("有贺美穗")
     print(type(a))

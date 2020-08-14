@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% block title %}Actor List {% endblock %}
+{% block body %}
+         {% include 'top.html' %}
+         {% include 'breadcrumb.html' %}
+    <!-- Bootstrap Core Css -->
+    <link href="/static/css/photos.css" rel="stylesheet" >
+    <!-- Custom Css -->
+    <link href="/static/plugins/jquery-datatable/skin/bootstrap/css/dataTables.bootstrap.css" rel="stylesheet">
+         <div class="page-content--bgf7">
+            <!-- DATA TABLE-->
+            <section class="p-t-20">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 offset-md-3">
+                            {% if search_result %}
+                                <!-- TOP CAMPAIGN-->
+                                <div class="top-campaign">
+                                    <h3 class="title-3 m-b-30">{{ search_for }}</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-top-campaign">
+                                            <tbody>
+                                                {% for r in search_result %}
+                                                <tr>
+                                                    <td><a href="{{ r.name_url }}">{{ r.name }}</a></td>
+                                                    <td><a href="{{ r.category_url }}">{{ r.category }}</a></td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--  END TOP CAMPAIGN-->
+                            {% else %}
+                                <!-- TOP CAMPAIGN-->
+                                <div class="top-campaign">
+                                    <h3 class="title-3 m-b-30">top campaigns</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-top-campaign">
+                                            <tbody>
+                                                <tr>
+                                                    <td>1. Australia</td>
+                                                    <td>$70,261.65</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>2. United Kingdom</td>
+                                                    <td>$46,399.22</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3. Turkey</td>
+                                                    <td>$35,364.90</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4. Germany</td>
+                                                    <td>$20,366.96</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5. France</td>
+                                                    <td>$10,366.96</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3. Turkey</td>
+                                                    <td>$35,364.90</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4. Germany</td>
+                                                    <td>$20,366.96</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5. France</td>
+                                                    <td>$10,366.96</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>3. Turkey</td>
+                                                    <td>$35,364.90</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4. Germany</td>
+                                                    <td>$20,366.96</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>5. France</td>
+                                                    <td>$10,366.96</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>4. Germany</td>
+                                                    <td>$20,366.96</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <!--  END TOP CAMPAIGN-->
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!-- END DATA TABLE-->
+         </div>
+{% endblock %}

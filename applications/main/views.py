@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, url_for, flash, redirect, session,
 from forms import LoginForm
 from applications.utils import dbmanager
 from applications.config import MEDIA_LOCAL_PATH, MOVIE_TYPE
+from applications.search.forms import SearchForm
 
 
 main = Blueprint("main", __name__)
@@ -64,7 +65,7 @@ def index():
                 "top5_ebook": top5_ebook_with_type
                 }
 
-        return render_template('index.html', logon_user=session['username'], dash=dash)
+        return render_template('index.html', search_form=SearchForm(), logon_user=session['username'], dash=dash)
     else:
         return render_template('login.html', form=LoginForm())
 

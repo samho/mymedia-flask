@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger, combineIntegerToStr, splitStrIdToInteger
 from applications.actors.forms import ActorForm
+from applications.search.forms import SearchForm
 from applications.config import MEDIA_SAVE_TO_DB, MEDIA_LOCAL_PATH, PHOTO_TYPE, MEDIA_URL, ACTOR_PER_PAGE, ACTOR_TYPE
 import uuid
 import os
@@ -45,7 +46,7 @@ def actor_index(actor_type, page_id):
                 actors = dbmanager.find_all_actors_with_type_by_page(actor_type=ACTOR_TYPE["ADULT"], per_page=ACTOR_PER_PAGE, page=page_id)
 
         if actors is None:
-            return render_template("actors.html", pagename="Actors", logon_user=session['username'])
+            return render_template("actors.html", pagename="Actors", search_form=SearchForm(), logon_user=session['username'])
         else:
             min_item = (page_id - 1) * ACTOR_PER_PAGE + 1
             if page_id * ACTOR_PER_PAGE >= count_actor:
@@ -74,7 +75,8 @@ def actor_index(actor_type, page_id):
                                    next_num=actors.next_num,
                                    min_item=min_item,
                                    max_item=max_item,
-                                   count_actors=count_actor
+                                   count_actors=count_actor,
+                                   search_form = SearchForm()
                                    )
 
 
@@ -84,7 +86,7 @@ def new_actor():
         return render_template('login.html', form=LoginForm())
 
     actorform = ActorForm()
-    return render_template("create_actor.html", pagename="New Actor", logon_ueer=session['username'], actorform=actorform)
+    return render_template("create_actor.html", pagename="New Actor", search_form=SearchForm(), logon_ueer=session['username'], actorform=actorform)
 
 
 @actor.route('/create_actor', methods=['POST'])
@@ -139,10 +141,10 @@ def create_actor():
         else:
             logger.info("The actor with name %s is existed." % actorform.name.data.strip())
             actorform.name.errors.append("Actor with name '%s' is existed." % actorform.name.data.strip())
-            return render_template("create_actor.html", pagename="Create Actor", logon_user=session['username'], actorform=actorform)
+            return render_template("create_actor.html", pagename="Create Actor", search_form=SearchForm(), logon_user=session['username'], actorform=actorform)
 
     logger.error("Create new actor fail.")
-    return render_template("create_actor.html", pagename="Create Actor", logon_user=session['username'], actorform=actorform)
+    return render_template("create_actor.html", pagename="Create Actor", search_form=SearchForm(), logon_user=session['username'], actorform=actorform)
 
 
 @actor.route('/detail/<int:actor_id>', methods=['GET', 'POST'])
@@ -179,8 +181,8 @@ def view_actor_detail(actor_id):
         else:
             thumb = db_thumb.path
 
-        actor = {"name": db_actor.name, "sex": sex, "country": db_actor.country, "description": description, "type_list": type_list, "thumb": thumb}
-        return render_template("actor.html", pagename="Actor Details", logon_user=session["username"], actor=actor)
+        actor = {"id": actor_id, "name": db_actor.name, "sex": sex, "country": db_actor.country, "description": description, "type_list": type_list, "thumb": thumb}
+        return render_template("actor.html", pagename="Actor Details", search_form=SearchForm(), logon_user=session["username"], actor=actor)
 
 
 @actor.route('/edit/<int:actor_id>', methods=['GET', 'POST'])
@@ -195,7 +197,7 @@ def edit_actor(actor_id):
     else:
         db_photo = dbmanager.find_photo_by_id(db_actor.thumb)
         actorform = ActorForm(name=db_actor.name, country=db_actor.country, sex=db_actor.sex, thumb_path=db_photo.path, description=db_actor.description)
-        return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform, actor_id=actor_id)
+        return render_template("edit_actor.html", pagename="Edit Actor", search_form=SearchForm(), logon_user=session['username'], actorform=actorform, actor_id=actor_id)
 
 
 @actor.route('/update_actor/<int:actor_id>', methods=['POST'])
@@ -263,7 +265,7 @@ def update_actor(actor_id):
         logger.info("Update actor with new data complete, status: %s." % op_result["op_status"])
         return redirect("/actor/all/1")
     else:
-        return render_template("edit_actor.html", pagename="Edit Actor", logon_user=session['username'], actorform=actorform, actor_id=actor_id)
+        return render_template("edit_actor.html", pagename="Edit Actor", search_form=SearchForm(), logon_user=session['username'], actorform=actorform, actor_id=actor_id)
 
 
 @actor.route('/delete_confirm/<int:actor_id>', methods=['GET'])
@@ -305,7 +307,7 @@ def delete_confirm(actor_id):
             thumb = db_thumb.path
 
         actor = {"id": actor_id, "name": cur_actor.name, "sex": sex, "country": cur_actor.country, "description": description, "type_list": type_list, "thumb": thumb}
-        return render_template("delete_actor_confirm.html", pagename="Actor Delete Confirm", logon_user=session["username"], actor=actor)
+        return render_template("delete_actor_confirm.html", pagename="Actor Delete Confirm", search_form=SearchForm(), logon_user=session["username"], actor=actor)
 
 
 @actor.route('/delete_actor/<int:actor_id>')

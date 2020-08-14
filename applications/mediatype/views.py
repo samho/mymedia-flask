@@ -2,6 +2,8 @@ from flask import Blueprint, render_template, session, redirect, url_for
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger
 from applications.mediatype.forms import MediaTypeForm
+from applications.search.forms import SearchForm
+
 
 mediatype = Blueprint("mediatype",
                   __name__,
@@ -19,7 +21,7 @@ def mediatype_index():
     else:
         mediatypes = dbmanager.find_all_mediatypes()
         if mediatypes is None:
-            return render_template("mediatypes.html", pagename="Media Type", logon_user=session['username'])
+            return render_template("mediatypes.html", pagename="Media Type", search_form=SearchForm(), logon_user=session['username'])
         else:
             mediatype_list = []
             for m in mediatypes:
@@ -29,7 +31,7 @@ def mediatype_index():
                     p_type = dbmanager.find_mediatype_by_id(m.parent)
                     mediatype_list.append({"id": m.id, "name": m.name, "parent_name": p_type.name, "parent_id": p_type.id})
 
-            return render_template("mediatypes.html", pagename="Media Type", logon_user=session['username'], mediatype_list=mediatype_list)
+            return render_template("mediatypes.html", pagename="Media Type", search_form=SearchForm(), logon_user=session['username'], mediatype_list=mediatype_list)
 
 
 @mediatype.route('/new')
@@ -39,7 +41,7 @@ def new_mediatype():
     else:
         mediatypes = dbmanager.find_all_mediatypes()
         if mediatypes is None:
-            return render_template("create_mediatype.html", pagename="Create Media Type", logon_user=session['username'], mediatypeform=MediaTypeForm())
+            return render_template("create_mediatype.html", pagename="Create Media Type", search_form=SearchForm(), logon_user=session['username'], mediatypeform=MediaTypeForm())
         else:
             mediatype_list = []
             for m in mediatypes:
@@ -49,7 +51,7 @@ def new_mediatype():
                     p_type = dbmanager.find_mediatype_by_id(m.parent)
                     mediatype_list.append({"id": m.id, "name": m.name, "parent_name": p_type.name, "parent_id": p_type.id})
 
-        return render_template("create_mediatype.html", pagename="Create Media Type", logon_user=session['username'], mediatypeform=MediaTypeForm())
+        return render_template("create_mediatype.html", pagename="Create Media Type", search_form=SearchForm(), logon_user=session['username'], mediatypeform=MediaTypeForm())
 
 
 @mediatype.route('/create_mediatype', methods=['GET', 'POST'])
@@ -69,9 +71,9 @@ def create_mediatype():
         else:
             logger.info("Media type is existed.")
             mediatypeform.name.errors.append("Media Type is existed.")
-            return render_template("create_mediatype.html", pagename="Create Media Type", logon_user=session['username'], mediatypeform=mediatypeform)
+            return render_template("create_mediatype.html", pagename="Create Media Type", search_form=SearchForm(), logon_user=session['username'], mediatypeform=mediatypeform)
 
-    return render_template("create_mediatype.html", pagename="Create Media Type", logon_user=session['username'], mediatypeform=mediatypeform)
+    return render_template("create_mediatype.html", pagename="Create Media Type", search_form=SearchForm(), logon_user=session['username'], mediatypeform=mediatypeform)
 
 
 @mediatype.route('/edit/<int:mediatype_id>', methods=['GET', 'POST'])
@@ -85,7 +87,7 @@ def edit_mediatype(mediatype_id):
         return redirect("/mediatype/all")
     else:
         mediatypeform = MediaTypeForm()
-        return render_template("edit_mediatype.html", pagename="Edit Media Type", logon_user=session['username'],
+        return render_template("edit_mediatype.html", pagename="Edit Media Type", search_form=SearchForm(), logon_user=session['username'],
                        mediatypeform=mediatypeform, cur_mediatype=mediatype)
 
 
@@ -106,9 +108,9 @@ def update_mediatype(mediatype_id):
         else:
             logger.info("Media type is existed.")
             mediatypeform.name.errors.append("Media Type is existed.")
-            return render_template("edit_mediatype.html", pagename="Edit Media Type", logon_user=session['username'], mediatypeform=mediatypeform, cur_mediatype=cur_mediatype)
+            return render_template("edit_mediatype.html", pagename="Edit Media Type", search_form=SearchForm(), logon_user=session['username'], mediatypeform=mediatypeform, cur_mediatype=cur_mediatype)
     else:
-        return render_template("edit_mediatype.html", pagename="Edit Media Type", logon_user=session['username'], mediatypeform=mediatypeform, cur_mediatype=cur_mediatype)
+        return render_template("edit_mediatype.html", pagename="Edit Media Type", search_form=SearchForm(), logon_user=session['username'], mediatypeform=mediatypeform, cur_mediatype=cur_mediatype)
 
 
 @mediatype.route('/delete_confirm/<int:mediatype_id>', methods=['GET', 'POST'])
@@ -121,7 +123,7 @@ def delete_confirm(mediatype_id):
         logger.error("There is not any media type match id %d." % mediatype_id)
         return redirect("/mediatype/all")
     else:
-        return render_template("delete_mediatype_confirm.html", pagename="Delete Media Type Confirm", logon_user=session['username'], cur_mediatype=mediatype)
+        return render_template("delete_mediatype_confirm.html", pagename="Delete Media Type Confirm", search_form=SearchForm(), logon_user=session['username'], cur_mediatype=mediatype)
 
 
 @mediatype.route('/delete_mediatype/<int:mediatype_id>')

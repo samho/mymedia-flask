@@ -75,5 +75,9 @@ def create_app():
     from applications.ebooks.views import ebook
     app.register_blueprint(ebook)
 
+    # register search blueprint
+    from applications.search.views import search
+    app.register_blueprint(search)
+
     return app
 
