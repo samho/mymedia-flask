@@ -79,5 +79,9 @@ def create_app():
     from applications.search.views import search
     app.register_blueprint(search)
 
+    # register statistics blueprint
+    from applications.statistics.views import statistics
+    app.register_blueprint(statistics)
+
     return app
 

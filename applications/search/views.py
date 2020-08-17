@@ -2,7 +2,6 @@
 from flask import Blueprint, render_template, session, request
 from applications.main.forms import LoginForm
 from applications.utils import dbmanager, logger
-from applications.config import PHOTO_PER_PAGE, PHOTO_TYPE
 from applications.search.forms import SearchForm
 
 import sys

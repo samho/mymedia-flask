@@ -808,8 +808,16 @@ def get_top5_actor_by_movie():
     return db.session.query(Movie_Actor.actor_id, func.count(Movie_Actor.movie_id)).group_by(Movie_Actor.actor_id).order_by(desc(func.count(Movie_Actor.movie_id))).limit(5)
 
 
+def get_all_actor_by_movie():
+    return db.session.query(Movie_Actor.actor_id, func.count(Movie_Actor.movie_id)).group_by(Movie_Actor.actor_id).order_by(desc(func.count(Movie_Actor.movie_id)))
+
+
 def get_top5_ebook_by_type():
     return db.session.query(EBook_Type.type_id, func.count(EBook_Type.ebook_id)).group_by(EBook_Type.type_id).order_by(desc(func.count(EBook_Type.ebook_id))).limit(5)
+
+
+def get_all_ebook_by_type():
+    return db.session.query(EBook_Type.type_id, func.count(EBook_Type.ebook_id)).group_by(EBook_Type.type_id).order_by(desc(func.count(EBook_Type.ebook_id)))
 
 
 if __name__ == '__main__':
