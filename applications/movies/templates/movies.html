@@ -41,7 +41,7 @@
                                     <tbody>
                                     {% for movie in movies %}
                                         <tr class="tr-shadow">
-                                            <td><a href="/movie/details/{{ movie.id }}">{{ movie.id }}</a></td>
+                                            <td><a href="/movie/detail/{{ movie.id }}">{{ movie.id }}</a></td>
                                             <td>{{ movie.name }}</td>
                                             <td>{{ movie.provider }}</td>
                                             <td>{{ movie.type }}</td>
@@ -75,6 +75,15 @@
                                                 <ul class="pagination">
                                                     {% if has_prev %}
                                                         <li class="paginate_button previous" id="DataTables_Table_0_previous">
+                                                            <a href="./1" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">First</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="paginate_button previous disabled" id="DataTables_Table_0_previous">
+                                                            <a href="./1" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">First</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if has_prev %}
+                                                        <li class="paginate_button previous" id="DataTables_Table_0_previous">
                                                             <a href="./{{ prev_num }}" aria-controls="DataTables_Table_0" data-dt-idx="0" tabindex="0">Prev</a>
                                                         </li>
                                                     {% else %}
@@ -92,6 +101,15 @@
                                                     {% else %}
                                                         <li class="paginate_button next disabled" id="DataTables_Table_0_next">
                                                             <a href="./{{ page }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Next</a>
+                                                        </li>
+                                                    {% endif %}
+                                                    {% if has_next %}
+                                                        <li class="paginate_button next" id="DataTables_Table_0_next">
+                                                            <a href="./{{ pages }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Last</a>
+                                                        </li>
+                                                    {% else %}
+                                                        <li class="paginate_button next disabled" id="DataTables_Table_0_next">
+                                                            <a href="./{{ pages }}" aria-controls="DataTables_Table_0" data-dt-idx="7" tabindex="0">Last</a>
                                                         </li>
                                                     {% endif %}
                                                 </ul>

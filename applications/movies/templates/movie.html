@@ -48,7 +48,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <a type="button" class="btn btn-warning btn-sm" href="/movie/all/1">
+                                <a type="button" class="btn btn-warning btn-sm" href="{{ request.referrer }}">
                                     <i class="fa fa-angle-double-left"></i>&nbsp;Back to All
                                 </a>
                             </div>
@@ -62,7 +62,7 @@
                                     </div>
                                     <!-- modal large -->
                                     <div class="modal fade text-center" id="{{ movie.id }}" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg" style="display: inline-block; width: auto;" role="document">
+                                        <div class="modal-dialog modal-lg" style="display: inline-block; width: auto; max-width: inherit; max-height: inherit;" role="document">
                                             <div class="modal-content">
                                                 <div class="modal-body">
                                                     <img src="{{ movie.cover }}">
@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <a type="button" class="btn btn-warning btn-sm" href="/movie/all/1">
+                                <a type="button" class="btn btn-warning btn-sm" href="{{ request.referrer }}">
                                     <i class="fa fa-angle-double-left"></i>&nbsp;Back to All
                                 </a>
                             </div>
