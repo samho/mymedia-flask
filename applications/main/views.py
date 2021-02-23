@@ -59,8 +59,8 @@ def index():
                 "actor_count": actor_count,
                 "photo_count": photo_count,
                 "movie_count": movie_count,
-                "r_movie_percent": round(float(r_movie_count)/float(movie_count)) * 100,
-                "a_movie_percent": round(float(a_movie_count)/float(movie_count)) * 100,
+                "r_movie_percent": round(float(r_movie_count)/float(movie_count),3) * 100,
+                "a_movie_percent": round(float(a_movie_count)/float(movie_count),3) * 100,
                 "top5_actor": top5_actor_with_movie,
                 "top5_ebook": top5_ebook_with_type
                 }
